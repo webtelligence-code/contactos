@@ -9,8 +9,8 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route index element={<UsersPage />} />
-          <Route path='/profile/:userId' element={<ProfilePage />} />
+          <Route index element={<UsersPage title='List de contactos' />} />
+          <Route path='/profile/:userId' element={<ProfilePage title='Perfil' />} />
         </Routes>
       </BrowserRouter>
     </div>

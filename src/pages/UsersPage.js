@@ -2,20 +2,19 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import UserTable from '../components/UsersTable';
 
-const UsersPage = () => {
+const UsersPage = ({ title }) => {
     const [users, setUsers] = useState([]);
 
     // This useEffect will run on page reload
     useEffect(() => {
-        getUsers();
-    }, []);
+        document.title = title
 
-    const getUsers = () => {
-        axios.get('http://localhost:80/contactos/api/index.php', {
-            params: {
-                action: 'get_users',
-            }
-        })
+        const getUsers = () => {
+            axios.get('http://localhost:80/contactos/api/index.php', {
+                params: {
+                    action: 'get_users',
+                }
+            })
             .then((response) => {
                 console.log(response)
                 const groupedUsers = response.data.reduce((acc, user) => {
@@ -32,7 +31,10 @@ const UsersPage = () => {
             .catch((error) => {
                 console.error('Error:', error);
             })
-    }
+        }
+
+        getUsers();
+    }, [title]);
 
     return (
         <UserTable users={users} />
