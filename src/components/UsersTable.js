@@ -35,15 +35,25 @@ const UserTable = ({ users }) => {
     <Fragment>
       {Object.keys(users).map((concessao, key) => (
         <Card
-          style={{ 
-            borderColor: '#ed6337',
-            borderBottomLeftRadius: 20,
-            borderBottomRightRadius: 20
+          style={{
+            borderColor: '#77321c',
+            borderRadius: 20,
+            borderTopWidth: 0,
+            borderTopLeftRadius: 22,
+            borderTopRightRadius: 22,
+            backgroundColor: '#fdefeb'
           }}
-          className='m-3 bg-light'
+          className='my-3'
           key={key}
         >
-          <Card.Header className='text-light' style={{ backgroundColor: '#ed6337', borderBottomLeftRadius: 20, borderBottomRightRadius: 20 }} as='h5'>
+          <Card.Header
+            className='text-light'
+            style={{
+              backgroundColor: '#ed6337',
+              borderRadius: 20
+            }}
+            as='h5'
+          >
             {concessao}
             <FontAwesomeIcon
               onClick={(event) => handleVCardClick(concessao, event)}
@@ -52,10 +62,16 @@ const UserTable = ({ users }) => {
               className='ms-2 clickable'
             />
           </Card.Header>
-          <Card.Body style={{ backgroundColor: '#fdefeb', borderBottomLeftRadius: 20, borderBottomRightRadius: 20 }}>
+          <Card.Body
+            style={{
+              backgroundColor: '#fdefeb',
+              borderBottomLeftRadius: 20,
+              borderBottomRightRadius: 20
+            }}
+          >
             <Table hover responsive>
               <thead>
-                <tr>
+                <tr style={{ color: '#77321c' }}>
                   <th>Nome</th>
                   <th>Departamento</th>
                   <th>Função</th>
