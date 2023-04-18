@@ -12,8 +12,8 @@ import { useNavigate } from 'react-router-dom'
 const UserTable = ({ users }) => {
   const navigate = useNavigate();
 
-  const handleUserRowOnClick = (userId) => {
-    navigate(`/profile/${userId}`);
+  const handleUserRowOnClick = (username) => {
+    navigate(`/profile/${username}`);
   }
 
   /**
@@ -33,7 +33,7 @@ const UserTable = ({ users }) => {
 
   return (
     <Fragment>
-      {Object.keys(users).map((concessao, key) => (
+      {Object.keys(users).map((CONCESSAO, key) => (
         <Card
           style={{
             borderColor: '#77321c',
@@ -54,9 +54,9 @@ const UserTable = ({ users }) => {
             }}
             as='h5'
           >
-            {concessao}
+            {CONCESSAO}
             <FontAwesomeIcon
-              onClick={(event) => handleVCardClick(concessao, event)}
+              onClick={(event) => handleVCardClick(CONCESSAO, event)}
               icon={faAddressCard}
               color=''
               className='ms-2 clickable'
@@ -80,14 +80,14 @@ const UserTable = ({ users }) => {
                 </tr>
               </thead>
               <tbody>
-                {users[concessao].map((user, key) => (
-                  <tr key={key} className='clickable' onClick={() => handleUserRowOnClick(user.id)}>
-                    <td>{user.nameDisplay}</td>
-                    <td>{user.departamento}</td>
-                    <td>{user.funcao}</td>
-                    <td>{user.emailEmpresa}</td>
+                {users[CONCESSAO].map((user, key) => (
+                  <tr key={key} className='clickable' onClick={() => handleUserRowOnClick(user.USERNAME)}>
+                    <td>{user.NAME}</td>
+                    <td>{user.DEPARTAMENTO}</td>
+                    <td>{user.FUNCAO}</td>
+                    <td>{user.EMAIL}</td>
                     <td className='text-end'>
-                      {user.contacto}
+                      {user.CONTACTO}
                       <FontAwesomeIcon
                         onClick={(event) => handleVCardClick(user, event)}
                         icon={faAddressCard}

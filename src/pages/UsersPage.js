@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import UserTable from '../components/UsersTable';
 import { Container } from 'react-bootstrap';
-import LoadingBars from '../components/LoadingBars';
+import LoadingBars from '../components/utility/LoadingBars';
 
 const UsersPage = ({ title }) => {
   const [users, setUsers] = useState([]);
@@ -21,7 +21,7 @@ const UsersPage = ({ title }) => {
         .then((response) => {
           console.log(response)
           const groupedUsers = response.data.reduce((acc, user) => {
-            const concession = user.concessao;
+            const concession = user.CONCESSAO;
             if (!acc[concession]) {
               acc[concession] = [];
             }

@@ -20,8 +20,20 @@ switch ($method) {
                 $response = getUsers();
                 break;
             case 'get_user':
-                $userId = isset($_GET['userId']) ? $_GET['userId'] : '';
-                $response = getUser($userId);
+                $username = isset($_GET['username']) ? $_GET['username'] : '';
+                $response = getUser($username);
+                break;
+            case 'get_team':
+                $username = isset($_GET['username']) ? $_GET['username'] : '';
+                $concessao = isset($_GET['concessao']) ? $_GET['concessao'] : '';
+                $response = getTeam($username, $concessao);
+                break;
+            default:
+                if ($get_action == '') {
+                    $response = 'Get action not specified. Please add an action type to the request.';
+                } else {
+                    $response = 'Get action "' . $get_action . '" does not exist in the API.';
+                }
                 break;
         }
 
