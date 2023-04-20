@@ -13,7 +13,7 @@ const UserTable = ({ users }) => {
   const navigate = useNavigate();
 
   const handleUserRowOnClick = (username) => {
-    navigate(`/profile/${username}`);
+    navigate(`/contactos/profile/${username}`);
   }
 
   /**

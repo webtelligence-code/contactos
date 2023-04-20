@@ -9,3 +9,40 @@
   border-radius: 50%;
   border: #77321c 2px solid;
 }
+
+.modalImputRow {
+  display: 'flex';
+  flex-direction: 'row';
+  width: '100%';
+  align-self: 'center';
+  justify-content: 'center';
+  align-items: center;
+}
+
+input {
+  border-radius: 50px;
+  border: gray 2px solid;
+  padding: 5px;
+  padding-inline: 10px;
+  width: 45%;
+  color: #77321c
+}
+
+input:hover {
+  border: #ed6337 2px solid;
+  background-color: #fdefeb;
+}
+
+input:focus {
+  outline: #77321c 2px solid;
+  border: none;
+}
+
+.modalInfoRow {
+  display: 'flex';
+  flex-direction: 'row';
+  width: '100%';
+  align-self: 'center';
+  justify-content: 'center';
+  align-items: center;
+}
