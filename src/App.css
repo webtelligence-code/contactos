@@ -6,7 +6,7 @@
   width: 150px;
   height: 150px;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: 5%;
   border: #77321c 2px solid;
 }
 
@@ -20,21 +20,42 @@
 }
 
 input {
-  border-radius: 50px;
+  border-radius: 10px;
   border: gray 2px solid;
   padding: 5px;
   padding-inline: 10px;
-  width: 45%;
+  width: 60%;
   color: #77321c
 }
 
 input:hover {
-  border: #ed6337 2px solid;
+  border-color: #ed6337;
   background-color: #fdefeb;
 }
 
 input:focus {
   outline: #77321c 2px solid;
+  background-color: #fdefeb;
+  border: none;
+}
+
+.dropdown {
+  border-radius: 10px;
+  border: gray 2px solid;
+  padding: 5px;
+  padding-inline: 10px;
+  width: 60%;
+  color: #77321c
+}
+
+.dropdown:hover {
+  border-color: #ed6337;
+  background-color: #fdefeb;
+}
+
+.dropdown:focus {
+  outline: #77321c 2px solid;
+  background-color: #fdefeb;
   border: none;
 }
 

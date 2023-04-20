@@ -37,10 +37,6 @@ const UserTable = ({ users }) => {
         <Card
           style={{
             borderColor: '#77321c',
-            borderRadius: 20,
-            borderTopWidth: 0,
-            borderTopLeftRadius: 22,
-            borderTopRightRadius: 22,
             backgroundColor: '#fdefeb'
           }}
           className='my-3'
@@ -48,10 +44,7 @@ const UserTable = ({ users }) => {
         >
           <Card.Header
             className='text-light'
-            style={{
-              backgroundColor: '#ed6337',
-              borderRadius: 20
-            }}
+            style={{backgroundColor: '#ed6337', borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px'}}
             as='h5'
           >
             {CONCESSAO}
@@ -62,13 +55,7 @@ const UserTable = ({ users }) => {
               className='ms-2 clickable'
             />
           </Card.Header>
-          <Card.Body
-            style={{
-              backgroundColor: '#fdefeb',
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20
-            }}
-          >
+          <Card.Body style={{backgroundColor: '#fdefeb'}}>
             <Table hover responsive>
               <thead>
                 <tr style={{ color: '#77321c' }}>

@@ -1,7 +1,7 @@
 import { faBuildingUser, faPeopleGroup, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Fragment } from 'react'
-import { Card, Col, Row } from 'react-bootstrap'
+import { Card, Col, Image, Row } from 'react-bootstrap'
 import LoadingBars from '../utility/LoadingBars'
 import { useNavigate } from 'react-router-dom'
 
@@ -19,10 +19,6 @@ const Team = ({ baseUrl, team, loading }) => {
         className='my-3'
         style={{
           borderColor: '#77321c',
-          borderRadius: 50,
-          borderTopWidth: 0,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
           backgroundColor: '#fdefeb'
         }}
       >
@@ -30,7 +26,8 @@ const Team = ({ baseUrl, team, loading }) => {
           className='text-light'
           style={{
             backgroundColor: '#ed6337',
-            borderRadius: 20
+            borderBottomLeftRadius: '10px', 
+            borderBottomRightRadius: '10px'
           }}
           as={'h6'}
         >
@@ -45,14 +42,14 @@ const Team = ({ baseUrl, team, loading }) => {
               <Row className='text-center'>
                 {team.map((teamMember, key) => (
                   <Col key={key} className='m-2'>
-                    <img
+                    <Image
                       className='clickable'
                       src={`${baseUrl}${teamMember.IMAGE_PATH}`}
                       alt='Team Pic'
                       style={{
                         width: 100,
                         height: 100,
-                        borderRadius: '50%',
+                        borderRadius: '5%',
                         objectFit: 'cover',
                         border: '#77321c 2px solid'
                       }}

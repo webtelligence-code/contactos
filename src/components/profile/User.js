@@ -7,6 +7,8 @@ import LoadingBars from '../utility/LoadingBars';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import ClothingSizesDropdown from '../utility/ClothingSizesDropdown';
+import axios from 'axios';
 
 const User = ({ baseUrl, user, team, loading, getUser }) => {
   // Initialize 
@@ -15,10 +17,32 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
 
   // States
   const [avatar, setAvatar] = useState('');
+  const [username, setUsername] = useState();
+  const [phone, setPhone] = useState();
+  const [dateOfBirth, setDateOfBirth] = useState();
+  const [pants, setPants] = useState();
+  const [shirt, setShirt] = useState();
+  const [jacket, setJacket] = useState();
+  const [polo, setPolo] = useState();
+  const [pullover, setPullover] = useState();
+  const [shoe, setShoe] = useState();
+  const [sweatshirt, setSweatshirt] = useState();
+  const [tshirt, setTshirt] = useState();
 
-  // This useEffect will set the image path for the avatar
+  // This useEffect will set the states for the user
   useEffect(() => {
     setAvatar(user.IMAGE_PATH);
+    setUsername(user.USERNAME);
+    setPhone(user.CONTACTO);
+    setDateOfBirth(user.DATA_NASCIMENTO);
+    setPants(user.nCalcas);
+    setShirt(user.nCamisa);
+    setJacket(user.nCasaco);
+    setPolo(user.nPolo);
+    setPullover(user.nPullover);
+    setShoe(user.nSapato);
+    setSweatshirt(user.nSweatshirt);
+    setTshirt(user.nTshirt);
   }, [user])
 
   /**
@@ -39,15 +63,42 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         if (isEdit) {
-          MySwal.fire({
-            title: <div style={{ color: '#32b300' }}>Perfil editado!</div>,
-            text: 'O seu perfil foi atualizado.',
-            icon: 'success',
-            confirmButtonColor: '#ed6337'
-          })
+          sendDataToApi()
         }
       }
     });
+  }
+
+  const sendDataToApi = async () => {
+    const action = 'update_user';
+    axios.post(`http://localhost:80/contactos/api/index.php`, {
+      action,
+      username,
+      phone,
+      dateOfBirth,
+      pants,
+      shirt,
+      jacket,
+      polo,
+      pullover,
+      shoe,
+      sweatshirt,
+      tshirt
+    }).then((response) => {
+      console.log(`Response from post request (${action})`, response)
+      const parsedResponse = JSON.parse(response)
+      MySwal.fire({
+        title: parsedResponse.title,
+        text: parsedResponse.message,
+        icon: parsedResponse.status,
+        confirmButtonColor: '#ed6337'
+      }).then(() => {
+        getUser();
+      })
+    }).catch((error) => {
+      console.error('Error while trying to post request to API:', error)
+    })
+
   }
 
   // Function to return form Modal body HTML
@@ -56,43 +107,93 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
       <Fragment>
         <div className='align-items-center my-1 modalInputRow'>
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/phone.png`} alt='phone' width={35} />
-          <input placeholder='Número de telemóvel' value={user.CONTACTO} />
+          <input
+            placeholder='Número de telemóvel'
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/cake.png`} alt='cake' width={35} />
-          <input placeholder='Data de Nascimento' value={user.DATA_NASCIMENTO} />
+          <input
+            type='date'
+            name='doj'
+            defaultValue={dateOfBirth}
+            placeholder='Data de Nascimento'
+            onChange={(e) => setDateOfBirth(e.target.value)}
+          />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/trousers.png`} alt='trousers' width={35} />
-          <input placeholder='Número das Calças' value={user.nCalcas} />
+          <ClothingSizesDropdown
+            defaultLabel='Selecione nº calças'
+            value={pants}
+            setState={setPants}
+            isNumber
+          />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/shirt.png`} alt='shirt' width={35} />
-          <input placeholder='Número da Camisa' value={user.nCamisa} />
+          <ClothingSizesDropdown
+            defaultLabel='Selecione nº camisa'
+            value={shirt}
+            setState={setShirt}
+            isLetter
+          />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/jacket.png`} alt='jacket' width={35} />
-          <input placeholder='Número do Casaco' value={user.nCasaco} />
+          <ClothingSizesDropdown
+            defaultLabel='Selecione nº casaco'
+            value={shirt}
+            setState={setJacket}
+            isLetter
+          />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/polo.png`} alt='polo' width={35} />
-          <input placeholder='Número do Pólo' value={user.nPolo} />
+          <ClothingSizesDropdown
+            defaultLabel='Selecione nº pólo'
+            value={shirt}
+            setState={setPolo}
+            isLetter
+          />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/pullover.png`} alt='pullover' width={35} />
-          <input placeholder='Número do Pullover' value={user.nPullover} />
+          <ClothingSizesDropdown
+            defaultLabel='Selecione nº pullover'
+            value={shirt}
+            setState={setPullover}
+            isLetter
+          />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/shoe.png`} alt='shoe' width={35} />
-          <input placeholder='Número do sapato' value={user.nSapato} />
+          <ClothingSizesDropdown
+            defaultLabel='Selecione nº calçado'
+            value={shoe}
+            setState={setShoe}
+            isFootwear
+          />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/sweatshirt.png`} alt='sweatshirt' width={35} />
-          <input placeholder='Número da Sweatshirt' value={user.nSweatshirt} />
+          <ClothingSizesDropdown
+            defaultLabel='Selecione nº sweatshirt'
+            value={shirt}
+            setState={setSweatshirt}
+            isLetter
+          />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/tshirt.png`} alt='tshirt' width={35} />
-          <input placeholder='Número da Tshirt' value={user.nTshirt} />
+          <ClothingSizesDropdown
+            defaultLabel='Selecione nº tshirt'
+            value={shirt}
+            setState={setTshirt}
+            isLetter
+          />
         </div>
       </Fragment>
     )
@@ -111,64 +212,64 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
 
     return (
       <Fragment>
-        {user.CONTACTO && (
+        {phone && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/phone.png`} alt='phone' width={35} />
-            <div>{user.CONTACTO}</div>
+            <div>{phone}</div>
           </div>
         )}
-        {user.DATA_NASCIMENTO && (
+        {dateOfBirth && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/cake.png`} alt='cake' width={35} />
-            <div>{user.DATA_NASCIMENTO}</div>
+            <div>{dateOfBirth}</div>
           </div>
         )}
-        {user.nCalcas && (
+        {pants && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/trousers.png`} alt='trousers' width={35} />
-            <div>{user.nCalcas}</div>
+            <div>{pants}</div>
           </div>
         )}
-        {user.nCamisa && (
+        {shirt && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/shirt.png`} alt='shirt' width={35} />
-            <div>{user.nCamisa}</div>
+            <div>{shirt}</div>
           </div>
         )}
-        {user.nCasaco && (
+        {jacket && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/jacket.png`} alt='jacket' width={35} />
-            <div>{user.nCasaco}</div>
+            <div>{jacket}</div>
           </div>
         )}
-        {user.nPolo && (
+        {polo && (
           <div className='align-items-center my-1 modalInfoRow'>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/polo.png`} alt='polo' width={35} />
-            <div>{user.nPolo}</div>
+            <div>{polo}</div>
           </div>
         )}
-        {user.nPullover && (
+        {pullover && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/pullover.png`} alt='pullover' width={35} />
-            <div>{user.nPullover}</div>
+            <div>{pullover}</div>
           </div>
         )}
-        {user.nSapato && (
+        {shoe && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/shoe.png`} alt='shoe' width={35} />
-            <div>{user.nSapato}</div>
+            <div>{shoe}</div>
           </div>
         )}
-        {user.nSweatshirt && (
+        {sweatshirt && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/sweatshirt.png`} alt='sweatshirt' width={35} />
-            <div>{user.nSweatshirt}</div>
+            <div>{sweatshirt}</div>
           </div>
         )}
-        {user.nTshirt && (
+        {tshirt && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/tshirt.png`} alt='tshirt' width={35} />
-            <div>{user.nTshirt}</div>
+            <div>{tshirt}</div>
           </div>
         )}
       </Fragment>
@@ -183,10 +284,6 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
         className='my-3'
         style={{
           borderColor: '#77321c',
-          borderRadius: 100,
-          borderTopWidth: 0,
-          borderTopLeftRadius: 102,
-          borderTopRightRadius: 102,
           backgroundColor: '#fdefeb'
         }}
       >
@@ -196,7 +293,8 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
           className='text-light'
           style={{
             backgroundColor: '#ed6337',
-            borderRadius: 100,
+            borderBottomLeftRadius: '10px',
+            borderBottomRightRadius: '10px'
           }}
         >
           {loading ? (
@@ -208,7 +306,7 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
               alignItems: 'center'
             }}>
               <div>
-                <img
+                <Image
                   src={`${baseUrl}${avatar}`}
                   alt='Profile'
                   className='me-2 profile-pic'
@@ -244,11 +342,10 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
                   <Button
                     variant='danger'
                     size='sm'
-                    className='w-100'
-                    style={{ borderRadius: 50 }}
+                    className='w-100 h-100 d-flex align-items-center justify-content-center'
                     onClick={() => navigate('/contactos')}
                   >
-                    <FontAwesomeIcon icon={faHandPointLeft} color='white' className='me-2' />
+                    <FontAwesomeIcon icon={faHandPointLeft} color='white' className='me-sm-3' />
                     Voltar atrás
                   </Button>
                 </Col>
@@ -256,11 +353,10 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
                   <Button
                     variant='primary'
                     size='sm'
-                    className='w-100'
-                    style={{ borderRadius: 50, color: '' }}
+                    className='w-100 h-100 d-flex align-items-center justify-content-center'
                     onClick={() => fireModal(false)}
                   >
-                    <FontAwesomeIcon icon={faInfo} color='white' className='me-2' />
+                    <FontAwesomeIcon icon={faInfo} color='white' className='me-sm-3' />
                     + Info
                   </Button>
                 </Col>
@@ -268,11 +364,10 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
                   <Button
                     variant='success'
                     size='sm'
-                    className='w-100'
-                    style={{ borderRadius: 50 }}
+                    className='w-100 h-100 d-flex align-items-center justify-content-center'
                     onClick={() => fireModal(true)}
                   >
-                    <FontAwesomeIcon icon={faUserPen} color='white' className='me-2' />
+                    <FontAwesomeIcon icon={faUserPen} color='white' className='me-sm-3' />
                     Editar perfil
                   </Button>
                 </Col>
@@ -280,12 +375,12 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
               <Row style={{ color: '#77321c', fontWeight: 'normal' }}>
                 <Col>
                   <p>
-                    <FontAwesomeIcon icon={faEnvelope} className='me-2' color='#ed6337' size='sm' />
+                    <FontAwesomeIcon icon={faEnvelope} className='me-1' color='#ed6337' size='sm' />
                     <FontAwesomeIcon icon={faBuilding} className='me-2' color='#ed6337' size='sm' />
                     {user.EMAIL}
                   </p>
                   <p>
-                    <FontAwesomeIcon icon={faEnvelope} className='me-2' color='#ed6337' size='sm' />
+                    <FontAwesomeIcon icon={faEnvelope} className='me-1' color='#ed6337' size='sm' />
                     <FontAwesomeIcon icon={faUser} className='me-2' color='#ed6337' size='sm' />
                     {user.EMAIL_PESSOAL}
                   </p>
