@@ -3,18 +3,15 @@ import React, { Fragment } from 'react'
 import { Card, Table } from 'react-bootstrap'
 import { faAddressCard } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 /**
  * This Component will render a table for each user and it will group them by concession
  * @param {props} param0 
  * @returns 
  */
-const UserTable = ({ users }) => {
+const UserTable = ({ users, username, API_BASE_URL }) => {
   const navigate = useNavigate();
-
-  const handleUserRowOnClick = (username) => {
-    navigate(`/contactos/profile/${username}`);
-  }
 
   /**
    * This function will handle VCard generation for the user selected or the concession
@@ -22,13 +19,33 @@ const UserTable = ({ users }) => {
    * Maybe it will make an API call to index.php that will generate a VCard and return to here via callback
    * @param {object} user 
    */
-  const handleVCardClick = (data, event) => {
-    if (typeof data === 'object') {
-      console.log('You clicked to generate a VCard for user ->', data);
-    } else {
-      console.log('You clicked to generate a VCard for Concession ->', data);
-    }
+  const handleVCardClick = async (data, event) => {
     event.stopPropagation(); // Prevent the click propagation for user row
+    const formData = new FormData();
+
+    formData.append('action', 'generate_vcard');
+
+    if (typeof data === 'object') {
+      formData.append('user', JSON.stringify(data))
+    } else {
+      formData.append('concessao', data);
+    }
+
+    try {
+      const response = await axios.post(API_BASE_URL, formData, { responseType: 'blob' });
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: response.headers['content-type'] }));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = typeof data === 'object'
+        ? `${data.USERNAME}.vcf`
+        : `vcards_concessao_${data}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 100);
+    } catch (error) {
+      console.error('Error fetching VCard:', error);
+    }
   }
 
   return (
@@ -44,7 +61,7 @@ const UserTable = ({ users }) => {
         >
           <Card.Header
             className='text-light'
-            style={{backgroundColor: '#ed6337', borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px'}}
+            style={{ backgroundColor: '#ed6337', borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px' }}
             as='h5'
           >
             {CONCESSAO}
@@ -55,7 +72,7 @@ const UserTable = ({ users }) => {
               className='ms-2 clickable'
             />
           </Card.Header>
-          <Card.Body style={{backgroundColor: '#fdefeb'}}>
+          <Card.Body style={{ backgroundColor: '#fdefeb' }}>
             <Table hover responsive>
               <thead>
                 <tr style={{ color: '#77321c' }}>
@@ -68,7 +85,7 @@ const UserTable = ({ users }) => {
               </thead>
               <tbody>
                 {users[CONCESSAO].map((user, key) => (
-                  <tr key={key} className='clickable' onClick={() => handleUserRowOnClick(user.USERNAME)}>
+                  <tr key={key} className='clickable' onClick={() => navigate(`/contactos/profile/${user.USERNAME}`)}>
                     <td>{user.NAME}</td>
                     <td>{user.DEPARTAMENTO}</td>
                     <td>{user.FUNCAO}</td>

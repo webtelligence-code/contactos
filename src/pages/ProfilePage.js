@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import User from '../components/profile/User';
 import { Container } from 'react-bootstrap';
 
-const ProfilePage = ({ baseUrl, title }) => {
+const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
   // Props from browser router
   const { username } = useParams();
 
@@ -20,7 +20,7 @@ const ProfilePage = ({ baseUrl, title }) => {
 
   // This function will fetch user data with axios request
   const getUser = useCallback(async () => {
-    axios.get('http://localhost:80/contactos/api/index.php', {
+    axios.get(API_BASE_URL, {
       params: {
         action: 'get_user',
         username
@@ -34,7 +34,7 @@ const ProfilePage = ({ baseUrl, title }) => {
       .catch((error) => {
         console.error('Error while trying to fetch user from API:', error)
       })
-  }, [setUser, username])
+  }, [API_BASE_URL, username])
 
   // This useEffect will fetch the user by id passed in the url
   useEffect(() => {
@@ -44,7 +44,7 @@ const ProfilePage = ({ baseUrl, title }) => {
 
   // This function will fetch team data with axios request
   const getTeam = useCallback(async () => {
-    axios.get('http://localhost:80/contactos/api/index.php', {
+    axios.get(API_BASE_URL, {
       params: {
         action: 'get_team',
         username,
@@ -60,7 +60,7 @@ const ProfilePage = ({ baseUrl, title }) => {
       .catch((error) => {
         console.error('Error while trying to fetch Team from API:', error)
       })
-  }, [username, user])
+  }, [API_BASE_URL, username, user])
 
   // THis function will fetch team by cidade and company
   useEffect(() => {
@@ -69,7 +69,7 @@ const ProfilePage = ({ baseUrl, title }) => {
 
   return (
     <Container>
-      <User baseUrl={baseUrl} user={user} team={team} loading={loading} getUser={getUser} />
+      <User API_BASE_URL={API_BASE_URL} baseUrl={baseUrl} user={user} team={team} loading={loading} getUser={getUser} />
     </Container>
   )
 }

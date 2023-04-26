@@ -4,7 +4,7 @@ import UserTable from '../components/UsersTable';
 import { Container } from 'react-bootstrap';
 import LoadingBars from '../components/utility/LoadingBars';
 
-const UsersPage = ({ title }) => {
+const UsersPage = ({ title , API_BASE_URL }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,7 +13,7 @@ const UsersPage = ({ title }) => {
     document.title = title
 
     const getUsers = () => {
-      axios.get('http://localhost:80/contactos/api/index.php', {
+      axios.get(API_BASE_URL, {
         params: {
           action: 'get_users',
         }
@@ -38,12 +38,12 @@ const UsersPage = ({ title }) => {
     }
 
     getUsers();
-  }, [title]);
+  }, [API_BASE_URL, title]);
 
   return (
     <Container>
       {loading && (<LoadingBars classes='mt-5' />)}
-      <UserTable users={users} />
+      <UserTable API_BASE_URL={API_BASE_URL} users={users} />
     </Container>
   );
 }

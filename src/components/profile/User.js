@@ -1,19 +1,18 @@
-import { faBuildingUser, faCakeCandles, faCar, faEnvelope, faPhone, faLayerGroup, faBuilding, faUser, faUserPen, faInfo, faSignature, faBolt, faHandPointLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { Fragment, useEffect, useState } from 'react'
-import { Button, Card, Col, Image, Row } from 'react-bootstrap'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import { Card, Image } from 'react-bootstrap'
 import Team from './Team';
 import LoadingBars from '../utility/LoadingBars';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
 import ClothingSizesDropdown from '../utility/ClothingSizesDropdown';
 import axios from 'axios';
+import UserButtons from './UserButtons';
+import UserDetails from './UserDetails';
+import UserCardHeader from './UserCardHeader';
 
-const User = ({ baseUrl, user, team, loading, getUser }) => {
+const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
   // Initialize 
   const MySwal = withReactContent(Swal);
-  const navigate = useNavigate();
 
   // States
   const [avatar, setAvatar] = useState('');
@@ -28,6 +27,8 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
   const [shoe, setShoe] = useState();
   const [sweatshirt, setSweatshirt] = useState();
   const [tshirt, setTshirt] = useState();
+  const [APIPost, setAPIPost] = useState(false);
+  const [sessionUsername, setSessionUsername] = useState('');
 
   // This useEffect will set the states for the user
   useEffect(() => {
@@ -44,6 +45,25 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
     setSweatshirt(user.nSweatshirt);
     setTshirt(user.nTshirt);
   }, [user])
+
+  useEffect(() => {
+    const getSessionUsername = () => {
+      axios.get(API_BASE_URL, {
+        params: {
+          action: 'get_username',
+        }
+      })
+        .then((response) => {
+          console.log('Session username:', response.data)
+          setSessionUsername(response.data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        })
+    }
+
+    getSessionUsername();
+  }, []);
 
   /**
    * This function will display a modal based on the boolean state parameter
@@ -63,43 +83,50 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         if (isEdit) {
-          sendDataToApi()
+          setAPIPost(true);
         }
       }
     });
   }
 
-  const sendDataToApi = async () => {
+  const sendDataToApi = useCallback(async () => {
     const action = 'update_user';
-    axios.post(`http://localhost:80/contactos/api/index.php`, {
-      action,
-      username,
-      phone,
-      dateOfBirth,
-      pants,
-      shirt,
-      jacket,
-      polo,
-      pullover,
-      shoe,
-      sweatshirt,
-      tshirt
-    }).then((response) => {
+    const formData = new FormData();
+    formData.append('action', action);
+    formData.append('username', username);
+    formData.append('phone', phone);
+    formData.append('dateOfBirth', dateOfBirth);
+    formData.append('pants', pants);
+    formData.append('shirt', shirt);
+    formData.append('jacket', jacket);
+    formData.append('polo', polo);
+    formData.append('pullover', pullover);
+    formData.append('shoe', shoe);
+    formData.append('sweatshirt', sweatshirt);
+    formData.append('tshirt', tshirt);
+
+    console.log('Form Data =>', formData)
+
+    axios.post(`http://localhost/contactos/api/index.php`, formData).then((response) => {
       console.log(`Response from post request (${action})`, response)
-      const parsedResponse = JSON.parse(response)
       MySwal.fire({
-        title: parsedResponse.title,
-        text: parsedResponse.message,
-        icon: parsedResponse.status,
+        title: response.data.title,
+        text: response.data.message,
+        icon: response.data.status,
         confirmButtonColor: '#ed6337'
       }).then(() => {
+        setAPIPost(false);
         getUser();
       })
     }).catch((error) => {
       console.error('Error while trying to post request to API:', error)
     })
 
-  }
+  }, [MySwal, dateOfBirth, getUser, jacket, pants, phone, polo, pullover, shirt, shoe, sweatshirt, tshirt, username])
+
+  useEffect(() => {
+    if (APIPost) sendDataToApi()
+  }, [APIPost, sendDataToApi])
 
   // Function to return form Modal body HTML
   const generateFormModalBody = () => {
@@ -145,7 +172,7 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/jacket.png`} alt='jacket' width={35} />
           <ClothingSizesDropdown
             defaultLabel='Selecione nº casaco'
-            value={shirt}
+            value={jacket}
             setState={setJacket}
             isLetter
           />
@@ -154,7 +181,7 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/polo.png`} alt='polo' width={35} />
           <ClothingSizesDropdown
             defaultLabel='Selecione nº pólo'
-            value={shirt}
+            value={polo}
             setState={setPolo}
             isLetter
           />
@@ -163,7 +190,7 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/pullover.png`} alt='pullover' width={35} />
           <ClothingSizesDropdown
             defaultLabel='Selecione nº pullover'
-            value={shirt}
+            value={pullover}
             setState={setPullover}
             isLetter
           />
@@ -181,7 +208,7 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/sweatshirt.png`} alt='sweatshirt' width={35} />
           <ClothingSizesDropdown
             defaultLabel='Selecione nº sweatshirt'
-            value={shirt}
+            value={sweatshirt}
             setState={setSweatshirt}
             isLetter
           />
@@ -190,7 +217,7 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/tshirt.png`} alt='tshirt' width={35} />
           <ClothingSizesDropdown
             defaultLabel='Selecione nº tshirt'
-            value={shirt}
+            value={tshirt}
             setState={setTshirt}
             isLetter
           />
@@ -300,33 +327,7 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
           {loading ? (
             <LoadingBars classes={'ms-3'} />
           ) : (
-            <div style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center'
-            }}>
-              <div>
-                <Image
-                  src={`${baseUrl}${avatar}`}
-                  alt='Profile'
-                  className='me-2 profile-pic'
-                />
-              </div>
-              <div className='text-start'>
-                <h3>
-                  <FontAwesomeIcon icon={faSignature} className='me-2' />
-                  {user.NAME}
-                </h3>
-                <h5 style={{ opacity: '80%', color: '#77321c' }}>
-                  <FontAwesomeIcon icon={faBuildingUser} className='me-2' />
-                  {user.DEPARTAMENTO}
-                </h5>
-                <h6 style={{ opacity: '80%', color: '#77321c' }}>
-                  <FontAwesomeIcon icon={faBolt} className='me-2' fade />
-                  {user.FUNCAO}
-                </h6>
-              </div>
-            </div>
+            <UserCardHeader user={user} baseUrl={baseUrl} avatar={avatar} />
           )}
 
         </Card.Header>
@@ -334,90 +335,14 @@ const User = ({ baseUrl, user, team, loading, getUser }) => {
         {/* This is the body of the User card */}
         <Card.Body style={{ padding: 50, paddingTop: 20, paddingBottom: 20 }}>
           {loading ? (
-            <LoadingBars />
+            <LoadingBars user={user} baseUrl={baseUrl} avatar={avatar} />
           ) : (
             <Fragment>
-              <Row className='text-center mb-3'>
-                <Col className='w-100'>
-                  <Button
-                    variant='danger'
-                    size='sm'
-                    className='w-100 h-100 d-flex align-items-center justify-content-center'
-                    onClick={() => navigate('/contactos')}
-                  >
-                    <FontAwesomeIcon icon={faHandPointLeft} color='white' className='me-sm-3' />
-                    Voltar atrás
-                  </Button>
-                </Col>
-                <Col className='w-100'>
-                  <Button
-                    variant='primary'
-                    size='sm'
-                    className='w-100 h-100 d-flex align-items-center justify-content-center'
-                    onClick={() => fireModal(false)}
-                  >
-                    <FontAwesomeIcon icon={faInfo} color='white' className='me-sm-3' />
-                    + Info
-                  </Button>
-                </Col>
-                <Col>
-                  <Button
-                    variant='success'
-                    size='sm'
-                    className='w-100 h-100 d-flex align-items-center justify-content-center'
-                    onClick={() => fireModal(true)}
-                  >
-                    <FontAwesomeIcon icon={faUserPen} color='white' className='me-sm-3' />
-                    Editar perfil
-                  </Button>
-                </Col>
-              </Row>
-              <Row style={{ color: '#77321c', fontWeight: 'normal' }}>
-                <Col>
-                  <p>
-                    <FontAwesomeIcon icon={faEnvelope} className='me-1' color='#ed6337' size='sm' />
-                    <FontAwesomeIcon icon={faBuilding} className='me-2' color='#ed6337' size='sm' />
-                    {user.EMAIL}
-                  </p>
-                  <p>
-                    <FontAwesomeIcon icon={faEnvelope} className='me-1' color='#ed6337' size='sm' />
-                    <FontAwesomeIcon icon={faUser} className='me-2' color='#ed6337' size='sm' />
-                    {user.EMAIL_PESSOAL}
-                  </p>
-                  <p>
-                    <FontAwesomeIcon icon={faPhone} className='me-2' color='#ed6337' size='sm' />
-                    {user.CONTACTO}
-                  </p>
-                  <p>
-                    <FontAwesomeIcon icon={faLayerGroup} className='me-2' color='#ed6337' size='sm' />
-                    {user.EXTENSAO ? user.EXTENSAO : 'Nenhuma.'}
-                  </p>
-                  <p>
-                    <FontAwesomeIcon icon={faCakeCandles} className='me-2' color='#ed6337' size='sm' />
-                    {user.DATA_NASCIMENTO}
-                  </p>
-                </Col>
-                <Col>
-                  <p>
-                    <FontAwesomeIcon icon={faBuildingUser} className='me-2' color='#ed6337' size='sm' />
-                    {user.DEPARTAMENTO}
-                  </p>
-                  <p>
-                    <FontAwesomeIcon icon={faCar} className='me-2' color='#ed6337' size='sm' />
-                    {user.CONCESSAO}
-                  </p>
-                  <p>
-                    <FontAwesomeIcon icon={faBuilding} className='me-2' color='#ed6337' size='sm' />
-                    {user.EMPRESA}
-                  </p>
-                </Col>
-              </Row>
+              <UserButtons username={user.USERNAME} sessionUsername={sessionUsername} fireModal={fireModal} />
+              <UserDetails user={user} />
+              <Team baseUrl={baseUrl} team={team} />
             </Fragment>
-          )
-          }
-
-          {/* Team component inside user card body */}
-          <Team baseUrl={baseUrl} team={team} loading={loading} />
+          )}
         </Card.Body >
       </Card >
     </Fragment >
