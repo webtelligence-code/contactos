@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Card, Table } from 'react-bootstrap'
 import { faAddressCard } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
@@ -12,6 +12,8 @@ import axios from 'axios'
  */
 const UserTable = ({ users, username, API_BASE_URL }) => {
   const navigate = useNavigate();
+  const [hoveredConcession, setHoveredConcession] = useState(null);
+  const [hoveredUser, setHoveredUser] = useState({})
 
   /**
    * This function will handle VCard generation for the user selected or the concession
@@ -67,9 +69,12 @@ const UserTable = ({ users, username, API_BASE_URL }) => {
             {CONCESSAO}
             <FontAwesomeIcon
               onClick={(event) => handleVCardClick(CONCESSAO, event)}
+              onMouseEnter={() => setHoveredConcession(CONCESSAO)}
+              onMouseLeave={() => setHoveredConcession(null)}
               icon={faAddressCard}
               color=''
               className='ms-2 clickable'
+              shake={hoveredConcession === CONCESSAO ? true : false}
             />
           </Card.Header>
           <Card.Body style={{ backgroundColor: '#fdefeb' }}>
@@ -94,6 +99,9 @@ const UserTable = ({ users, username, API_BASE_URL }) => {
                       {user.CONTACTO}
                       <FontAwesomeIcon
                         onClick={(event) => handleVCardClick(user, event)}
+                        onMouseEnter={() => setHoveredUser(user)}
+                        onMouseLeave={() => setHoveredUser({})}
+                        shake={hoveredUser === user ? true : false}
                         icon={faAddressCard}
                         color='#ed6337'
                         className='ms-2 clickable'

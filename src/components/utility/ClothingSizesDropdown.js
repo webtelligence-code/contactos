@@ -8,10 +8,9 @@ const ClothingSizesDropdown = ({ value, setState, defaultLabel, isLetter, isNumb
   return (
     <select
       className='dropdown'
-      value={value}
+      defaultValue={value}
       onChange={(event) => setState(event.target.value)}
     >
-      <option selected>{defaultLabel}</option>
       {isLetter && (
         sizesLetter.map((size) => (
           <option key={size} value={size}>

@@ -9,10 +9,12 @@ import axios from 'axios';
 import UserButtons from './UserButtons';
 import UserDetails from './UserDetails';
 import UserCardHeader from './UserCardHeader';
+import { useNavigate } from 'react-router-dom';
 
 const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
   // Initialize 
   const MySwal = withReactContent(Swal);
+  const navigate = useNavigate();
 
   // States
   const [avatar, setAvatar] = useState('');
@@ -32,18 +34,20 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
 
   // This useEffect will set the states for the user
   useEffect(() => {
-    setAvatar(user.IMAGE_PATH);
-    setUsername(user.USERNAME);
-    setPhone(user.CONTACTO);
-    setDateOfBirth(user.DATA_NASCIMENTO);
-    setPants(user.nCalcas);
-    setShirt(user.nCamisa);
-    setJacket(user.nCasaco);
-    setPolo(user.nPolo);
-    setPullover(user.nPullover);
-    setShoe(user.nSapato);
-    setSweatshirt(user.nSweatshirt);
-    setTshirt(user.nTshirt);
+    if (user) {
+      setAvatar(user.IMAGE_PATH);
+      setUsername(user.USERNAME);
+      setPhone(user.CONTACTO || '');
+      setDateOfBirth(user.DATA_NASCIMENTO || '');
+      setPants(user.nCalcas || '');
+      setShirt(user.nCamisa || '');
+      setJacket(user.nCasaco || '');
+      setPolo(user.nPolo || '');
+      setPullover(user.nPullover || '');
+      setShoe(user.nSapato || '');
+      setSweatshirt(user.nSweatshirt || '');
+      setTshirt(user.nTshirt || '');
+    }
   }, [user])
 
   useEffect(() => {
@@ -63,13 +67,14 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
     }
 
     getSessionUsername();
-  }, []);
+  }, [API_BASE_URL]);
 
   /**
    * This function will display a modal based on the boolean state parameter
    * @param {boolean} isEdit 
    */
   const fireModal = (isEdit) => {
+
     MySwal.fire({
       title: <div style={{ color: '#ed6337' }}>{isEdit ? 'Editar Perfil' : 'Mais informações'}</div>,
       html: isEdit ? generateFormModalBody() : generateInfoModalBody(),
@@ -116,13 +121,13 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
         confirmButtonColor: '#ed6337'
       }).then(() => {
         setAPIPost(false);
-        getUser();
+        navigate(`contactos/profile/${username}`);
       })
     }).catch((error) => {
       console.error('Error while trying to post request to API:', error)
     })
 
-  }, [MySwal, dateOfBirth, getUser, jacket, pants, phone, polo, pullover, shirt, shoe, sweatshirt, tshirt, username])
+  }, [MySwal, dateOfBirth, jacket, navigate, pants, phone, polo, pullover, shirt, shoe, sweatshirt, tshirt, username])
 
   useEffect(() => {
     if (APIPost) sendDataToApi()
@@ -338,7 +343,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
             <LoadingBars user={user} baseUrl={baseUrl} avatar={avatar} />
           ) : (
             <Fragment>
-              <UserButtons username={user.USERNAME} sessionUsername={sessionUsername} fireModal={fireModal} />
+              <UserButtons username={user.USERNAME} sessionUsername={user.USERNAME} fireModal={fireModal} user={user} />
               <UserDetails user={user} />
               <Team baseUrl={baseUrl} team={team} />
             </Fragment>

@@ -23,7 +23,7 @@ const UserCardHeader = ({ user, avatar }) => {
           {user.NAME}
         </h3>
         <h5 style={{ opacity: '80%', color: '#77321c' }}>
-          <FontAwesomeIcon icon={faBuildingUser} className='me-2' />
+          <FontAwesomeIcon icon={faBuildingUser} className='me-2'  />
           {user.DEPARTAMENTO}
         </h5>
         <h6 style={{ opacity: '80%', color: '#77321c' }}>
