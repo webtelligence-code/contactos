@@ -16,8 +16,24 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
 
+  // This useEffect will set the states for the user
+  useEffect(() => {
+    if (user) {
+      setUsername(user.USERNAME || '');
+      setPhone(user.CONTACTO || '');
+      setDateOfBirth(user.DATA_NASCIMENTO || '');
+      setPants(user.nCalcas || '');
+      setShirt(user.nCamisa || '');
+      setJacket(user.nCasaco || '');
+      setPolo(user.nPolo || '');
+      setPullover(user.nPullover || '');
+      setShoe(user.nSapato || '');
+      setSweatshirt(user.nSweatshirt || '');
+      setTshirt(user.nTshirt || '');
+    }
+  }, [user])
+
   // States
-  const [avatar, setAvatar] = useState('');
   const [username, setUsername] = useState();
   const [phone, setPhone] = useState();
   const [dateOfBirth, setDateOfBirth] = useState();
@@ -31,24 +47,6 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
   const [tshirt, setTshirt] = useState();
   const [APIPost, setAPIPost] = useState(false);
   const [sessionUsername, setSessionUsername] = useState('');
-
-  // This useEffect will set the states for the user
-  useEffect(() => {
-    if (user) {
-      setAvatar(user.IMAGE_PATH);
-      setUsername(user.USERNAME);
-      setPhone(user.CONTACTO || '');
-      setDateOfBirth(user.DATA_NASCIMENTO || '');
-      setPants(user.nCalcas || '');
-      setShirt(user.nCamisa || '');
-      setJacket(user.nCasaco || '');
-      setPolo(user.nPolo || '');
-      setPullover(user.nPullover || '');
-      setShoe(user.nSapato || '');
-      setSweatshirt(user.nSweatshirt || '');
-      setTshirt(user.nTshirt || '');
-    }
-  }, [user])
 
   useEffect(() => {
     const getSessionUsername = () => {
@@ -75,6 +73,17 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
    */
   const fireModal = (isEdit) => {
 
+    setPhone(user.CONTACTO || '');
+    setDateOfBirth(user.DATA_NASCIMENTO || '');
+    setPants(user.nCalcas || '');
+    setShirt(user.nCamisa || '');
+    setJacket(user.nCasaco || '');
+    setPolo(user.nPolo || '');
+    setPullover(user.nPullover || '');
+    setShoe(user.nSapato || '');
+    setSweatshirt(user.nSweatshirt || '');
+    setTshirt(user.nTshirt || '');
+
     MySwal.fire({
       title: <div style={{ color: '#ed6337' }}>{isEdit ? 'Editar Perfil' : 'Mais informações'}</div>,
       html: isEdit ? generateFormModalBody() : generateInfoModalBody(),
@@ -99,20 +108,20 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
     const formData = new FormData();
     formData.append('action', action);
     formData.append('username', username);
-    formData.append('phone', phone);
-    formData.append('dateOfBirth', dateOfBirth);
-    formData.append('pants', pants);
-    formData.append('shirt', shirt);
-    formData.append('jacket', jacket);
-    formData.append('polo', polo);
-    formData.append('pullover', pullover);
-    formData.append('shoe', shoe);
-    formData.append('sweatshirt', sweatshirt);
-    formData.append('tshirt', tshirt);
+    phone && formData.append('phone', phone);
+    dateOfBirth && formData.append('dateOfBirth', dateOfBirth);
+    pants && formData.append('pants', pants);
+    shirt && formData.append('shirt', shirt);
+    jacket && formData.append('jacket', jacket);
+    polo && formData.append('polo', polo);
+    pullover && formData.append('pullover', pullover);
+    shoe && formData.append('shoe', shoe);
+    sweatshirt && formData.append('sweatshirt', sweatshirt);
+    tshirt && formData.append('tshirt', tshirt);
 
     console.log('Form Data =>', formData)
 
-    axios.post(`http://localhost/contactos/api/index.php`, formData).then((response) => {
+    axios.post(API_BASE_URL, formData).then((response) => {
       console.log(`Response from post request (${action})`, response)
       MySwal.fire({
         title: response.data.title,
@@ -121,13 +130,13 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
         confirmButtonColor: '#ed6337'
       }).then(() => {
         setAPIPost(false);
-        navigate(`contactos/profile/${username}`);
+        window.location.reload();
       })
     }).catch((error) => {
       console.error('Error while trying to post request to API:', error)
     })
 
-  }, [MySwal, dateOfBirth, jacket, navigate, pants, phone, polo, pullover, shirt, shoe, sweatshirt, tshirt, username])
+  }, [API_BASE_URL, MySwal, dateOfBirth, jacket, pants, phone, polo, pullover, shirt, shoe, sweatshirt, tshirt, username])
 
   useEffect(() => {
     if (APIPost) sendDataToApi()
@@ -244,64 +253,64 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
 
     return (
       <Fragment>
-        {phone && (
+        {user.CONTACTO && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/phone.png`} alt='phone' width={35} />
-            <div>{phone}</div>
+            <div>{user.CONTACTO}</div>
           </div>
         )}
-        {dateOfBirth && (
+        {user.DATA_NASCIMENTO && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/cake.png`} alt='cake' width={35} />
-            <div>{dateOfBirth}</div>
+            <div>{user.DATA_NASCIMENTO}</div>
           </div>
         )}
-        {pants && (
+        {user.nCalcas && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/trousers.png`} alt='trousers' width={35} />
-            <div>{pants}</div>
+            <div>{user.nCalcas}</div>
           </div>
         )}
-        {shirt && (
+        {user.nCamisa && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/shirt.png`} alt='shirt' width={35} />
-            <div>{shirt}</div>
+            <div>{user.nCamisa}</div>
           </div>
         )}
-        {jacket && (
+        {user.nCasaco && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/jacket.png`} alt='jacket' width={35} />
-            <div>{jacket}</div>
+            <div>{user.nCasaco}</div>
           </div>
         )}
-        {polo && (
+        {user.nPolo && (
           <div className='align-items-center my-1 modalInfoRow'>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/polo.png`} alt='polo' width={35} />
-            <div>{polo}</div>
+            <div>{user.nPolo}</div>
           </div>
         )}
-        {pullover && (
+        {user.nPullover && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/pullover.png`} alt='pullover' width={35} />
-            <div>{pullover}</div>
+            <div>{user.nPullover}</div>
           </div>
         )}
-        {shoe && (
+        {user.nSapato && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/shoe.png`} alt='shoe' width={35} />
-            <div>{shoe}</div>
+            <div>{user.nSapato}</div>
           </div>
         )}
-        {sweatshirt && (
+        {user.nSweatshirt && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/sweatshirt.png`} alt='sweatshirt' width={35} />
-            <div>{sweatshirt}</div>
+            <div>{user.nSweatshirt}</div>
           </div>
         )}
-        {tshirt && (
+        {user.nTshirt && (
           <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/tshirt.png`} alt='tshirt' width={35} />
-            <div>{tshirt}</div>
+            <div>{user.nTshirt}</div>
           </div>
         )}
       </Fragment>
@@ -332,7 +341,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
           {loading ? (
             <LoadingBars classes={'ms-3'} />
           ) : (
-            <UserCardHeader user={user} baseUrl={baseUrl} avatar={avatar} />
+            <UserCardHeader user={user} baseUrl={baseUrl} />
           )}
 
         </Card.Header>
@@ -340,7 +349,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
         {/* This is the body of the User card */}
         <Card.Body style={{ padding: 50, paddingTop: 20, paddingBottom: 20 }}>
           {loading ? (
-            <LoadingBars user={user} baseUrl={baseUrl} avatar={avatar} />
+            <LoadingBars />
           ) : (
             <Fragment>
               <UserButtons username={user.USERNAME} sessionUsername={user.USERNAME} fireModal={fireModal} user={user} />

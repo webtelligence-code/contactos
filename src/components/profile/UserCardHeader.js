@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { Image } from 'react-bootstrap'
 
-const UserCardHeader = ({ user, avatar }) => {
+const UserCardHeader = ({ user }) => {
   return (
     <div style={{
       display: 'flex',
@@ -12,7 +12,7 @@ const UserCardHeader = ({ user, avatar }) => {
     }}>
       <div>
         <Image
-          src={`/contactos/${avatar}`}
+          src={`/contactos/${user.IMAGE_PATH}`}
           alt='Profile'
           className='me-2 profile-pic'
         />

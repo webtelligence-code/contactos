@@ -36,11 +36,11 @@ function getUsers()
   $users = array();
   if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $users[] = $row;
+      $users[] = $row;
     }
-} else {
+  } else {
     echo "No data found";
-}
+  }
 
   return $users;
 }
@@ -100,23 +100,71 @@ function getUsersByConcession($concession)
 function updateUser($username, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt)
 {
   global $conn;
-  $sql = 'UPDATE users
+
+  // Fetch existing user data
+  $sql = 'SELECT * FROM users WHERE USERNAME = ?';
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param('s', $username);
+  $stmt->execute();
+  $existingUser = $stmt->get_result()->fetch_assoc();
+
+  // Compare new values with existing values and construct log messag
+  $logMessage = 'O utilizador fez mudanças nos campos';
+  $changeFields = [];
+
+  if ($phone !== '' && $phone !== $existingUser['CONTACTO']) {
+    $changeFields[] = 'CONTACTO ("' . $phone . '")';
+  }
+  if ($dateOfBirth !== '' && $dateOfBirth !== $existingUser['DATA_NASCIMENTO']) {
+    $changeFields[] = 'DATA_NASCIMENTO ("' . $dateOfBirth . '")';
+  }
+  if ($pants !== 0 && $pants !== $existingUser['nCalcas']) {
+    $changeFields[] = 'nCalcas ("' . $pants . '")';
+  }
+  if ($shirt !== '' && $shirt !== $existingUser['nCamisa']) {
+    $changeFields[] = 'nCamisa ("' . $shirt . '")';
+  }
+  if ($jacket !== '' && $jacket !== $existingUser['nCasaco']) {
+    $changeFields[] = 'nCasaco ("' . $jacket . '")';
+  }
+  if ($polo !== '' && $polo !== $existingUser['nPolo']) {
+    $changeFields[] = 'nPolo ("' . $polo . '")';
+  }
+  if ($pullover !== '' && $pullover !== $existingUser['nPullover']) {
+    $changeFields[] = 'nPullover ("' . $pullover . '")';
+  }
+  if ($shoe !== 0 && $shoe !== $existingUser['nSapato']) {
+    $changeFields[] = 'nSapato ("' . $shoe . '")';
+  }
+  if ($sweatshirt !== '' && $sweatshirt !== $existingUser['nSweatshirt']) {
+    $changeFields[] = 'nSweatshirt ("' . $sweatshirt . '")';
+  }
+  if ($tshirt !== '' && $tshirt !== $existingUser['nTshirt']) {
+    $changeFields[] = 'nTshirt ("' . $tshirt . '")';
+  }
+
+  // Log message
+  $logMessage .= implode(', ', $changeFields);
+
+  // Update the user with the new values and log message
+  $sql = "UPDATE users
           SET
-          CONTACTO = ?,
-          DATA_NASCIMENTO = ?,
-          nCalcas = ?,
-          nCamisa = ?,
-          nCasaco = ?,
-          nPolo = ?,
-          nPullover = ?,
-          nSapato = ?,
-          nSweatshirt = ?,
-          nTshirt = ?
+          CONTACTO = COALESCE(NULLIF(?, ''), CONTACTO),
+          DATA_NASCIMENTO = COALESCE(NULLIF(?, ''), DATA_NASCIMENTO),
+          nCalcas = COALESCE(NULLIF(?, 0), nCalcas),
+          nCamisa = COALESCE(NULLIF(?, ''), nCamisa),
+          nCasaco = COALESCE(NULLIF(?, ''), nCasaco),
+          nPolo = COALESCE(NULLIF(?, ''), nPolo),
+          nPullover = COALESCE(NULLIF(?, ''), nPullover),
+          nSapato = COALESCE(NULLIF(?, 0), nSapato),
+          nSweatshirt = COALESCE(NULLIF(?, ''), nSweatshirt),
+          nTshirt = COALESCE(NULLIF(?, ''), nTshirt),
+          LOG = ?
           WHERE USERNAME = ?
-        ';
+        ";
 
   $stmt = $conn->prepare($sql);
-  $stmt->bind_param('sdissssisss', $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt, $username);
+  $stmt->bind_param('ssissssissss', $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt, $logMessage, $username);
   $result = $stmt->execute();
 
   if ($result) {
