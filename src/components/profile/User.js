@@ -14,7 +14,6 @@ import { useNavigate } from 'react-router-dom';
 const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
   // Initialize 
   const MySwal = withReactContent(Swal);
-  const navigate = useNavigate();
 
   // States
   const [username, setUsername] = useState();

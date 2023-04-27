@@ -8,7 +8,7 @@ const SearchUser = ({ searchInput, setSearchInput, searchBy, setSearchBy, option
     <InputGroup className='mt-3'>
       <InputGroup.Text
         className='text-light'
-        style={{ backgroundColor: '#ed6337', fontWeight: 500 }}
+        style={{ backgroundColor: '#ed6337', fontWeight: 500, borderBottomLeftRadius: 15, borderColor:  '#77321c'}}
       >
         Procurar utilizador
         <FontAwesomeIcon icon={faSearch} className='ms-2' color='white' />
@@ -19,7 +19,7 @@ const SearchUser = ({ searchInput, setSearchInput, searchBy, setSearchBy, option
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
       />
-      <InputGroup.Text className='text-light' style={{ backgroundColor: '#ed6337', fontWeight: 600 }}>
+      <InputGroup.Text className='text-light' style={{ backgroundColor: '#ed6337', fontWeight: 600, borderBottomRightRadius: 15, borderColor:  '#77321c' }}>
         <select
           className='searchDropdown clickable'
           defaultValue={searchBy}
