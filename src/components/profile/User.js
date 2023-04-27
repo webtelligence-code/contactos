@@ -16,25 +16,9 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
 
-  // This useEffect will set the states for the user
-  useEffect(() => {
-    if (user) {
-      setUsername(user.USERNAME || '');
-      setPhone(user.CONTACTO || '');
-      setDateOfBirth(user.DATA_NASCIMENTO || '');
-      setPants(user.nCalcas || '');
-      setShirt(user.nCamisa || '');
-      setJacket(user.nCasaco || '');
-      setPolo(user.nPolo || '');
-      setPullover(user.nPullover || '');
-      setShoe(user.nSapato || '');
-      setSweatshirt(user.nSweatshirt || '');
-      setTshirt(user.nTshirt || '');
-    }
-  }, [user])
-
   // States
   const [username, setUsername] = useState();
+  const [personalEmail, setPersonalEmail] = useState();
   const [phone, setPhone] = useState();
   const [dateOfBirth, setDateOfBirth] = useState();
   const [pants, setPants] = useState();
@@ -47,6 +31,24 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
   const [tshirt, setTshirt] = useState();
   const [APIPost, setAPIPost] = useState(false);
   const [sessionUsername, setSessionUsername] = useState('');
+
+  // This useEffect will set the states for the user
+  useEffect(() => {
+    if (user) {
+      setUsername(user.USERNAME || '');
+      setPersonalEmail(user.EMAIL_PESSOAL || '')
+      setPhone(user.CONTACTO || '');
+      setDateOfBirth(user.DATA_NASCIMENTO || '');
+      setPants(user.nCalcas || '');
+      setShirt(user.nCamisa || '');
+      setJacket(user.nCasaco || '');
+      setPolo(user.nPolo || '');
+      setPullover(user.nPullover || '');
+      setShoe(user.nSapato || '');
+      setSweatshirt(user.nSweatshirt || '');
+      setTshirt(user.nTshirt || '');
+    }
+  }, [user])
 
   useEffect(() => {
     const getSessionUsername = () => {
@@ -72,7 +74,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
    * @param {boolean} isEdit 
    */
   const fireModal = (isEdit) => {
-
+    setPersonalEmail(user.EMAIL_PESSOAL || '')
     setPhone(user.CONTACTO || '');
     setDateOfBirth(user.DATA_NASCIMENTO || '');
     setPants(user.nCalcas || '');
@@ -108,6 +110,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
     const formData = new FormData();
     formData.append('action', action);
     formData.append('username', username);
+    personalEmail && formData.append('personalEmail', personalEmail);
     phone && formData.append('phone', phone);
     dateOfBirth && formData.append('dateOfBirth', dateOfBirth);
     pants && formData.append('pants', pants);
@@ -136,7 +139,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
       console.error('Error while trying to post request to API:', error)
     })
 
-  }, [API_BASE_URL, MySwal, dateOfBirth, jacket, pants, phone, polo, pullover, shirt, shoe, sweatshirt, tshirt, username])
+  }, [API_BASE_URL, MySwal, dateOfBirth, jacket, pants, personalEmail, phone, polo, pullover, shirt, shoe, sweatshirt, tshirt, username])
 
   useEffect(() => {
     if (APIPost) sendDataToApi()
@@ -147,10 +150,18 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
     return (
       <Fragment>
         <div className='align-items-center my-1 modalInputRow'>
+          <Image className='me-2' src={`${baseUrl}/assets/img/clothes/message.png`} alt='email' width={35} />
+          <input
+            placeholder='Email pessoal'
+            defaultValue={personalEmail}
+            onChange={(e) => setPersonalEmail(e.target.value)}
+          />
+        </div>
+        <div className='align-items-center my-1 modalInputRow'>
           <Image className='me-2' src={`${baseUrl}/assets/img/clothes/phone.png`} alt='phone' width={35} />
           <input
             placeholder='Número de telemóvel'
-            value={phone}
+            defaultValue={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
         </div>
@@ -247,8 +258,8 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
       flexDirection: 'row',
       width: '100%',
       alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center'
+      justifyContent: 'space-between',
+      alignItems: 'center',
     }
 
     return (
@@ -284,7 +295,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
           </div>
         )}
         {user.nPolo && (
-          <div className='align-items-center my-1 modalInfoRow'>
+          <div className='align-items-center my-1' style={rowStyle}>
             <Image className='me-2' src={`${baseUrl}/assets/img/clothes/polo.png`} alt='polo' width={35} />
             <div>{user.nPolo}</div>
           </div>

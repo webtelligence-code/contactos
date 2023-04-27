@@ -59,6 +59,41 @@ input:focus {
   border: none;
 }
 
+.searchDropdown {
+  border-radius: 10px;
+  border: none;
+  color: white;
+  background-color: #ed6337;
+}
+
+.searchDropdown:hover {
+  border-color: #ed6337;
+}
+
+.searchDropdown:focus {
+  outline: none;
+  border: none;
+}
+
+.searchInput {
+  border-radius: 10px;
+  border: #ed6337 2px solid;
+  padding: 5px;
+  padding-inline: 10px;
+  color: #77321c
+}
+
+.searchInput:hover {
+  border-color: #ed6337;
+  background-color: #fdefeb;
+}
+
+.searchInput:focus {
+  outline: #77321c 2px solid;
+  background-color: #fdefeb;
+  border: none;
+}
+
 .modalInfoRow {
   display: 'flex';
   flex-direction: 'row';

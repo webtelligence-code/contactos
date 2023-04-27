@@ -59,7 +59,7 @@ function getUser($username)
 function getTeam($username, $cidade, $empresa)
 {
   global $conn;
-  $sql = 'SELECT * FROM users WHERE USERNAME != ? AND CIDADE = ? AND EMPRESA = ?';
+  $sql = 'SELECT * FROM users WHERE COLABORADOR = 1 AND ACT = 1 AND USERNAME != ? AND CIDADE = ? AND EMPRESA = ?';
   $stmt = $conn->prepare($sql);
   $stmt->bind_param('sss', $username, $cidade, $empresa);
   $stmt->execute();
@@ -97,7 +97,7 @@ function getUsersByConcession($concession)
 ////////////////////////////////////////////POST////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-function updateUser($username, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt)
+function updateUser($username, $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt)
 {
   global $conn;
 
@@ -112,6 +112,9 @@ function updateUser($username, $phone, $dateOfBirth, $pants, $shirt, $jacket, $p
   $logMessage = 'O utilizador fez mudanças nos campos';
   $changeFields = [];
 
+  if ($personalEmail !== '' && $personalEmail !== $existingUser['EMAIL_PESSOAL']) {
+    $changeFields[] = 'EMAIL_PESSOAL ("' . $personalEmail . '")';
+  }
   if ($phone !== '' && $phone !== $existingUser['CONTACTO']) {
     $changeFields[] = 'CONTACTO ("' . $phone . '")';
   }
@@ -149,6 +152,7 @@ function updateUser($username, $phone, $dateOfBirth, $pants, $shirt, $jacket, $p
   // Update the user with the new values and log message
   $sql = "UPDATE users
           SET
+          EMAIL_PESSOAL = COALESCE(NULLIF(?, ''), EMAIL_PESSOAL),
           CONTACTO = COALESCE(NULLIF(?, ''), CONTACTO),
           DATA_NASCIMENTO = COALESCE(NULLIF(?, ''), DATA_NASCIMENTO),
           nCalcas = COALESCE(NULLIF(?, 0), nCalcas),
@@ -164,7 +168,7 @@ function updateUser($username, $phone, $dateOfBirth, $pants, $shirt, $jacket, $p
         ";
 
   $stmt = $conn->prepare($sql);
-  $stmt->bind_param('ssissssissss', $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt, $logMessage, $username);
+  $stmt->bind_param('sssissssissss', $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt, $logMessage, $username);
   $result = $stmt->execute();
 
   if ($result) {
@@ -184,15 +188,26 @@ function updateUser($username, $phone, $dateOfBirth, $pants, $shirt, $jacket, $p
   return $response;
 }
 
-function escapeVCardValue($value)
+/**
+ * This function will remove any accentuation from the string given in the parameter
+ * @param mixed $string 
+ * @return mixed Final string without accentuation
+ */
+function removeAccents($string)
 {
-  $value = iconv(mb_detect_encoding($value, mb_detect_order(), true), "UTF-8", $value);
-  $value = str_replace(";", "\\;", $value);
-  $value = str_replace(",", "\\,", $value);
-  $value = str_replace("\n", "\\n", $value);
-  return $value;
+  if (class_exists('Normalizer')) {
+    $string = Normalizer::normalize($string, Normalizer::FORM_D);
+    $string = preg_replace('/[\x{0300}-\x{036f}]/u', '', $string);
+  }
+
+  return $string;
 }
 
+/**
+ * THis function will generate a VCard for the user given
+ * @param mixed $user 
+ * @return void 
+ */
 function generateVCardUser($user)
 {
   $vcard = new VCard();
@@ -201,14 +216,14 @@ function generateVCardUser($user)
 
   // Separate first and last names
   $nameParts = explode(' ', $user['NAME']);
-  $firstName = $nameParts[0];
-  $lastName = isset($nameParts[1]) ? $nameParts[1] : '';
+  $firstName = removeAccents($nameParts[0]);
+  $lastName = isset($nameParts[1]) ? removeAccents($nameParts[1]) : '';
 
   // Add user information to the VCard
   $vcard->addName($lastName, $firstName);
-  $vcard->addCompany($user['EMPRESA'], $user['DEPARTAMENTO']);
-  $vcard->addJobTitle($user['FUNCAO']);
-  $vcard->addRole($user['FUNCAO']);
+  $vcard->addCompany(removeAccents($user['EMPRESA']), removeAccents($user['DEPARTAMENTO']));
+  $vcard->addJobTitle(removeAccents($user['FUNCAO']));
+  $vcard->addRole(removeAccents($user['FUNCAO']));
   $vcard->addEmail($user['EMAIL']);
   $vcard->addPhoneNumber($user['CONTACTO'], 'PREF;WORK;VOICE');
 
@@ -233,14 +248,14 @@ function generateVCardConcession($concession)
 
     // Separate first and last names
     $nameParts = explode(' ', $user['NAME']);
-    $firstName = $nameParts[0];
-    $lastName = isset($nameParts[1]) ? $nameParts[1] : '';
+    $firstName = removeAccents($nameParts[0]);
+    $lastName = isset($nameParts[1]) ? removeAccents($nameParts[1]) : '';
 
     // Add user information to the VCard
     $vcard->addName($lastName, $firstName);
-    $vcard->addCompany($user['EMPRESA'], $user['DEPARTAMENTO']);
-    $vcard->addJobTitle($user['FUNCAO']);
-    $vcard->addRole($user['FUNCAO']);
+    $vcard->addCompany(removeAccents($user['EMPRESA']), removeAccents($user['DEPARTAMENTO']));
+    $vcard->addJobTitle(removeAccents($user['FUNCAO']));
+    $vcard->addRole(removeAccents($user['FUNCAO']));
     $vcard->addEmail($user['EMAIL']);
     $vcard->addPhoneNumber($user['CONTACTO'], 'PREF;WORK;VOICE');
 

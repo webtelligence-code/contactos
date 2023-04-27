@@ -54,6 +54,7 @@ switch ($method) {
         // UPDATE USER RESPONSE
       case 'update_user':
         $username = isset($_POST['username']) ? $_POST['username'] : '';
+        $personalEmail = isset($_POST['personalEmail']) ? $_POST['personalEmail'] : '';
         $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
         $dateOfBirth = isset($_POST['dateOfBirth']) ? $_POST['dateOfBirth'] : '';
         $pants = isset($_POST['pants']) ? $_POST['pants'] : '';
@@ -65,7 +66,7 @@ switch ($method) {
         $sweatshirt = isset($_POST['sweatshirt']) ? $_POST['sweatshirt'] : '';
         $tshirt = isset($_POST['tshirt']) ? $_POST['tshirt'] : '';
 
-        $response = updateUser($username, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt);
+        $response = updateUser($username, $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt);
 
         break;
       case 'generate_vcard':
