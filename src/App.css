@@ -19,7 +19,7 @@
   align-items: center;
 }
 
-input {
+.dropdownInput {
   border-radius: 10px;
   border: gray 2px solid;
   padding-inline: 10px;
@@ -27,12 +27,12 @@ input {
   color: #77321c
 }
 
-input:hover {
+.dropdownInput:hover {
   border-color: #ed6337;
   background-color: #fdefeb;
 }
 
-input:focus {
+.dropdownInput:focus {
   outline: #77321c 2px solid;
   background-color: #fdefeb;
   border-color: #77321c;
@@ -70,25 +70,6 @@ input:focus {
 
 .searchDropdown:focus {
   outline: none;
-  border: none;
-}
-
-.searchInput {
-  border-radius: 10px;
-  border: #ed6337 2px solid;
-  padding: 5px;
-  padding-inline: 10px;
-  color: #77321c
-}
-
-.searchInput:hover {
-  border-color: #ed6337;
-  background-color: #fdefeb;
-}
-
-.searchInput:focus {
-  outline: #77321c 2px solid;
-  background-color: #fdefeb;
   border: none;
 }
 

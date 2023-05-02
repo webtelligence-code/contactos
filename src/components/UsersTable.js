@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Fragment, useState } from 'react'
 import { Button, Card, Table } from 'react-bootstrap'
-import { faAddressCard } from '@fortawesome/free-solid-svg-icons'
+import { faAddressCard, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
@@ -101,16 +101,21 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
               as='h5'
             >
               {CONCESSAO}
-              <Button className='ms-2' size='sm' variant='outline-dark' onClick={(event) => handleVCardClick(CONCESSAO, event)}>
+              <Button
+                className='ms-2'
+                size='sm'
+                variant='outline-dark'
+                onClick={(event) => handleVCardClick(CONCESSAO, event)}
+                onMouseEnter={() => setHoveredConcession(CONCESSAO)}
+                onMouseLeave={() => setHoveredConcession(null)}
+              >
                 <FontAwesomeIcon
-                  onMouseEnter={() => setHoveredConcession(CONCESSAO)}
-                  onMouseLeave={() => setHoveredConcession(null)}
-                  icon={faAddressCard}
+                  icon={hoveredConcession === CONCESSAO ? faDownload : faAddressCard}
                   color='#ed6337'
                   className='me-2 clickable'
-                  shake={hoveredConcession === CONCESSAO ? true : false}
+                  bounce={hoveredConcession === CONCESSAO ? true : false}
                 />
-                VCard
+                {hoveredConcession === CONCESSAO ? 'Download Zip' : 'VCards'}
               </Button>
             </Card.Header>
             <Card.Body>
@@ -133,16 +138,22 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                       <td className='align-middle'>{user.EMAIL}</td>
                       <td className='text-end'>
                         {user.CONTACTO}
-                        <Button className='ms-2' size='sm' variant='outline-dark' onClick={(event) => handleVCardClick(user, event)}>
+                        <Button
+                          className='ms-2'
+                          size='sm'
+                          variant='outline-dark'
+                          onClick={(event) => handleVCardClick(user, event)}
+                          onMouseEnter={() => setHoveredUser(user)}
+                          onMouseLeave={() => setHoveredUser({})}
+                          style={{ width: 125 }}
+                        >
                           <FontAwesomeIcon
-                            onMouseEnter={() => setHoveredUser(user)}
-                            onMouseLeave={() => setHoveredUser({})}
-                            shake={hoveredUser === user ? true : false}
-                            icon={faAddressCard}
+                            bounce={hoveredUser === user ? true : false}
+                            icon={hoveredUser === user ? faDownload : faAddressCard}
                             color='#ed6337'
                             className='me-2 clickable'
                           />
-                          VCard
+                          {hoveredUser === user ? 'Download' : 'VCard'}
                         </Button>
                       </td>
                     </tr>

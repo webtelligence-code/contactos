@@ -155,7 +155,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
             placeholder='Email pessoal'
             defaultValue={personalEmail}
             onChange={(e) => setPersonalEmail(e.target.value)}
-            className='ms-2'
+            className='ms-2 dropdownInput'
           />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
@@ -164,7 +164,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
             placeholder='Número de telemóvel'
             defaultValue={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className='ms-2'
+            className='ms-2 dropdownInput'
           />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
@@ -175,7 +175,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
             defaultValue={dateOfBirth}
             placeholder='Data de Nascimento'
             onChange={(e) => setDateOfBirth(e.target.value)}
-            className='ms-2'
+            className='ms-2 dropdownInput'
           />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
