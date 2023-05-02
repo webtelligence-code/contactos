@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Fragment, useState } from 'react'
-import { Card, Table } from 'react-bootstrap'
+import { Button, Card, Table } from 'react-bootstrap'
 import { faAddressCard } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -10,7 +10,7 @@ import axios from 'axios'
  * @param {props} param0 
  * @returns 
  */
-const UserTable = ({ users, searchInput, searchBy, API_BASE_URL }) => {
+const UserTable = ({ users, searchInput, API_BASE_URL }) => {
   const navigate = useNavigate();
   const [hoveredConcession, setHoveredConcession] = useState(null);
   const [hoveredUser, setHoveredUser] = useState({})
@@ -54,28 +54,26 @@ const UserTable = ({ users, searchInput, searchBy, API_BASE_URL }) => {
     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   };
 
-  const filteredUsers = (group) => {
-    if (!users[group]) {
-      return [];
-    }
-    if (!searchInput) {
-      return users[group];
-    }
-    const searchByField = {
-      'Nome': 'NAME',
-      'Departamento': 'DEPARTAMENTO',
-      'Função': 'FUNCAO',
-      'Email': 'EMAIL',
-      'Contacto': 'CONTACTO',
-    }[searchBy];
+  const filterUsers = (user) => {
+    const searchTerms = removeDiacritics(searchInput).toLowerCase().split(' ');
 
-    const normalizedSearchInput = removeDiacritics(searchInput.toLowerCase());
+    // Add all the fields you want to search by in this array
+    const userAttributes = [
+      user.NAME,
+      user.DEPARTAMENTO,
+      user.FUNCAO,
+      user.EMAIL,
+      user.CONTACTO,
+    ];
 
-    return users[group].filter((user) => {
-      const normalizedFieldValue = removeDiacritics(user[searchByField].toLowerCase());
-      return normalizedFieldValue.includes(normalizedSearchInput);
-    });
+    return searchTerms.every((term) =>
+      userAttributes.some((attribute) =>
+        attribute && removeDiacritics(attribute.toLowerCase()).includes(term)
+      )
+    );
   }
+
+  const filteredUsers = (concession) => users[concession].filter(filterUsers);
 
   return (
     <Fragment>
@@ -87,30 +85,35 @@ const UserTable = ({ users, searchInput, searchBy, API_BASE_URL }) => {
 
         return (
           <Card
-            style={{
-              borderColor: '#77321c',
-              backgroundColor: '#fdefeb'
-            }}
             className='my-3'
             key={key}
           >
             <Card.Header
-              className='text-light'
-              style={{ backgroundColor: '#ed6337', borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px' }}
+              style={{
+                backgroundColor: 'white',
+                color: '#77321c',
+                borderBottomLeftRadius: '10px',
+                borderBottomRightRadius: '10px',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center'
+              }}
               as='h5'
             >
               {CONCESSAO}
-              <FontAwesomeIcon
-                onClick={(event) => handleVCardClick(CONCESSAO, event)}
-                onMouseEnter={() => setHoveredConcession(CONCESSAO)}
-                onMouseLeave={() => setHoveredConcession(null)}
-                icon={faAddressCard}
-                color=''
-                className='ms-2 clickable'
-                shake={hoveredConcession === CONCESSAO ? true : false}
-              />
+              <Button className='ms-2' size='sm' variant='outline-dark' onClick={(event) => handleVCardClick(CONCESSAO, event)}>
+                <FontAwesomeIcon
+                  onMouseEnter={() => setHoveredConcession(CONCESSAO)}
+                  onMouseLeave={() => setHoveredConcession(null)}
+                  icon={faAddressCard}
+                  color='#ed6337'
+                  className='me-2 clickable'
+                  shake={hoveredConcession === CONCESSAO ? true : false}
+                />
+                VCard
+              </Button>
             </Card.Header>
-            <Card.Body style={{ backgroundColor: '#fdefeb' }}>
+            <Card.Body>
               <Table hover responsive>
                 <thead>
                   <tr style={{ color: '#77321c' }}>
@@ -124,21 +127,23 @@ const UserTable = ({ users, searchInput, searchBy, API_BASE_URL }) => {
                 <tbody>
                   {filteredUsers(CONCESSAO).map((user, key) => (
                     <tr key={key} className='clickable' onClick={() => navigate(`/contactos/profile/${user.USERNAME}`)}>
-                      <td>{user.NAME}</td>
-                      <td>{user.DEPARTAMENTO}</td>
-                      <td>{user.FUNCAO}</td>
-                      <td>{user.EMAIL}</td>
+                      <td className='align-middle'>{user.NAME}</td>
+                      <td className='align-middle'>{user.DEPARTAMENTO}</td>
+                      <td className='align-middle'>{user.FUNCAO}</td>
+                      <td className='align-middle'>{user.EMAIL}</td>
                       <td className='text-end'>
                         {user.CONTACTO}
-                        <FontAwesomeIcon
-                          onClick={(event) => handleVCardClick(user, event)}
-                          onMouseEnter={() => setHoveredUser(user)}
-                          onMouseLeave={() => setHoveredUser({})}
-                          shake={hoveredUser === user ? true : false}
-                          icon={faAddressCard}
-                          color='#ed6337'
-                          className='ms-2 clickable'
-                        />
+                        <Button className='ms-2' size='sm' variant='outline-dark' onClick={(event) => handleVCardClick(user, event)}>
+                          <FontAwesomeIcon
+                            onMouseEnter={() => setHoveredUser(user)}
+                            onMouseLeave={() => setHoveredUser({})}
+                            shake={hoveredUser === user ? true : false}
+                            icon={faAddressCard}
+                            color='#ed6337'
+                            className='me-2 clickable'
+                          />
+                          VCard
+                        </Button>
                       </td>
                     </tr>
                   ))}

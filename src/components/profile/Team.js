@@ -16,22 +16,18 @@ const Team = ({ baseUrl, team }) => {
     <Fragment>
       <Card
         className='my-3'
-        style={{
-          borderColor: '#77321c',
-          backgroundColor: '#fdefeb'
-        }}
       >
         <Card.Header
-          className='text-light'
+          className='text-dark'
           style={{
-            backgroundColor: '#ed6337',
+            backgroundColor: 'white',
             borderBottomLeftRadius: '10px',
-            borderBottomRightRadius: '10px'
+            borderBottomRightRadius: '10px',
           }}
           as={'h6'}
         >
           Equipa
-          <FontAwesomeIcon icon={faPeopleGroup} color='white' className='ms-2' />
+          <FontAwesomeIcon icon={faPeopleGroup} color='dark' className='ms-2' />
         </Card.Header>
         <Card.Body>
           <Row className='text-center'>

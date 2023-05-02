@@ -2,5 +2,5 @@
 
 session_start();
 
-$_SESSION['USERNAME'] = 'luisaires@AM224';
+$_SESSION['USERNAME'] = 'manuelcarreiras@EST2';
 $_SESSION['DEPARTAMENTO'] = 'Informático';

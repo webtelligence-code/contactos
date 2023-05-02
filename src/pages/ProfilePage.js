@@ -69,7 +69,7 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
 
   return (
     <Container>
-      <User API_BASE_URL={API_BASE_URL} baseUrl={baseUrl} user={user} team={team} loading={loading} getUser={getUser} />
+      <User API_BASE_URL={API_BASE_URL} baseUrl={baseUrl} user={user} team={team} loading={loading} />
     </Container>
   )
 }

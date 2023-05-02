@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
-import { Card, Image } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
 import Team from './Team';
 import LoadingBars from '../utility/LoadingBars';
 import withReactContent from 'sweetalert2-react-content';
@@ -9,9 +9,10 @@ import axios from 'axios';
 import UserButtons from './UserButtons';
 import UserDetails from './UserDetails';
 import UserCardHeader from './UserCardHeader';
-import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCake, faEnvelope, faPhone, faShirt, faShoePrints, faUserTie, faVest } from '@fortawesome/free-solid-svg-icons';
 
-const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
+const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
   // Initialize 
   const MySwal = withReactContent(Swal);
 
@@ -149,33 +150,36 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
     return (
       <Fragment>
         <div className='align-items-center my-1 modalInputRow'>
-          <Image className='me-2' src={`${baseUrl}/assets/img/clothes/message.png`} alt='email' width={35} />
+          <FontAwesomeIcon icon={faEnvelope} color='#ed6337' width={30} />
           <input
             placeholder='Email pessoal'
             defaultValue={personalEmail}
             onChange={(e) => setPersonalEmail(e.target.value)}
+            className='ms-2'
           />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
-          <Image className='me-2' src={`${baseUrl}/assets/img/clothes/phone.png`} alt='phone' width={35} />
+          <FontAwesomeIcon icon={faPhone} color='#ed6337' width={30} />
           <input
             placeholder='Número de telemóvel'
             defaultValue={phone}
             onChange={(e) => setPhone(e.target.value)}
+            className='ms-2'
           />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
-          <Image className='me-2' src={`${baseUrl}/assets/img/clothes/cake.png`} alt='cake' width={35} />
+          <FontAwesomeIcon icon={faCake} color='#ed6337' width={30} />
           <input
             type='date'
             name='doj'
             defaultValue={dateOfBirth}
             placeholder='Data de Nascimento'
             onChange={(e) => setDateOfBirth(e.target.value)}
+            className='ms-2'
           />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
-          <Image className='me-2' src={`${baseUrl}/assets/img/clothes/trousers.png`} alt='trousers' width={35} />
+          <FontAwesomeIcon icon={faShirt} color='#ed6337' width={30} />
           <ClothingSizesDropdown
             defaultLabel='Selecione nº calças'
             value={pants}
@@ -184,7 +188,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
           />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
-          <Image className='me-2' src={`${baseUrl}/assets/img/clothes/shirt.png`} alt='shirt' width={35} />
+          <FontAwesomeIcon icon={faUserTie} color='#ed6337' width={30} />
           <ClothingSizesDropdown
             defaultLabel='Selecione nº camisa'
             value={shirt}
@@ -193,7 +197,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
           />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
-          <Image className='me-2' src={`${baseUrl}/assets/img/clothes/jacket.png`} alt='jacket' width={35} />
+          <FontAwesomeIcon icon={faVest} color='#ed6337' width={30} />
           <ClothingSizesDropdown
             defaultLabel='Selecione nº casaco'
             value={jacket}
@@ -202,7 +206,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
           />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
-          <Image className='me-2' src={`${baseUrl}/assets/img/clothes/polo.png`} alt='polo' width={35} />
+          <FontAwesomeIcon icon={faShirt} color='#ed6337' width={30} />
           <ClothingSizesDropdown
             defaultLabel='Selecione nº pólo'
             value={polo}
@@ -211,7 +215,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
           />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
-          <Image className='me-2' src={`${baseUrl}/assets/img/clothes/pullover.png`} alt='pullover' width={35} />
+          <FontAwesomeIcon icon={faVest} color='#ed6337' width={30} />
           <ClothingSizesDropdown
             defaultLabel='Selecione nº pullover'
             value={pullover}
@@ -220,7 +224,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
           />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
-          <Image className='me-2' src={`${baseUrl}/assets/img/clothes/shoe.png`} alt='shoe' width={35} />
+          <FontAwesomeIcon icon={faShoePrints} color='#ed6337' width={30} />
           <ClothingSizesDropdown
             defaultLabel='Selecione nº calçado'
             value={shoe}
@@ -229,7 +233,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
           />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
-          <Image className='me-2' src={`${baseUrl}/assets/img/clothes/sweatshirt.png`} alt='sweatshirt' width={35} />
+          <FontAwesomeIcon icon={faShirt} color='#ed6337' width={30} />
           <ClothingSizesDropdown
             defaultLabel='Selecione nº sweatshirt'
             value={sweatshirt}
@@ -238,7 +242,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
           />
         </div>
         <div className='align-items-center my-1 modalInputRow'>
-          <Image className='me-2' src={`${baseUrl}/assets/img/clothes/tshirt.png`} alt='tshirt' width={35} />
+          <FontAwesomeIcon icon={faShirt} color='#ed6337' width={30} />
           <ClothingSizesDropdown
             defaultLabel='Selecione nº tshirt'
             value={tshirt}
@@ -265,61 +269,61 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
       <Fragment>
         {user.CONTACTO && (
           <div className='align-items-center my-1' style={rowStyle}>
-            <Image className='me-2' src={`${baseUrl}/assets/img/clothes/phone.png`} alt='phone' width={35} />
+            <FontAwesomeIcon icon={faPhone} color='#ed6337' width={30} />
             <div>{user.CONTACTO}</div>
           </div>
         )}
         {user.DATA_NASCIMENTO && (
           <div className='align-items-center my-1' style={rowStyle}>
-            <Image className='me-2' src={`${baseUrl}/assets/img/clothes/cake.png`} alt='cake' width={35} />
+            <FontAwesomeIcon icon={faCake} color='#ed6337' width={30} />
             <div>{user.DATA_NASCIMENTO}</div>
           </div>
         )}
         {user.nCalcas && (
           <div className='align-items-center my-1' style={rowStyle}>
-            <Image className='me-2' src={`${baseUrl}/assets/img/clothes/trousers.png`} alt='trousers' width={35} />
+            <FontAwesomeIcon icon={faShirt} color='#ed6337' width={30} />
             <div>{user.nCalcas}</div>
           </div>
         )}
         {user.nCamisa && (
           <div className='align-items-center my-1' style={rowStyle}>
-            <Image className='me-2' src={`${baseUrl}/assets/img/clothes/shirt.png`} alt='shirt' width={35} />
+            <FontAwesomeIcon icon={faUserTie} color='#ed6337' width={30} />
             <div>{user.nCamisa}</div>
           </div>
         )}
         {user.nCasaco && (
           <div className='align-items-center my-1' style={rowStyle}>
-            <Image className='me-2' src={`${baseUrl}/assets/img/clothes/jacket.png`} alt='jacket' width={35} />
+            <FontAwesomeIcon icon={faVest} color='#ed6337' width={30} />
             <div>{user.nCasaco}</div>
           </div>
         )}
         {user.nPolo && (
           <div className='align-items-center my-1' style={rowStyle}>
-            <Image className='me-2' src={`${baseUrl}/assets/img/clothes/polo.png`} alt='polo' width={35} />
+            <FontAwesomeIcon icon={faShirt} color='#ed6337' width={30} />
             <div>{user.nPolo}</div>
           </div>
         )}
         {user.nPullover && (
           <div className='align-items-center my-1' style={rowStyle}>
-            <Image className='me-2' src={`${baseUrl}/assets/img/clothes/pullover.png`} alt='pullover' width={35} />
+            <FontAwesomeIcon icon={faVest} color='#ed6337' width={30} />
             <div>{user.nPullover}</div>
           </div>
         )}
         {user.nSapato && (
           <div className='align-items-center my-1' style={rowStyle}>
-            <Image className='me-2' src={`${baseUrl}/assets/img/clothes/shoe.png`} alt='shoe' width={35} />
+            <FontAwesomeIcon icon={faShoePrints} color='#ed6337' width={30} />
             <div>{user.nSapato}</div>
           </div>
         )}
         {user.nSweatshirt && (
           <div className='align-items-center my-1' style={rowStyle}>
-            <Image className='me-2' src={`${baseUrl}/assets/img/clothes/sweatshirt.png`} alt='sweatshirt' width={35} />
+            <FontAwesomeIcon icon={faShirt} color='#ed6337' width={30} />
             <div>{user.nSweatshirt}</div>
           </div>
         )}
         {user.nTshirt && (
           <div className='align-items-center my-1' style={rowStyle}>
-            <Image className='me-2' src={`${baseUrl}/assets/img/clothes/tshirt.png`} alt='tshirt' width={35} />
+            <FontAwesomeIcon icon={faShirt} color='#ed6337' width={30} />
             <div>{user.nTshirt}</div>
           </div>
         )}
@@ -333,17 +337,13 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
       {/* Card Component */}
       <Card
         className='my-3'
-        style={{
-          borderColor: '#77321c',
-          backgroundColor: '#fdefeb'
-        }}
       >
 
         {/* This is the User Card Header */}
         <Card.Header
           className='text-light'
           style={{
-            backgroundColor: '#ed6337',
+            backgroundColor: 'white',
             borderBottomLeftRadius: '10px',
             borderBottomRightRadius: '10px'
           }}
@@ -362,7 +362,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, getUser }) => {
             <LoadingBars />
           ) : (
             <Fragment>
-              <UserButtons username={user.USERNAME} sessionUsername={user.USERNAME} fireModal={fireModal} user={user} />
+              <UserButtons username={user.USERNAME} sessionUsername={sessionUsername} fireModal={fireModal} user={user} />
               <UserDetails user={user} />
               <Team baseUrl={baseUrl} team={team} />
             </Fragment>

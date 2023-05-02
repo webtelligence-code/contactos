@@ -22,7 +22,6 @@
 input {
   border-radius: 10px;
   border: gray 2px solid;
-  padding: 5px;
   padding-inline: 10px;
   width: 60%;
   color: #77321c
@@ -36,13 +35,12 @@ input:hover {
 input:focus {
   outline: #77321c 2px solid;
   background-color: #fdefeb;
-  border: none;
+  border-color: #77321c;
 }
 
 .dropdown {
   border-radius: 10px;
   border: gray 2px solid;
-  padding: 5px;
   padding-inline: 10px;
   width: 60%;
   color: #77321c
@@ -54,9 +52,9 @@ input:focus {
 }
 
 .dropdown:focus {
-  outline: #77321c 2px solid;
+  outline: #77321c 3px solid;
   background-color: #fdefeb;
-  border: none;
+  border-color: #77321c;
 }
 
 .searchDropdown {

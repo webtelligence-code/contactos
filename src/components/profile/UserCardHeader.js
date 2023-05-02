@@ -17,16 +17,16 @@ const UserCardHeader = ({ user }) => {
           className='me-2 profile-pic'
         />
       </div>
-      <div className='text-start'>
+      <div className='text-start' style={{ color: '#77321c'}}>
         <h3>
           <FontAwesomeIcon icon={faSignature} className='me-2' />
           {user.NAME}
         </h3>
-        <h5 style={{ opacity: '80%', color: '#77321c' }}>
+        <h5 style={{ opacity: '60%', color: '#77321c' }}>
           <FontAwesomeIcon icon={faBuildingUser} className='me-2'  />
           {user.DEPARTAMENTO}
         </h5>
-        <h6 style={{ opacity: '80%', color: '#77321c' }}>
+        <h6 style={{ opacity: '60%', color: '#77321c' }}>
           <FontAwesomeIcon icon={faBolt} className='me-2' fade />
           {user.FUNCAO}
         </h6>

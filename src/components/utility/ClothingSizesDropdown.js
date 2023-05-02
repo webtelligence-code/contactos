@@ -7,7 +7,7 @@ const ClothingSizesDropdown = ({ value, setState, defaultLabel, isLetter, isNumb
 
   return (
     <select
-      className='dropdown'
+      className='dropdown ms-2'
       defaultValue={value}
       onChange={(event) => setState(event.target.value)}
     >

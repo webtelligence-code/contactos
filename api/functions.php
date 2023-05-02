@@ -97,20 +97,22 @@ function getUsersByConcession($concession)
 ////////////////////////////////////////////POST////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-function updateUser($username, $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt)
-{
+function generateLogMessage($username, $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt) {
   global $conn;
-
   // Fetch existing user data
   $sql = 'SELECT * FROM users WHERE USERNAME = ?';
   $stmt = $conn->prepare($sql);
   $stmt->bind_param('s', $username);
   $stmt->execute();
-  $existingUser = $stmt->get_result()->fetch_assoc();
 
+  $existingUser = $stmt->get_result()->fetch_assoc();
   // Compare new values with existing values and construct log messag
-  $logMessage = 'O utilizador fez mudanças nos campos';
+  $logMessage = 'O utilizador fez mudanças nos campos ';
   $changeFields = [];
+
+  // Add current date and time to the log message
+  $dateTime = new DateTime('now', new DateTimeZone('Europe/Lisbon'));
+  $formattedDateTime = $dateTime->format('Y-m-d H:i:s');
 
   if ($personalEmail !== '' && $personalEmail !== $existingUser['EMAIL_PESSOAL']) {
     $changeFields[] = 'EMAIL_PESSOAL ("' . $personalEmail . '")';
@@ -148,6 +150,17 @@ function updateUser($username, $personalEmail, $phone, $dateOfBirth, $pants, $sh
 
   // Log message
   $logMessage .= implode(', ', $changeFields);
+  $logMessage .= ' em ' . $formattedDateTime;
+
+  return $logMessage;
+}
+
+function updateUser($username, $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt)
+{
+  global $conn;
+
+  // Call the function to generate a log message
+  $logMessage = generateLogMessage($username, $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt);
 
   // Update the user with the new values and log message
   $sql = "UPDATE users
