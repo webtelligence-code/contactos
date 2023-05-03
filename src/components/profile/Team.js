@@ -26,7 +26,7 @@ const Team = ({ baseUrl, team }) => {
           }}
           as={'h6'}
         >
-          Equipa
+          {`Equipa (${team.length} membros)`}
           <FontAwesomeIcon icon={faPeopleGroup} color='dark' className='ms-2' />
         </Card.Header>
         <Card.Body>

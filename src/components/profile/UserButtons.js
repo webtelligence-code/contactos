@@ -4,11 +4,10 @@ import React, { Fragment, useState } from 'react'
 import { Button, Col, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
-const UserButtons = ({ fireModal, username, sessionUsername, user }) => {
+const UserButtons = ({ fireModal }) => {
   const navigate = useNavigate();
 
   // States
-  const [hoveredBack, setHoveredBack] = useState(false);
   const [hoveredInfo, setHoveredInfo] = useState(false);
   const [hoveredEdit, setHoveredEdit] = useState(false);
 
@@ -16,62 +15,40 @@ const UserButtons = ({ fireModal, username, sessionUsername, user }) => {
     <Row className='text-center mb-3'>
       <Col className='w-100'>
         <Button
-          variant='danger'
+          variant='primary'
           size='sm'
           className='w-100 h-100 d-flex align-items-center justify-content-center'
-          onClick={() => navigate('/contactos')}
-          onMouseEnter={() => setHoveredBack(true)}
-          onMouseLeave={() => setHoveredBack(false)}
+          onClick={() => fireModal(false)}
+          onMouseEnter={() => setHoveredInfo(true)}
+          onMouseLeave={() => setHoveredInfo(false)}
         >
           <FontAwesomeIcon
-            icon={faHandPointLeft}
+            icon={faInfo}
             color='white'
             className='me-sm-3'
-            fade={hoveredBack}
+            fade={hoveredInfo}
           />
-          Voltar atrás
+          + Info
         </Button>
       </Col>
-      {username === sessionUsername && (
-        <Fragment>
-          <Col className='w-100'>
-            <Button
-              variant='primary'
-              size='sm'
-              className='w-100 h-100 d-flex align-items-center justify-content-center'
-              onClick={() => fireModal(false)}
-              onMouseEnter={() => setHoveredInfo(true)}
-              onMouseLeave={() => setHoveredInfo(false)}
-            >
-              <FontAwesomeIcon
-                icon={faInfo}
-                color='white'
-                className='me-sm-3'
-                fade={hoveredInfo}
-              />
-              + Info
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              variant='success'
-              size='sm'
-              className='w-100 h-100 d-flex align-items-center justify-content-center'
-              onClick={() => fireModal(true)}
-              onMouseEnter={() => setHoveredEdit(true)}
-              onMouseLeave={() => setHoveredEdit(false)}
-            >
-              <FontAwesomeIcon
-                icon={faUserPen}
-                color='white'
-                className='me-sm-3'
-                fade={hoveredEdit}
-              />
-              Editar perfil
-            </Button>
-          </Col>
-        </Fragment>
-      )}
+      <Col>
+        <Button
+          variant='success'
+          size='sm'
+          className='w-100 h-100 d-flex align-items-center justify-content-center'
+          onClick={() => fireModal(true)}
+          onMouseEnter={() => setHoveredEdit(true)}
+          onMouseLeave={() => setHoveredEdit(false)}
+        >
+          <FontAwesomeIcon
+            icon={faUserPen}
+            color='white'
+            className='me-sm-3'
+            fade={hoveredEdit}
+          />
+          Editar perfil
+        </Button>
+      </Col>
     </Row>
   )
 }

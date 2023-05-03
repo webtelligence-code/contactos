@@ -56,12 +56,19 @@ function getUser($username)
 
   return $user;
 }
-function getTeam($username, $cidade, $empresa)
+function getTeam($chefe, $username, $chefia)
 {
   global $conn;
-  $sql = 'SELECT * FROM users WHERE COLABORADOR = 1 AND ACT = 1 AND USERNAME != ? AND CIDADE = ? AND EMPRESA = ?';
+  $sql = 'SELECT * FROM users WHERE COLABORADOR = 1 AND ACT = 1 AND (CHEFIA = ? OR USERNAME = ?)';
+
   $stmt = $conn->prepare($sql);
-  $stmt->bind_param('sss', $username, $cidade, $empresa);
+
+  if ($chefe == 1) {
+    $stmt->bind_param('ss', $username, $chefia);
+  } else {
+    $stmt->bind_param('ss', $chefia, $chefia);
+  }
+
   $stmt->execute();
   $result = $stmt->get_result();
 
@@ -71,6 +78,16 @@ function getTeam($username, $cidade, $empresa)
       $team[] = $row;
     }
   }
+
+  usort($team, function ($a, $b) {
+    if ($a['CHEFE'] == 1 && $b['CHEFE'] != 1) {
+      return -1;
+    } elseif ($a['CHEFE'] != 1 && $b['CHEFE'] == 1) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
 
   return $team;
 }
@@ -97,7 +114,8 @@ function getUsersByConcession($concession)
 ////////////////////////////////////////////POST////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-function generateLogMessage($username, $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt) {
+function generateLogMessage($username, $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt)
+{
   global $conn;
   // Fetch existing user data
   $sql = 'SELECT * FROM users WHERE USERNAME = ?';

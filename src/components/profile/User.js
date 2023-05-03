@@ -11,6 +11,7 @@ import UserDetails from './UserDetails';
 import UserCardHeader from './UserCardHeader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCake, faEnvelope, faPhone, faShirt, faShoePrints, faUserTie, faVest } from '@fortawesome/free-solid-svg-icons';
+import Brands from './Brands';
 
 const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
   // Initialize 
@@ -335,9 +336,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
     <Fragment>
 
       {/* Card Component */}
-      <Card
-        className='my-3'
-      >
+      <Card>
 
         {/* This is the User Card Header */}
         <Card.Header
@@ -351,7 +350,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
           {loading ? (
             <LoadingBars classes={'ms-3'} />
           ) : (
-            <UserCardHeader user={user} baseUrl={baseUrl} />
+            <UserCardHeader user={user} baseUrl={baseUrl} sessionaUsername={sessionUsername} fireModal={fireModal} />
           )}
 
         </Card.Header>
@@ -362,8 +361,9 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
             <LoadingBars />
           ) : (
             <Fragment>
-              <UserButtons username={user.USERNAME} sessionUsername={sessionUsername} fireModal={fireModal} user={user} />
+              {user.USERNAME === sessionUsername && <UserButtons fireModal={fireModal} />}
               <UserDetails user={user} />
+              <Brands brands={user.MARCAS} />
               <Team baseUrl={baseUrl} team={team} />
             </Fragment>
           )}

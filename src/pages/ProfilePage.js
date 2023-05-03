@@ -1,17 +1,21 @@
 import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import User from '../components/profile/User';
-import { Container } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandPointLeft } from '@fortawesome/free-solid-svg-icons';
 
 const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
   // Props from browser router
   const { username } = useParams();
+  const navigate = useNavigate();
 
   // States
   const [user, setUser] = useState({});
   const [team, setTeam] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [hoveredBack, setHoveredBack] = useState(false);
 
   // This use effect will scroll to top every time user refreshes the page
   useEffect(() => {
@@ -48,8 +52,8 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
       params: {
         action: 'get_team',
         username,
-        cidade: user.CIDADE,
-        empresa: user.EMPRESA
+        chefia: user.CHEFIA,
+        chefe: user.CHEFE,
       }
     })
       .then((response) => {
@@ -62,13 +66,30 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
       })
   }, [API_BASE_URL, username, user])
 
-  // THis function will fetch team by cidade and company
+  // This function will fetch team by cidade and company
   useEffect(() => {
     getTeam();
   }, [getTeam])
 
+
   return (
     <Container>
+      <Button
+        variant='danger'
+        size='sm'
+        className='my-2'
+        onClick={() => window.history.back()}
+        onMouseEnter={() => setHoveredBack(true)}
+        onMouseLeave={() => setHoveredBack(false)}
+      >
+        <FontAwesomeIcon
+          icon={faHandPointLeft}
+          color='white'
+          className='me-sm-3'
+          fade={setHoveredBack}
+        />
+        Voltar atrás
+      </Button>
       <User API_BASE_URL={API_BASE_URL} baseUrl={baseUrl} user={user} team={team} loading={loading} />
     </Container>
   )

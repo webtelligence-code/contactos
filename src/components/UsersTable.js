@@ -14,6 +14,8 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
   const navigate = useNavigate();
   const [hoveredConcession, setHoveredConcession] = useState(null);
   const [hoveredUser, setHoveredUser] = useState({})
+  const [vcardLoadUser, setVCardLoadUser] = useState(null)
+  const [vcardLoadConcession, setVCardLoadConcession] = useState(null)
 
   /**
    * This function will handle VCard generation for the user selected or the concession
@@ -22,14 +24,17 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
    * @param {object} user 
    */
   const handleVCardClick = async (data, event) => {
+
     event.stopPropagation(); // Prevent the click propagation for user row
     const formData = new FormData();
 
     formData.append('action', 'generate_vcard');
 
     if (typeof data === 'object') {
+      setVCardLoadUser(data.USERNAME);
       formData.append('user', JSON.stringify(data))
     } else {
+      setVCardLoadConcession(data);
       formData.append('concessao', data);
     }
 
@@ -44,7 +49,13 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
       document.body.appendChild(a);
       a.click();
       a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 100);
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+        setVCardLoadUser(null);
+        setVCardLoadConcession(null);
+      }, 100);
+      setVCardLoadUser(false);
+      setVCardLoadConcession(false);
     } catch (error) {
       console.error('Error fetching VCard:', error);
     }
@@ -102,6 +113,7 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
             >
               {CONCESSAO}
               <Button
+                disabled={vcardLoadConcession === CONCESSAO ? true : false}
                 className='ms-2'
                 size='sm'
                 variant='outline-dark'
@@ -115,13 +127,13 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                   className='me-2 clickable'
                   bounce={hoveredConcession === CONCESSAO ? true : false}
                 />
-                {hoveredConcession === CONCESSAO ? 'Download Zip' : 'VCards'}
+                {vcardLoadConcession === CONCESSAO ? 'A transferir...' : 'VCards'}
               </Button>
             </Card.Header>
             <Card.Body>
               <Table hover responsive>
                 <thead>
-                  <tr style={{ color: '#77321c' }}>
+                  <tr style={{ color: '#77321c', borderColor: '#77321c' }}>
                     <th>Nome</th>
                     <th>Departamento</th>
                     <th>Função</th>
@@ -131,7 +143,7 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                 </thead>
                 <tbody>
                   {filteredUsers(CONCESSAO).map((user, key) => (
-                    <tr key={key} className='clickable' onClick={() => navigate(`/contactos/profile/${user.USERNAME}`)}>
+                    <tr style={{ borderColor: '#77321c'}} key={key} className='clickable' onClick={() => navigate(`/contactos/profile/${user.USERNAME}`)}>
                       <td className='align-middle'>{user.NAME}</td>
                       <td className='align-middle'>{user.DEPARTAMENTO}</td>
                       <td className='align-middle'>{user.FUNCAO}</td>
@@ -139,6 +151,7 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                       <td className='text-end'>
                         {user.CONTACTO}
                         <Button
+                          disabled={vcardLoadUser === user.USERNAME ? true : false}
                           className='ms-2'
                           size='sm'
                           variant='outline-dark'
@@ -153,7 +166,7 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                             color='#ed6337'
                             className='me-2 clickable'
                           />
-                          {hoveredUser === user ? 'Download' : 'VCard'}
+                          {vcardLoadUser === user.USERNAME ? 'A transferir...' : 'VCard'}
                         </Button>
                       </td>
                     </tr>

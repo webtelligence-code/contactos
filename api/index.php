@@ -29,10 +29,10 @@ switch ($method) {
         $response = getUser($username);
         break;
       case 'get_team':
+        $chefia = isset($_GET['chefia']) ? $_GET['chefia'] : '';
+        $chefe = isset($_GET['chefe']) ? $_GET['chefe'] : '';
         $username = isset($_GET['username']) ? $_GET['username'] : '';
-        $cidade = isset($_GET['cidade']) ? $_GET['cidade'] : '';
-        $empresa = isset($_GET['empresa']) ? $_GET['empresa'] : '';
-        $response = getTeam($username, $cidade, $empresa);
+        $response = getTeam($chefe, $username, $chefia);
         break;
       default:
         if ($get_action == '') {
