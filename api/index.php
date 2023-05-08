@@ -79,8 +79,6 @@ switch ($method) {
         }
         break;
       case 'update_avatar':
-        var_dump($_FILES);
-        var_dump($_POST);
         if (isset($_FILES['image']) && isset($_POST['username'])) {
           $username = $_POST['username'];
           $image = $_FILES['image'];
