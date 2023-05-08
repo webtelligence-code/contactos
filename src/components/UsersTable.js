@@ -124,10 +124,9 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                 <FontAwesomeIcon
                   icon={hoveredConcession === CONCESSAO ? faDownload : faAddressCard}
                   color='#ed6337'
-                  className='me-2 clickable'
                   bounce={hoveredConcession === CONCESSAO ? true : false}
                 />
-                {vcardLoadConcession === CONCESSAO ? 'A transferir...' : 'VCards'}
+                {vcardLoadConcession === CONCESSAO ? ' A transferir' : null}
               </Button>
             </Card.Header>
             <Card.Body>
@@ -135,6 +134,7 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                 <thead>
                   <tr style={{ color: '#77321c', borderColor: '#77321c' }}>
                     <th>Nome</th>
+                    <th>Empresa</th>
                     <th>Departamento</th>
                     <th>Função</th>
                     <th>Email</th>
@@ -143,8 +143,9 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                 </thead>
                 <tbody>
                   {filteredUsers(CONCESSAO).map((user, key) => (
-                    <tr style={{ borderColor: '#77321c'}} key={key} className='clickable' onClick={() => navigate(`/contactos/profile/${user.USERNAME}`)}>
+                    <tr style={{ color: '#77321c', fontSize: 15}} key={key} className='clickable' onClick={() => navigate(`/contactos/profile/${user.USERNAME}`)}>
                       <td className='align-middle'>{user.NAME}</td>
+                      <td className='align-middle'>{user.EMPRESA}</td>
                       <td className='align-middle'>{user.DEPARTAMENTO}</td>
                       <td className='align-middle'>{user.FUNCAO}</td>
                       <td className='align-middle'>{user.EMAIL}</td>
@@ -158,15 +159,13 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                           onClick={(event) => handleVCardClick(user, event)}
                           onMouseEnter={() => setHoveredUser(user)}
                           onMouseLeave={() => setHoveredUser({})}
-                          style={{ width: 125 }}
                         >
                           <FontAwesomeIcon
                             bounce={hoveredUser === user ? true : false}
                             icon={hoveredUser === user ? faDownload : faAddressCard}
                             color='#ed6337'
-                            className='me-2 clickable'
                           />
-                          {vcardLoadUser === user.USERNAME ? 'A transferir...' : 'VCard'}
+                          {vcardLoadUser === user.USERNAME ? ' A transferir' : null}
                         </Button>
                       </td>
                     </tr>

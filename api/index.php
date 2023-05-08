@@ -55,8 +55,6 @@ switch ($method) {
       case 'update_user':
         $username = isset($_POST['username']) ? $_POST['username'] : '';
         $personalEmail = isset($_POST['personalEmail']) ? $_POST['personalEmail'] : '';
-        $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
-        $dateOfBirth = isset($_POST['dateOfBirth']) ? $_POST['dateOfBirth'] : '';
         $pants = isset($_POST['pants']) ? $_POST['pants'] : '';
         $shirt = isset($_POST['shirt']) ? $_POST['shirt'] : '';
         $jacket = isset($_POST['jacket']) ? $_POST['jacket'] : '';
@@ -66,7 +64,7 @@ switch ($method) {
         $sweatshirt = isset($_POST['sweatshirt']) ? $_POST['sweatshirt'] : '';
         $tshirt = isset($_POST['tshirt']) ? $_POST['tshirt'] : '';
 
-        $response = updateUser($username, $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt);
+        $response = updateUser($username, $personalEmail, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt);
 
         break;
       case 'generate_vcard':
@@ -74,10 +72,20 @@ switch ($method) {
           $user = json_decode($_POST['user'], true);
 
           $response = generateVCardUser($user);
-        } else if(isset($_POST['concessao'])) {
+        } else if (isset($_POST['concessao'])) {
           $concessao = $_POST['concessao'];
 
           $response = generateVCardConcession($concessao);
+        }
+        break;
+      case 'update_avatar':
+        var_dump($_FILES);
+        var_dump($_POST);
+        if (isset($_FILES['image']) && isset($_POST['username'])) {
+          $username = $_POST['username'];
+          $image = $_FILES['image'];
+
+          $response = updateAvatar($username, $image);
         }
         break;
       default:

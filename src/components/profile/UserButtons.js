@@ -34,6 +34,7 @@ const UserButtons = ({ fireModal }) => {
       <Col>
         <Button
           variant='success'
+          style={{backgroundColor: '#388e3c'}}
           size='sm'
           className='w-100 h-100 d-flex align-items-center justify-content-center'
           onClick={() => fireModal(true)}

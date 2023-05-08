@@ -10,7 +10,7 @@ const SearchUser = ({ searchInput, setSearchInput }) => {
         className='text-dark'
         style={{ backgroundColor: 'white', fontWeight: 500, fontSize: 16, borderBottomLeftRadius: 15}}
       >
-        <FontAwesomeIcon icon={faSearch} className='ms-2' color='dark' />
+        <FontAwesomeIcon icon={faSearch} className='ms-2' color='#ed6337' />
       </InputGroup.Text>
       <FormControl
         placeholder='Insira o termo de pesquisa do utilizador'

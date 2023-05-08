@@ -81,3 +81,27 @@
   justify-content: 'center';
   align-items: center;
 }
+
+.brandsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Adjust this value to increase or decrease the spacing between items */
+  list-style-type: none;
+  padding: 0;
+}
+
+.brandsList li {
+  position: relative;
+}
+
+.brandsList li::after {
+  content: "•";
+  position: absolute;
+  right: -15px; /* Adjust this value to match the increased gap */
+  top: 0;
+  color: #ed6337;
+}
+
+.brandsList li:last-child::after {
+  content: "";
+}

@@ -76,8 +76,6 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
    */
   const fireModal = (isEdit) => {
     setPersonalEmail(user.EMAIL_PESSOAL || '')
-    setPhone(user.CONTACTO || '');
-    setDateOfBirth(user.DATA_NASCIMENTO || '');
     setPants(user.nCalcas || '');
     setShirt(user.nCamisa || '');
     setJacket(user.nCasaco || '');
@@ -93,8 +91,8 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
       icon: isEdit ? 'warning' : 'info',
       showCancelButton: isEdit,
       showConfirmButton: true,
-      confirmButtonColor: isEdit ? '#32b300' : '#ed6337',
-      cancelButtonColor: 'red',
+      confirmButtonColor: isEdit ? '#388e3c' : '#ed6337',
+      cancelButtonColor: '#c62828',
       confirmButtonText: isEdit ? 'Confirmar' : 'Ok',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -109,11 +107,10 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
   const sendDataToApi = useCallback(async () => {
     const action = 'update_user';
     const formData = new FormData();
+    
     formData.append('action', action);
     formData.append('username', username);
     personalEmail && formData.append('personalEmail', personalEmail);
-    phone && formData.append('phone', phone);
-    dateOfBirth && formData.append('dateOfBirth', dateOfBirth);
     pants && formData.append('pants', pants);
     shirt && formData.append('shirt', shirt);
     jacket && formData.append('jacket', jacket);
@@ -140,7 +137,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
       console.error('Error while trying to post request to API:', error)
     })
 
-  }, [API_BASE_URL, MySwal, dateOfBirth, jacket, pants, personalEmail, phone, polo, pullover, shirt, shoe, sweatshirt, tshirt, username])
+  }, [API_BASE_URL, MySwal, jacket, pants, personalEmail, polo, pullover, shirt, shoe, sweatshirt, tshirt, username])
 
   useEffect(() => {
     if (APIPost) sendDataToApi()
@@ -156,26 +153,6 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
             placeholder='Email pessoal'
             defaultValue={personalEmail}
             onChange={(e) => setPersonalEmail(e.target.value)}
-            className='ms-2 dropdownInput'
-          />
-        </div>
-        <div className='align-items-center my-1 modalInputRow'>
-          <FontAwesomeIcon icon={faPhone} color='#ed6337' width={30} />
-          <input
-            placeholder='Número de telemóvel'
-            defaultValue={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className='ms-2 dropdownInput'
-          />
-        </div>
-        <div className='align-items-center my-1 modalInputRow'>
-          <FontAwesomeIcon icon={faCake} color='#ed6337' width={30} />
-          <input
-            type='date'
-            name='doj'
-            defaultValue={dateOfBirth}
-            placeholder='Data de Nascimento'
-            onChange={(e) => setDateOfBirth(e.target.value)}
             className='ms-2 dropdownInput'
           />
         </div>
@@ -350,7 +327,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
           {loading ? (
             <LoadingBars classes={'ms-3'} />
           ) : (
-            <UserCardHeader user={user} baseUrl={baseUrl} sessionaUsername={sessionUsername} fireModal={fireModal} />
+            <UserCardHeader user={user} baseUrl={baseUrl} API_BASE_URL={API_BASE_URL} sessionaUsername={sessionUsername} fireModal={fireModal} sessionUsername={sessionUsername} />
           )}
 
         </Card.Header>
@@ -364,7 +341,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading }) => {
               {user.USERNAME === sessionUsername && <UserButtons fireModal={fireModal} />}
               <UserDetails user={user} />
               <Brands brands={user.MARCAS} />
-              <Team baseUrl={baseUrl} team={team} />
+              <Team baseUrl={baseUrl} team={team} username={user.USERNAME} />
             </Fragment>
           )}
         </Card.Body >

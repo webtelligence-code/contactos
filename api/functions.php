@@ -114,7 +114,7 @@ function getUsersByConcession($concession)
 ////////////////////////////////////////////POST////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-function generateLogMessage($username, $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt)
+function generateLogMessage($username, $personalEmail, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt)
 {
   global $conn;
   // Fetch existing user data
@@ -134,12 +134,6 @@ function generateLogMessage($username, $personalEmail, $phone, $dateOfBirth, $pa
 
   if ($personalEmail !== '' && $personalEmail !== $existingUser['EMAIL_PESSOAL']) {
     $changeFields[] = 'EMAIL_PESSOAL ("' . $personalEmail . '")';
-  }
-  if ($phone !== '' && $phone !== $existingUser['CONTACTO']) {
-    $changeFields[] = 'CONTACTO ("' . $phone . '")';
-  }
-  if ($dateOfBirth !== '' && $dateOfBirth !== $existingUser['DATA_NASCIMENTO']) {
-    $changeFields[] = 'DATA_NASCIMENTO ("' . $dateOfBirth . '")';
   }
   if ($pants !== 0 && $pants !== $existingUser['nCalcas']) {
     $changeFields[] = 'nCalcas ("' . $pants . '")';
@@ -173,19 +167,17 @@ function generateLogMessage($username, $personalEmail, $phone, $dateOfBirth, $pa
   return $logMessage;
 }
 
-function updateUser($username, $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt)
+function updateUser($username, $personalEmail, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt)
 {
   global $conn;
 
   // Call the function to generate a log message
-  $logMessage = generateLogMessage($username, $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt);
+  $logMessage = generateLogMessage($username, $personalEmail, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt);
 
   // Update the user with the new values and log message
   $sql = "UPDATE users
           SET
           EMAIL_PESSOAL = COALESCE(NULLIF(?, ''), EMAIL_PESSOAL),
-          CONTACTO = COALESCE(NULLIF(?, ''), CONTACTO),
-          DATA_NASCIMENTO = COALESCE(NULLIF(?, ''), DATA_NASCIMENTO),
           nCalcas = COALESCE(NULLIF(?, 0), nCalcas),
           nCamisa = COALESCE(NULLIF(?, ''), nCamisa),
           nCasaco = COALESCE(NULLIF(?, ''), nCasaco),
@@ -199,7 +191,7 @@ function updateUser($username, $personalEmail, $phone, $dateOfBirth, $pants, $sh
         ";
 
   $stmt = $conn->prepare($sql);
-  $stmt->bind_param('sssissssissss', $personalEmail, $phone, $dateOfBirth, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt, $logMessage, $username);
+  $stmt->bind_param('sissssissss', $personalEmail, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt, $logMessage, $username);
   $result = $stmt->execute();
 
   if ($result) {
@@ -296,3 +288,31 @@ function generateVCardConcession($concession)
 
   $zip->finish(); // Finish the zip creation
 }
+
+function updateAvatar($username, $image) {
+
+  $response = ['success' => true, 'message' => 'updateAvatar Function'];
+  $directoryPath = "workers/{$username}";
+
+  if (!file_exists($directoryPath)) {
+    mkdir($directoryPath, 0755, true);
+  }
+
+  $targetPath = "{$directoryPath}/{$username}.webp";
+
+  // Extract base64 data
+  $base64Data = substr($image, strpos($image, ',') + 1);
+
+  // Decode base64 data
+  $decodedData = base64_decode($base64Data);
+
+  // Save the decoded data as a file
+  if (file_put_contents($targetPath, $decodedData)) {
+    $response = ['success' => true, 'message' => 'Avatar atualizado com sucesso!'];
+  } else {
+    $response = ['success' => false, 'message' => 'Erro ao guardar avatar'];
+  }
+
+  return $response;
+}
+

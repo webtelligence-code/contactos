@@ -14,7 +14,7 @@ const UserDetails = ({ user }) => {
             {user.EMAIL}
           </p>
         )}
-        {user.EMAIL_PESSOAL && (
+        {user.EMAIL_PESSOAL && user.EMAIL_PESSOAL.length > 1 && (
           <p>
             <FontAwesomeIcon icon={faEnvelope} className='me-1' color='#ed6337' size='sm' />
             <FontAwesomeIcon icon={faUser} className='me-2' color='#ed6337' size='sm' />

@@ -4,7 +4,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import User from '../components/profile/User';
 import { Button, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHandPointLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowLeftLong, faHandPointLeft, faHome } from '@fortawesome/free-solid-svg-icons';
 
 const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
   // Props from browser router
@@ -16,6 +16,7 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
   const [team, setTeam] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoveredBack, setHoveredBack] = useState(false);
+  const [hoveredHome, setHoveredHome] = useState(false);
 
   // This use effect will scroll to top every time user refreshes the page
   useEffect(() => {
@@ -76,6 +77,7 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
     <Container>
       <Button
         variant='danger'
+        style={{backgroundColor: '#c62828'}}
         size='sm'
         className='my-2'
         onClick={() => window.history.back()}
@@ -83,12 +85,25 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
         onMouseLeave={() => setHoveredBack(false)}
       >
         <FontAwesomeIcon
-          icon={faHandPointLeft}
+          icon={faArrowLeftLong}
           color='white'
-          className='me-sm-3'
-          fade={setHoveredBack}
+          fade={hoveredBack}
         />
-        Voltar atrás
+      </Button>
+      <Button
+        variant='success'
+        style={{backgroundColor: '#388e3c'}}
+        size='sm'
+        className='my-2 ms-2'
+        onClick={() => navigate('/contactos')}
+        onMouseEnter={() => setHoveredHome(true)}
+        onMouseLeave={() => setHoveredHome(false)}
+      >
+        <FontAwesomeIcon
+          icon={faHome}
+          color='white'
+          fade={hoveredHome}
+        />
       </Button>
       <User API_BASE_URL={API_BASE_URL} baseUrl={baseUrl} user={user} team={team} loading={loading} />
     </Container>
