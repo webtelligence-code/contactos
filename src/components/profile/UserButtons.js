@@ -8,10 +8,12 @@ const UserButtons = ({ fireModal, sessionUsername, username, firePasswordModal, 
   const navigate = useNavigate();
 
   // States
-  const [hoveredInfo, setHoveredInfo] = useState(false);
-  const [hoveredEdit, setHoveredEdit] = useState(false);
   const [hoveredBack, setHoveredBack] = useState(false);
   const [hoveredHome, setHoveredHome] = useState(false);
+  const [hoveredManual, setHoveredManual] = useState(false);
+  const [hoveredInfo, setHoveredInfo] = useState(false);
+  const [hoveredEdit, setHoveredEdit] = useState(false);
+  const [hoveredPassword, setHoveredPassword] = useState(false);
 
   // Tooltip States
   const [tooltipMessage, setTooltipMessage] = useState('');
@@ -54,13 +56,13 @@ const UserButtons = ({ fireModal, sessionUsername, username, firePasswordModal, 
         size='sm'
         className='ms-5'
         onClick={showUserManual}
-        onMouseEnter={(e) => { setHoveredHome(true); setTooltipMessage('Manual de utilizador'); setTooltipTarget(e.currentTarget) }}
-        onMouseLeave={() => { setHoveredHome(false); setTooltipMessage(''); setTooltipTarget(null) }}
+        onMouseEnter={(e) => { setHoveredManual(true); setTooltipMessage('Manual de utilizador'); setTooltipTarget(e.currentTarget) }}
+        onMouseLeave={() => { setHoveredManual(false); setTooltipMessage(''); setTooltipTarget(null) }}
       >
         <FontAwesomeIcon
           icon={faBookOpen}
           color='white'
-          fade={hoveredHome}
+          fade={hoveredManual}
         />
       </Button>
       {sessionUsername === username && (
@@ -101,13 +103,13 @@ const UserButtons = ({ fireModal, sessionUsername, username, firePasswordModal, 
             size='sm'
             className='ms-2'
             onClick={firePasswordModal}
-            onMouseEnter={(e) => { setHoveredEdit(true); setTooltipMessage('Alterar password'); setTooltipTarget(e.currentTarget) }}
-            onMouseLeave={() => { setHoveredEdit(false); setTooltipMessage(''); setTooltipTarget(null) }}
+            onMouseEnter={(e) => { setHoveredPassword(true); setTooltipMessage('Alterar password'); setTooltipTarget(e.currentTarget) }}
+            onMouseLeave={() => { setHoveredPassword(false); setTooltipMessage(''); setTooltipTarget(null) }}
           >
             <FontAwesomeIcon
               icon={faKey}
               color='white'
-              fade={hoveredEdit}
+              fade={hoveredPassword}
             />
           </Button>
         </Fragment>

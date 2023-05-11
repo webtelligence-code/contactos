@@ -155,7 +155,8 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
       confirmButtonColor: isEdit ? '#388e3c' : '#ed6337',
       cancelButtonColor: '#c62828',
       confirmButtonText: isEdit ? 'Confirmar' : 'Ok',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
+      width: !isEdit && 275
     }).then((result) => {
       if (result.isConfirmed) {
         if (isEdit) {
@@ -299,25 +300,12 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
       display: 'flex',
       flexDirection: 'row',
       width: '100%',
-      alignSelf: 'center',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
       alignItems: 'center',
     }
 
     return (
       <Fragment>
-        {user.CONTACTO && (
-          <div className='align-items-center my-1' style={rowStyle}>
-            <FontAwesomeIcon icon={faPhone} color='#ed6337' width={30} />
-            <div>{user.CONTACTO}</div>
-          </div>
-        )}
-        {user.DATA_NASCIMENTO && (
-          <div className='align-items-center my-1' style={rowStyle}>
-            <FontAwesomeIcon icon={faCake} color='#ed6337' width={30} />
-            <div>{user.DATA_NASCIMENTO}</div>
-          </div>
-        )}
         {user.nCalcas && (
           <div className='align-items-center my-1' style={rowStyle}>
             <FontAwesomeIcon icon={faShirt} color='#ed6337' width={30} />
@@ -375,22 +363,22 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
       MySwal.fire({
         title: <div style={{ color: '#ed6337' }}>Alterar Password</div>,
         html: <Fragment>
-          <ModalPasswordUpdate
-            state={oldPassword}
-            setState={setOldPassword}
-            placeholder='Insira password antiga'
-          />
-          <ModalPasswordUpdate
-            state={newPassword}
-            setState={setNewPassword}
-            placeholder='Insira nova password'
-          />
-          <ModalPasswordUpdate
-            state={confirmPassword}
-            setState={setConfirmPassword}
-            placeholder='Confirmar nova password'
-          />
-        </Fragment>,
+                <ModalPasswordUpdate
+                  state={oldPassword}
+                  setState={setOldPassword}
+                  placeholder='Insira password antiga'
+                />
+                <ModalPasswordUpdate
+                  state={newPassword}
+                  setState={setNewPassword}
+                  placeholder='Insira nova password'
+                />
+                <ModalPasswordUpdate
+                  state={confirmPassword}
+                  setState={setConfirmPassword}
+                  placeholder='Confirmar nova password'
+                />
+              </Fragment>,
         showCancelButton: true,
         showConfirmButton: true,
         confirmButtonColor: '#388e3c',

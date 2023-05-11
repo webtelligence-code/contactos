@@ -1,12 +1,11 @@
 import { faBolt, faBuildingUser, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import WorkerImage from './WorkerImage'
 import withReactContent from 'sweetalert2-react-content'
 import Swal from 'sweetalert2'
 import ModalAvatarEdit from './ModalAvatarEdit'
 import axios from 'axios'
-import UserButtons from './UserButtons'
 
 const UserCardHeader = ({ user, sessionUsername, API_BASE_URL, baseUrl }) => {
   const MySwal = withReactContent(Swal);
