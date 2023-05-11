@@ -1,11 +1,19 @@
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faBoltLightning, faBuilding, faBuildingUser, faCamera, faCar, faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Overlay, Tooltip } from 'react-bootstrap';
 
-const WorkerImage = ({ baseUrl, clickable, avatar, username, sessionUsername, defaultImageSrc, alt, style, onClick }) => {
+const WorkerImage = ({ baseUrl, clickable, avatar, username, sessionUsername, alt, style, onClick, teamOverlay, teamMember }) => {
+  const defaultImageSrc = `${baseUrl}/workers/user.webp`;
+  const avatarTarget = useRef(null);
+  const teamTarget = useRef(null);
+
   const [imageSrc, setImageSrc] = useState(`${baseUrl}/workers/${username}/${username}.webp`);
   const [isLoading, setIsLoading] = useState(true);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [avatarShow, setAvatarShow] = useState(false);
+  const [teamShow, setTeamShow] = useState(false);
+
 
   useEffect(() => {
     const img = new Image();
@@ -46,6 +54,9 @@ const WorkerImage = ({ baseUrl, clickable, avatar, username, sessionUsername, de
         alt={alt}
         style={style}
         onClick={onClick}
+        ref={teamTarget}
+        onMouseEnter={() => setTeamShow(true)}
+        onMouseLeave={() => setTeamShow(false)}
       />
       {showOverlay && (
         <div
@@ -64,9 +75,52 @@ const WorkerImage = ({ baseUrl, clickable, avatar, username, sessionUsername, de
             borderRadius: '5%'
           }}
           onClick={onClick}
+          onMouseEnter={() => setAvatarShow(true)}
+          onMouseLeave={() => setAvatarShow(false)}
+          ref={avatarTarget}
         >
           <FontAwesomeIcon icon={faCamera} fontSize={45} color='#ed6337' />
         </div>
+      )}
+      <Overlay target={avatarTarget.current} show={avatarShow} placement="bottom">
+        {(props) => (
+          <Tooltip id="overlay-example" {...props}>
+            Alterar foto de perfil
+          </Tooltip>
+        )}
+      </Overlay>
+      {teamOverlay && (
+        <Overlay target={teamTarget.current} show={teamShow} placement="bottom">
+          {(props) => (
+            <Tooltip id="overlay-example" {...props}>
+              <h6>{teamMember.NAME}</h6>
+              <p>
+                <FontAwesomeIcon icon={faBuildingUser} className='me-2' />
+                {teamMember.DEPARTAMENTO}
+              </p>
+              <p>
+                <FontAwesomeIcon icon={faBuildingUser} className='me-2' />
+                {teamMember.FUNCAO}
+              </p>
+              <p>
+                <FontAwesomeIcon icon={faCar} className='me-2' />
+                {teamMember.CONCESSAO}
+              </p>
+              <p>
+                <FontAwesomeIcon icon={faBuilding} className='me-2' />
+                {teamMember.EMPRESA}
+              </p>
+              <p>
+                <FontAwesomeIcon icon={faEnvelope} className='me-2' />
+                {teamMember.EMAIL}
+              </p>
+              <p>
+                <FontAwesomeIcon icon={faPhone} className='me-2' />
+                {teamMember.CONTACTO}
+              </p>
+            </Tooltip>
+          )}
+        </Overlay>
       )}
     </div>
   );

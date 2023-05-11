@@ -1,7 +1,7 @@
 import { faBuildingUser, faCar, faPeopleGroup, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Fragment } from 'react'
-import { Card, Col, Image, Row } from 'react-bootstrap'
+import { Card, Col, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import WorkerImage from './WorkerImage'
 
@@ -53,6 +53,8 @@ const Team = ({ baseUrl, team, username }) => {
                       sessionUsername={null}
                       clickable={true}
                       baseUrl={baseUrl}
+                      teamMember={teamMember}
+                      teamOverlay={true}
                     />
                     <div
                       style={{
@@ -74,8 +76,8 @@ const Team = ({ baseUrl, team, username }) => {
                     </div>
                     <div
                       style={{
-                        color: '#ed6337',
-                        fontSize: 12
+                        color: '#77321c',
+                        fontSize: 12,
                       }}
                     >
                       <FontAwesomeIcon icon={faCar} className='me-1' color='#ed6337' size='xs' />

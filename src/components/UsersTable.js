@@ -1,6 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useRef, useState } from 'react'
 import { Button, Card, Table } from 'react-bootstrap'
+import Overlay from 'react-bootstrap/Overlay'
+import Tooltip from 'react-bootstrap/Tooltip'
 import { faAddressCard, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -12,6 +14,8 @@ import axios from 'axios'
  */
 const UserTable = ({ users, searchInput, API_BASE_URL }) => {
   const navigate = useNavigate();
+  const [concessionTarget] = useState(new Map());
+  const [userTarget] = useState(new Map());
   const [hoveredConcession, setHoveredConcession] = useState(null);
   const [hoveredUser, setHoveredUser] = useState({})
   const [vcardLoadUser, setVCardLoadUser] = useState(null)
@@ -71,6 +75,7 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
     // Add all the fields you want to search by in this array
     const userAttributes = [
       user.NAME,
+      user.EMPRESA,
       user.DEPARTAMENTO,
       user.FUNCAO,
       user.EMAIL,
@@ -89,9 +94,13 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
   return (
     <Fragment>
       {Object.keys(users).map((CONCESSAO, key) => {
-        const filteredUSersInGroup = filteredUsers(CONCESSAO);
-        if (filteredUSersInGroup.length === 0) {
+        const filteredUsersInGroup = filteredUsers(CONCESSAO);
+        if (filteredUsersInGroup.length === 0) {
           return null
+        }
+
+        if (!concessionTarget.has(CONCESSAO)) {
+          concessionTarget.set(CONCESSAO, React.createRef());
         }
 
         return (
@@ -120,14 +129,22 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                 onClick={(event) => handleVCardClick(CONCESSAO, event)}
                 onMouseEnter={() => setHoveredConcession(CONCESSAO)}
                 onMouseLeave={() => setHoveredConcession(null)}
+                ref={concessionTarget.get(CONCESSAO)}
               >
                 <FontAwesomeIcon
                   icon={hoveredConcession === CONCESSAO ? faDownload : faAddressCard}
                   color='#ed6337'
-                  bounce={hoveredConcession === CONCESSAO ? true : false}
+                  bounce={hoveredConcession === CONCESSAO}
                 />
                 {vcardLoadConcession === CONCESSAO ? ' A transferir' : null}
               </Button>
+              <Overlay target={concessionTarget.get(CONCESSAO)?.current} show={hoveredConcession === CONCESSAO} placement='right'>
+                {(props) => (
+                  <Tooltip id='overlay-ZIP' {...props}>
+                    Clicar para transferir ZIP de VCards da Concessão {CONCESSAO}.
+                  </Tooltip>
+                )}
+              </Overlay>
             </Card.Header>
             <Card.Body>
               <Table hover responsive>
@@ -142,34 +159,48 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredUsers(CONCESSAO).map((user, key) => (
-                    <tr style={{ color: '#77321c', fontSize: 15}} key={key} className='clickable' onClick={() => navigate(`/contactos/profile/${user.USERNAME}`)}>
-                      <td className='align-middle'>{user.NAME}</td>
-                      <td className='align-middle'>{user.EMPRESA}</td>
-                      <td className='align-middle'>{user.DEPARTAMENTO}</td>
-                      <td className='align-middle'>{user.FUNCAO}</td>
-                      <td className='align-middle'>{user.EMAIL}</td>
-                      <td className='text-end'>
-                        {user.CONTACTO}
-                        <Button
-                          disabled={vcardLoadUser === user.USERNAME ? true : false}
-                          className='ms-2'
-                          size='sm'
-                          variant='outline-dark'
-                          onClick={(event) => handleVCardClick(user, event)}
-                          onMouseEnter={() => setHoveredUser(user)}
-                          onMouseLeave={() => setHoveredUser({})}
-                        >
-                          <FontAwesomeIcon
-                            bounce={hoveredUser === user ? true : false}
-                            icon={hoveredUser === user ? faDownload : faAddressCard}
-                            color='#ed6337'
-                          />
-                          {vcardLoadUser === user.USERNAME ? ' A transferir' : null}
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
+                  {filteredUsers(CONCESSAO).map((user, key) => {
+                    if (!userTarget.has(user.USERNAME)) {
+                      userTarget.set(user.USERNAME, React.createRef())
+                    }
+
+                    return (
+                      <tr style={{ color: '#77321c', fontSize: 15 }} key={key} className='clickable' onClick={() => navigate(`/contactos/profile/${user.USERNAME}`)}>
+                        <td className='align-middle'>{user.NAME}</td>
+                        <td className='align-middle'>{user.EMPRESA}</td>
+                        <td className='align-middle'>{user.DEPARTAMENTO}</td>
+                        <td className='align-middle'>{user.FUNCAO}</td>
+                        <td className='align-middle'>{user.EMAIL}</td>
+                        <td className='text-end'>
+                          {user.CONTACTO}
+                          <Button
+                            disabled={vcardLoadUser === user.USERNAME ? true : false}
+                            className='ms-2'
+                            size='sm'
+                            variant='outline-dark'
+                            onClick={(event) => handleVCardClick(user, event)}
+                            onMouseEnter={() => setHoveredUser(user)}
+                            onMouseLeave={() => setHoveredUser({})}
+                            ref={userTarget.get(user.USERNAME)}
+                          >
+                            <FontAwesomeIcon
+                              bounce={hoveredUser === user ? true : false}
+                              icon={hoveredUser === user ? faDownload : faAddressCard}
+                              color='#ed6337'
+                            />
+                            {vcardLoadUser === user.USERNAME ? ' A transferir' : null}
+                          </Button>
+                          <Overlay target={userTarget.get(user.USERNAME)?.current} show={hoveredUser === user} placement='left'>
+                            {(props) => (
+                              <Tooltip id='overlay-USER' {...props}>
+                                Clicar para transferir VCard do utilizador {user.USERNAME}.
+                              </Tooltip>
+                            )}
+                          </Overlay>
+                        </td>
+                      </tr>
+                    )
+                  })}
                 </tbody>
               </Table>
             </Card.Body>

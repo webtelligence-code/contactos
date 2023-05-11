@@ -79,12 +79,23 @@ switch ($method) {
         }
         break;
       case 'update_avatar':
+        //$response = ['success' => false, 'message' => 'Entered update_avatar case.'];
         if (isset($_FILES['image']) && isset($_POST['username'])) {
           $username = $_POST['username'];
           $image = $_FILES['image'];
 
+          //response = ['success' => true, 'message' => 'update_avatar case condition accepted.'];
+
           $response = updateAvatar($username, $image);
         }
+        break;
+      case 'update_password':
+          if (isset($_POST['password']) && isset($_POST['username'])) {
+            $password = $_POST['password'];
+            $username = $_POST['username'];
+
+            $response = updatePassword($password, $username);
+          }
         break;
       default:
         if ($post_action == '') {

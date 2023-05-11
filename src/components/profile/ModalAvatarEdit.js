@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 
-const ModalAvatarEdit = ({defaultImageSrc, setAvatar}) => {
+const ModalAvatarEdit = ({ baseUrl, setAvatar }) => {
+  const defaultImageSrc = `${baseUrl}/workers/user.webp`;
   const [previewImage, setPreviewImage] = useState(defaultImageSrc);
 
   useEffect(() => {

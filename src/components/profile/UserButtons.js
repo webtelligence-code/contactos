@@ -1,56 +1,125 @@
-import { faHandPointLeft, faInfo, faUserPen } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeftLong, faBookOpen, faHandPointLeft, faHome, faInfo, faKey, faUserPen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Fragment, useState } from 'react'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button, Col, Overlay, Row, Tooltip } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
-const UserButtons = ({ fireModal }) => {
+const UserButtons = ({ fireModal, sessionUsername, username, firePasswordModal, showUserManual }) => {
   const navigate = useNavigate();
 
   // States
   const [hoveredInfo, setHoveredInfo] = useState(false);
   const [hoveredEdit, setHoveredEdit] = useState(false);
+  const [hoveredBack, setHoveredBack] = useState(false);
+  const [hoveredHome, setHoveredHome] = useState(false);
+
+  // Tooltip States
+  const [tooltipMessage, setTooltipMessage] = useState('');
+  const [tooltipTarget, setTooltipTarget] = useState(null);
 
   return (
-    <Row className='text-center mb-3'>
-      <Col className='w-100'>
-        <Button
-          variant='primary'
-          size='sm'
-          className='w-100 h-100 d-flex align-items-center justify-content-center'
-          onClick={() => fireModal(false)}
-          onMouseEnter={() => setHoveredInfo(true)}
-          onMouseLeave={() => setHoveredInfo(false)}
-        >
-          <FontAwesomeIcon
-            icon={faInfo}
-            color='white'
-            className='me-sm-3'
-            fade={hoveredInfo}
-          />
-          + Info
-        </Button>
-      </Col>
-      <Col>
-        <Button
-          variant='success'
-          style={{backgroundColor: '#388e3c'}}
-          size='sm'
-          className='w-100 h-100 d-flex align-items-center justify-content-center'
-          onClick={() => fireModal(true)}
-          onMouseEnter={() => setHoveredEdit(true)}
-          onMouseLeave={() => setHoveredEdit(false)}
-        >
-          <FontAwesomeIcon
-            icon={faUserPen}
-            color='white'
-            className='me-sm-3'
-            fade={hoveredEdit}
-          />
-          Editar perfil
-        </Button>
-      </Col>
-    </Row>
+    <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: 'white' }}>
+      <Button
+        variant='danger'
+        style={{ backgroundColor: '#c62828', width: 35 }}
+        size='sm'
+        className='my-2'
+        onClick={() => window.history.back()}
+        onMouseEnter={(e) => { setHoveredBack(true); setTooltipMessage('Voltar atrás'); setTooltipTarget(e.currentTarget) }}
+        onMouseLeave={() => { setHoveredBack(false); setTooltipMessage(''); setTooltipTarget(null) }}
+      >
+        <FontAwesomeIcon
+          icon={faArrowLeftLong}
+          color='white'
+          fade={hoveredBack}
+        />
+      </Button>
+      <Button
+        variant='success'
+        style={{ backgroundColor: '#388e3c', width: 35 }}
+        size='sm'
+        className='ms-2'
+        onClick={() => navigate('/contactos')}
+        onMouseEnter={(e) => { setHoveredHome(true); setTooltipMessage('Página Inicial'); setTooltipTarget(e.currentTarget) }}
+        onMouseLeave={() => { setHoveredHome(false); setTooltipMessage(''); setTooltipTarget(null) }}
+      >
+        <FontAwesomeIcon
+          icon={faHome}
+          color='white'
+          fade={hoveredHome}
+        />
+      </Button>
+      <Button
+        style={{ backgroundColor: '#ed6337', borderColor: '#ed6337' }}
+        size='sm'
+        className='ms-5'
+        onClick={showUserManual}
+        onMouseEnter={(e) => { setHoveredHome(true); setTooltipMessage('Manual de utilizador'); setTooltipTarget(e.currentTarget) }}
+        onMouseLeave={() => { setHoveredHome(false); setTooltipMessage(''); setTooltipTarget(null) }}
+      >
+        <FontAwesomeIcon
+          icon={faBookOpen}
+          color='white'
+          fade={hoveredHome}
+        />
+      </Button>
+      {sessionUsername === username && (
+        <Fragment>
+          <Button
+            variant='primary'
+            size='sm'
+            className='ms-5'
+            style={{ width: 35 }}
+            onClick={() => fireModal(false)}
+            onMouseEnter={(e) => { setHoveredInfo(true); setTooltipMessage('+ Info'); setTooltipTarget(e.currentTarget) }}
+            onMouseLeave={() => { setHoveredInfo(false); setTooltipMessage(''); setTooltipTarget(null) }}
+          >
+            <FontAwesomeIcon
+              icon={faInfo}
+              color='white'
+              fade={hoveredInfo}
+            />
+          </Button>
+          <Button
+            variant='success'
+            style={{ backgroundColor: '#388e3c', width: 35 }}
+            size='sm'
+            className='ms-2'
+            onClick={() => fireModal(true)}
+            onMouseEnter={(e) => { setHoveredEdit(true); setTooltipMessage('Editar perfil'); setTooltipTarget(e.currentTarget) }}
+            onMouseLeave={() => { setHoveredEdit(false); setTooltipMessage(''); setTooltipTarget(null) }}
+          >
+            <FontAwesomeIcon
+              icon={faUserPen}
+              color='white'
+              fade={hoveredEdit}
+            />
+          </Button>
+          <Button
+            variant='success'
+            style={{ backgroundColor: '#388e3c', width: 35 }}
+            size='sm'
+            className='ms-2'
+            onClick={firePasswordModal}
+            onMouseEnter={(e) => { setHoveredEdit(true); setTooltipMessage('Alterar password'); setTooltipTarget(e.currentTarget) }}
+            onMouseLeave={() => { setHoveredEdit(false); setTooltipMessage(''); setTooltipTarget(null) }}
+          >
+            <FontAwesomeIcon
+              icon={faKey}
+              color='white'
+              fade={hoveredEdit}
+            />
+          </Button>
+        </Fragment>
+      )}
+      <Overlay target={tooltipTarget} show={tooltipMessage !== ""} placement='bottom'>
+        {(props) => (
+          <Tooltip id='overlay-example' {...props}>
+            {tooltipMessage}
+          </Tooltip>
+        )}
+      </Overlay>
+    </div>
   )
 }
 

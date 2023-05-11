@@ -291,8 +291,7 @@ function generateVCardConcession($concession)
 
 function updateAvatar($username, $image) {
 
-  $response = ['success' => true, 'message' => 'updateAvatar Function'];
-  $directoryPath = "workers/{$username}";
+  $directoryPath = "../workers/{$username}";
 
   if (!file_exists($directoryPath)) {
     mkdir($directoryPath, 0755, true);
@@ -300,19 +299,38 @@ function updateAvatar($username, $image) {
 
   $targetPath = "{$directoryPath}/{$username}.webp";
 
-  // Extract base64 data
-  $base64Data = substr($image, strpos($image, ',') + 1);
-
-  // Decode base64 data
-  $decodedData = base64_decode($base64Data);
-
-  // Save the decoded data as a file
-  if (file_put_contents($targetPath, $decodedData)) {
-    $response = ['success' => true, 'message' => 'Avatar atualizado com sucesso!'];
+  // Move the uploaded file to the target location
+  if (move_uploaded_file($image['tmp_name'], $targetPath)) {
+    $response = ['title' => 'Foto de perfil atualizada!', 'message' => 'A foto de perfil foi alterada com sucesso!', 'icon' => 'success'];
   } else {
-    $response = ['success' => false, 'message' => 'Erro ao guardar avatar'];
+    $response = ['title' => 'Erro ao atualizar', 'message' => 'Erro ao atualizar foto de perfil.', 'icon' => 'error'];
   }
 
   return $response;
 }
 
+function updatePassword($password, $username) {
+  global $conn;
+
+  $sql = 'UPDATE users SET PASSWORD = ? WHERE USERNAME = ?';
+
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param('ss', $password, $username);
+  $result = $stmt->execute();
+
+  if ($result) {
+    $response = [
+      'status' => 'success',
+      'message' => 'Password alterada com sucesso!',
+      'title' => 'Password alterada!'
+    ];
+  } else {
+    $response = [
+      'status' => 'error',
+      'message' => 'Ocorreu um erro ao ao tentar alterar password na base de dados. Tente novamente e, se o erro persistir, informe o Departamento Informático.',
+      'title' => 'Erro!'
+    ];
+  }
+
+  return $response;
+}
