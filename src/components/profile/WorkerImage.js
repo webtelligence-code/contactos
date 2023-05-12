@@ -90,7 +90,7 @@ const WorkerImage = ({ baseUrl, clickable, avatar, username, sessionUsername, al
         )}
       </Overlay>
       {teamOverlay && (
-        <Overlay target={teamTarget.current} show={true} placement="top">
+        <Overlay target={teamTarget.current} show={teamShow} placement="top">
           {(props) => (
             <Tooltip id="overlay-example" {...props}>
               <h5 style={{color: '#ed6337'}}>{teamMember.NAME}</h5>
