@@ -1,4 +1,4 @@
-import { faBoltLightning, faBuilding, faBuildingUser, faCamera, faCar, faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faBuildingUser, faCamera, faCar, faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect, useRef } from 'react';
 import { Overlay, Tooltip } from 'react-bootstrap';
@@ -93,7 +93,7 @@ const WorkerImage = ({ baseUrl, clickable, avatar, username, sessionUsername, al
         <Overlay target={teamTarget.current} show={teamShow} placement="top">
           {(props) => (
             <Tooltip id="overlay-example" {...props}>
-              <h6>{teamMember.NAME}</h6>
+              <h5 style={{color: '#ed6337'}}>{teamMember.NAME}</h5>
               <p>
                 <FontAwesomeIcon icon={faBuildingUser} className='me-2' color='#ed6337' />
                 {teamMember.DEPARTAMENTO}

@@ -1,6 +1,6 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { Fragment, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { FormControl, InputGroup, Overlay, Tooltip } from 'react-bootstrap'
 
 const SearchUser = ({ searchInput, setSearchInput }) => {
@@ -8,9 +8,8 @@ const SearchUser = ({ searchInput, setSearchInput }) => {
   const target = useRef(null);
 
   return (
-    <Fragment>
+    <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: 'white' }} className='py-3'>
       <InputGroup
-        className='mt-3'
         ref={target}
         onMouseEnter={() => setShow(true)}
         onMouseLeave={() => setShow(false)}
@@ -36,7 +35,7 @@ const SearchUser = ({ searchInput, setSearchInput }) => {
           </Tooltip>
         )}
       </Overlay>
-    </Fragment>
+    </div>
   )
 }
 

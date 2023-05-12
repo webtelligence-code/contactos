@@ -23,7 +23,7 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, sessionUsername }) =
           {loading ? (
             <LoadingBars classes={'ms-3'} />
           ) : (
-            <UserCardHeader user={user} baseUrl={baseUrl} API_BASE_URL={API_BASE_URL} sessionaUsername={sessionUsername} sessionUsername={sessionUsername} />
+            <UserCardHeader user={user} baseUrl={baseUrl} API_BASE_URL={API_BASE_URL} sessionUsername={sessionUsername}/>
           )}
 
         </Card.Header>

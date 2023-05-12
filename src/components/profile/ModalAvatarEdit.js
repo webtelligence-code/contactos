@@ -1,12 +1,19 @@
 import React, { Fragment, useEffect, useState } from 'react'
 
-const ModalAvatarEdit = ({ baseUrl, setAvatar }) => {
+const ModalAvatarEdit = ({ baseUrl, setAvatar, username }) => {
   const defaultImageSrc = `${baseUrl}/workers/user.webp`;
-  const [previewImage, setPreviewImage] = useState(defaultImageSrc);
+  const [imageSrc, setImageSrc] = useState(`${baseUrl}/workers/${username}/${username}.webp`);
 
   useEffect(() => {
-    setAvatar(defaultImageSrc);
-  }, [defaultImageSrc, setAvatar])
+    const img = new Image();
+    img.src = imageSrc;
+    img.onload = () => {
+      
+    };
+    img.onerror = () => {
+      setImageSrc(defaultImageSrc);
+    };
+  }, [username, defaultImageSrc, imageSrc]);
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -14,7 +21,7 @@ const ModalAvatarEdit = ({ baseUrl, setAvatar }) => {
 
       reader.onload = (event) => {
         setAvatar(event.target.result)
-        setPreviewImage(event.target.result);
+        setImageSrc(event.target.result);
       };
 
       reader.readAsDataURL(e.target.files[0]);
@@ -25,7 +32,7 @@ const ModalAvatarEdit = ({ baseUrl, setAvatar }) => {
     <Fragment>
       <div>
         <img
-          src={previewImage}
+          src={imageSrc}
           className='mb-3'
           alt='Avatar Preview'
           style={{

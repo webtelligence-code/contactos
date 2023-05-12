@@ -1,7 +1,7 @@
-import { faArrowLeftLong, faBookOpen, faHandPointLeft, faHome, faInfo, faKey, faUserPen } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeftLong, faBookOpen, faHome, faInfo, faKey, faUserPen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Fragment, useState } from 'react'
-import { Button, Col, Overlay, Row, Tooltip } from 'react-bootstrap'
+import { Button, Overlay, Tooltip } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
 const UserButtons = ({ fireModal, sessionUsername, username, firePasswordModal, showUserManual }) => {

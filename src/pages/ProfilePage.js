@@ -1,10 +1,10 @@
 import axios from 'axios'
-import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
-import { useParams, useLocation, useNavigate } from 'react-router-dom'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import User from '../components/profile/User';
-import { Button, Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCake, faEnvelope, faPhone, faShirt, faShoePrints, faUserTie, faVest } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faShirt, faShoePrints, faUserTie, faVest } from '@fortawesome/free-solid-svg-icons';
 import UserButtons from '../components/profile/UserButtons';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
@@ -14,8 +14,6 @@ import ModalPasswordUpdate from '../components/profile/ModalPasswordUpdate';
 const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
   // Props from browser router
   const { username } = useParams();
-  const navigate = useNavigate();
-  const isMountedRef = useRef(true);
 
   // Initialize 
   const MySwal = withReactContent(Swal);
@@ -25,7 +23,6 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
   const [team, setTeam] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sessionUsername, setSessionUsername] = useState('');
-  const [usernameUser, setUsernameUser] = useState();
   const [personalEmail, setPersonalEmail] = useState();
   const [pants, setPants] = useState();
   const [shirt, setShirt] = useState();
@@ -118,7 +115,6 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
   // This useEffect will set the states for the user
   useEffect(() => {
     if (user) {
-      setUsernameUser(user.USERNAME || '');
       setPersonalEmail(user.EMAIL_PESSOAL || '')
       setPassword(user.PASSWORD || '')
       setPants(user.nCalcas || '');
@@ -391,7 +387,7 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
         }
       })
     }, 0)
-  }, [MySwal, confirmPassword, newPassword, oldPassword])
+  }, [MySwal, confirmPassword, newPassword, oldPassword]);
 
   const updatePassword =  useCallback(() => {
     const formData = new FormData();
@@ -409,7 +405,7 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
         confirmButtonText: 'Ok'
       }).then(() => window.location.reload()) 
     })
-  }, [API_BASE_URL, MySwal, newPassword, user.USERNAME])
+  }, [API_BASE_URL, MySwal, newPassword, user.USERNAME]);
 
   const evaluatePasswordFields = useCallback(() => {
     setConfirmPasswordFields(false)
@@ -453,7 +449,7 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
         if (result.isDismissed) clearPasswordStates();
       })
     }, 0)
-  }, [MySwal, confirmPassword, firePasswordModal, newPassword, oldPassword, password, updatePassword])
+  }, [MySwal, confirmPassword, firePasswordModal, newPassword, oldPassword, password, updatePassword]);
 
   const clearPasswordStates = () => {
     setOldPassword('');
@@ -466,7 +462,7 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
   }, [confirmPasswordFields, evaluatePasswordFields])
 
   const showUserManual = () => {
-    console.log('Show user manual');
+    window.open(process.env.PUBLIC_URL + '/assets/manual/Manual-Portal-Contactos.pdf');
   }
 
   return (

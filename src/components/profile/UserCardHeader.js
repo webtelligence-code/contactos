@@ -15,7 +15,7 @@ const UserCardHeader = ({ user, sessionUsername, API_BASE_URL, baseUrl }) => {
   const handleAvatarUpdate = () => {
     MySwal.fire({
       title: <div style={{ color: '#ed6337' }}>Alterar foto de perfil</div>,
-      html: <ModalAvatarEdit baseUrl={baseUrl} setAvatar={setAvatar} />,
+      html: <ModalAvatarEdit baseUrl={baseUrl} setAvatar={setAvatar} username={user.USERNAME} />,
       showCancelButton: true,
       showConfirmButton: true,
       confirmButtonColor: '#388e3c',

@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { Fragment, useRef, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Button, Card, Table } from 'react-bootstrap'
 import Overlay from 'react-bootstrap/Overlay'
 import Tooltip from 'react-bootstrap/Tooltip'
@@ -105,7 +105,7 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
 
         return (
           <Card
-            className='my-3'
+            className='mb-3'
             key={key}
           >
             <Card.Header
