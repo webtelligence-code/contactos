@@ -43,6 +43,8 @@ const UserCardHeader = ({ user, sessionUsername, API_BASE_URL, baseUrl }) => {
     const blob = dataURLtoBlob(avatar);
     const file = new File([blob], `${user.USERNAME}.webp`, { type: 'image/webp' });
 
+    console.log(file)
+
     formData.append('action', 'update_avatar');
     formData.append('image', file);
     formData.append('username', user.USERNAME);

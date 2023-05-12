@@ -84,8 +84,6 @@ switch ($method) {
           $username = $_POST['username'];
           $image = $_FILES['image'];
 
-          //response = ['success' => true, 'message' => 'update_avatar case condition accepted.'];
-
           $response = updateAvatar($username, $image);
         }
         break;
@@ -107,16 +105,5 @@ switch ($method) {
     }
 
     echo json_encode($response); // return $response
-    break;
-
-    // DELETE REQUESTS
-  case 'DELETE':
-    parse_str(file_get_contents("php://input"), $_DELETE);
-    $delete_action = isset($_DELETE['action']) ? $_DELETE['action'] : '';
-
-    switch ($delete_action) {
-      case 'delete_apartment':
-        break;
-    }
     break;
 }
