@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import UsersPage from './pages/UsersPage';
 import ProfilePage from './pages/ProfilePage';
 
-const isProduction = process.env.NODE_ENV === 'production';
 const BASE_URL = 'https://webtelligence.pt/contactos';
 const API_BASE_URL = 'https://webtelligence.pt/contactos/api/index.php';
 
