@@ -26,4 +26,7 @@ Ver a secção [deployment](https://facebook.github.io/create-react-app/docs/dep
 
 # Alterar os endereços de API 
 
+Para alterar os endereços de **API** quando for realizado o **deployment** deverá alterar os endereços 
+**BASE_URL** para o endereço do servidor onde vai ser feito o deployment e **API_BASE_URL** para o endereço do servidor onde vai estar os ficheiros da **API** (Por default está dentro da pasta **api** na **raíz do projeto**).
+
 ![App.js](https://webtelligence.pt/contactos/assets/github/App.jpg)
