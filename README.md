@@ -47,3 +47,7 @@ Para alterar o caminho das fotos de perfil dos trabalhadores, na pasta do projet
 Por default o endereço aponta para (dominio.pt/contactos/workers/{username}/{username}.webp).
 
 ![WorkerImage.js](https://webtelligence.pt/contactos/assets/github/WorkerImage.jpg)
+
+Também deverá alterar o endereço no componente **ModalAvatarEdit.js** para o endereço respetivo do servidor
+
+![ModalAvatarEdit.js](https://webtelligence.pt/contactos/assets/github/ModalAvatarEdit.jpg)
