@@ -26,8 +26,8 @@ Ver a secção [deployment](https://facebook.github.io/create-react-app/docs/dep
 
 # Alterar os endereços de ficheiros e de API 
 
-Para alterar os endereços de **API** quando for realizado o **deployment** deverá alterar os endereços 
-**BASE_URL** para o endereço do servidor onde vai ser feito o deployment e **API_BASE_URL** para o endereço do servidor onde vai estar os ficheiros da **API** (Por default está dentro da pasta **api** na **raíz do projeto**).
+Para alterar os endereços de **API** quando for realizado o **deployment**, abra a raíz do projeto procure o ficheiro **App.js** presente na pasta **/src**.\
+Depois deverá alterar o endereço **BASE_URL** para o endereço do servidor onde vai ser feito o deployment e **API_BASE_URL** para o endereço do servidor onde vai estar os ficheiros da **API** (Deverá apontar para o caminho onde os ficheiros vão estar presentes no servidor).
 
 ![App.js](https://webtelligence.pt/contactos/assets/github/App.jpg)
 
@@ -40,3 +40,10 @@ Ao alterar algumas destas propriedades deverá correr o comando **npm run build*
 ## Ficheiros PHP (Server Side)
 
 Se alterar a raíz do código nos ficheiros **PHP** não necessita de correr o comando **npm run build** para as mudaças tomarem efeito. Os ficheiros Back-end são independentes dos ficheiros Front-end (React).
+
+# Alterar o caminho das fotos de perfil (Avatar)
+
+Para alterar o caminho das fotos de perfil dos trabalhadores, na pasta do projeto dentro de **/src/components/profile** abra o ficheiro **WorkerImage.js** e altere o caminho onde as fotos de perfil estão presentes no servidor.\
+Por default o endereço aponta para (dominio.pt/contactos/workers/{username}/{username}.webp).
+
+![WorkerImage.js](https://webtelligence.pt/contactos/assets/github/WorkerImage.jpg)
