@@ -115,11 +115,9 @@ const UserButtons = ({ fireModal, sessionUsername, username, firePasswordModal, 
         </Fragment>
       )}
       <Overlay target={tooltipTarget} show={tooltipMessage !== ""} placement='bottom'>
-        {(props) => (
-          <Tooltip id='overlay-example' {...props}>
-            {tooltipMessage}
-          </Tooltip>
-        )}
+        <Tooltip id='overlay-example' >
+          {tooltipMessage}
+        </Tooltip>
       </Overlay>
     </div>
   )

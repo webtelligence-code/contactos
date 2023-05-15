@@ -139,11 +139,9 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                 {vcardLoadConcession === CONCESSAO ? ' A transferir' : null}
               </Button>
               <Overlay target={concessionTarget.get(CONCESSAO)?.current} show={hoveredConcession === CONCESSAO} placement='right'>
-                {(props) => (
-                  <Tooltip id='overlay-ZIP' {...props}>
-                    Clicar para transferir ZIP de VCards da Concessão {CONCESSAO}.
-                  </Tooltip>
-                )}
+                <Tooltip id='overlay-ZIP'>
+                  Clicar para transferir ZIP de VCards da Concessão {CONCESSAO}.
+                </Tooltip>
               </Overlay>
             </Card.Header>
             <Card.Body>
@@ -191,11 +189,9 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                             {vcardLoadUser === user.USERNAME ? ' A transferir' : null}
                           </Button>
                           <Overlay target={userTarget.get(user.USERNAME)?.current} show={hoveredUser === user} placement='left'>
-                            {(props) => (
-                              <Tooltip id='overlay-USER' {...props}>
+                              <Tooltip id='overlay-USER'>
                                 Clicar para transferir VCard do utilizador {user.USERNAME}.
                               </Tooltip>
-                            )}
                           </Overlay>
                         </td>
                       </tr>

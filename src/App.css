@@ -105,7 +105,3 @@
 .brandsList li:last-child::after {
   content: "";
 }
-
-.tooltip {
-  background-color: aliceblue;
-}

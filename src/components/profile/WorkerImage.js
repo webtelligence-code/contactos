@@ -83,43 +83,39 @@ const WorkerImage = ({ baseUrl, clickable, avatar, username, sessionUsername, al
         </div>
       )}
       <Overlay target={avatarTarget.current} show={avatarShow} placement="bottom">
-        {(props) => (
-          <Tooltip id="overlay-example" {...props}>
-            Alterar foto de perfil
-          </Tooltip>
-        )}
+        <Tooltip id="overlay-example">
+          Alterar foto de perfil
+        </Tooltip>
       </Overlay>
       {teamOverlay && (
         <Overlay target={teamTarget.current} show={teamShow} placement="top">
-          {(props) => (
-            <Tooltip id="overlay-example" {...props}>
-              <h5 style={{color: '#ed6337'}}>{teamMember.NAME}</h5>
-              <p>
-                <FontAwesomeIcon icon={faBuildingUser} className='me-2' color='#ed6337' />
-                {teamMember.DEPARTAMENTO}
-              </p>
-              <p>
-                <FontAwesomeIcon icon={faBuildingUser} className='me-2' color='#ed6337' />
-                {teamMember.FUNCAO}
-              </p>
-              <p>
-                <FontAwesomeIcon icon={faCar} className='me-2' color='#ed6337' />
-                {teamMember.CONCESSAO}
-              </p>
-              <p>
-                <FontAwesomeIcon icon={faBuilding} className='me-2' color='#ed6337' />
-                {teamMember.EMPRESA}
-              </p>
-              <p>
-                <FontAwesomeIcon icon={faEnvelope} className='me-2' color='#ed6337' />
-                {teamMember.EMAIL}
-              </p>
-              <p>
-                <FontAwesomeIcon icon={faPhone} className='me-2' color='#ed6337' />
-                {teamMember.CONTACTO}
-              </p>
-            </Tooltip>
-          )}
+          <Tooltip id="overlay-example" >
+            <h5 style={{ color: '#ed6337' }}>{teamMember.NAME}</h5>
+            <p>
+              <FontAwesomeIcon icon={faBuildingUser} className='me-2' color='#ed6337' />
+              {teamMember.DEPARTAMENTO}
+            </p>
+            <p>
+              <FontAwesomeIcon icon={faBuildingUser} className='me-2' color='#ed6337' />
+              {teamMember.FUNCAO}
+            </p>
+            <p>
+              <FontAwesomeIcon icon={faCar} className='me-2' color='#ed6337' />
+              {teamMember.CONCESSAO}
+            </p>
+            <p>
+              <FontAwesomeIcon icon={faBuilding} className='me-2' color='#ed6337' />
+              {teamMember.EMPRESA}
+            </p>
+            <p>
+              <FontAwesomeIcon icon={faEnvelope} className='me-2' color='#ed6337' />
+              {teamMember.EMAIL}
+            </p>
+            <p>
+              <FontAwesomeIcon icon={faPhone} className='me-2' color='#ed6337' />
+              {teamMember.CONTACTO}
+            </p>
+          </Tooltip>
         </Overlay>
       )}
     </div>
