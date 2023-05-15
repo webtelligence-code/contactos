@@ -43,18 +43,14 @@ const UserCardHeader = ({ user, sessionUsername, API_BASE_URL, baseUrl }) => {
     const blob = dataURLtoBlob(avatar);
     const file = new File([blob], `${user.USERNAME}.webp`, { type: 'image/webp' });
 
-    console.log(file)
-
     formData.append('action', 'update_avatar');
     formData.append('image', file);
     formData.append('username', user.USERNAME);
 
-    console.log('Data to update_avatar case:', file)
     axios.post(API_BASE_URL, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
       .then((response) => {
-        console.log(response.data)
         MySwal.fire({
           title: response.data.title,
           text: response.data.message,

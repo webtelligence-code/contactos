@@ -22,7 +22,6 @@ const UsersPage = ({ title, API_BASE_URL }) => {
         }
       })
         .then((response) => {
-          console.log(response)
           const groupedUsers = response.data.reduce((acc, user) => {
             const concession = user.CONCESSAO;
             if (!acc[concession]) {
@@ -31,7 +30,6 @@ const UsersPage = ({ title, API_BASE_URL }) => {
             acc[concession].push(user);
             return acc;
           }, {});
-          console.log('Grouped users:', groupedUsers)
           setUsers(groupedUsers);
           setLoading(false)
         })

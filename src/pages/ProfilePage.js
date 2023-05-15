@@ -47,7 +47,6 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
         }
       })
         .then((response) => {
-          console.log('Session username:', response.data)
           setSessionUsername(response.data);
         })
         .catch((error) => {
@@ -73,7 +72,6 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
     })
       .then((response) => {
         document.title = `Perfil de ${response.data.NAME}`;
-        console.log(response.data)
         setUser(response.data);
       })
       .catch((error) => {
@@ -98,7 +96,6 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
       }
     })
       .then((response) => {
-        console.log(response.data)
         setTeam(response.data);
         setLoading(false);
       })
@@ -178,10 +175,7 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
     sweatshirt && formData.append('sweatshirt', sweatshirt);
     tshirt && formData.append('tshirt', tshirt);
 
-    console.log('Form Data =>', formData)
-
     axios.post(API_BASE_URL, formData).then((response) => {
-      console.log(`Response from post request (${action})`, response)
       MySwal.fire({
         title: response.data.title,
         text: response.data.message,
