@@ -6,6 +6,10 @@ Este projeto foi criado com [Create React App](https://github.com/facebook/creat
 
 Na raíz do projeto ('/contactos') pode correr os seguintes comandos:
 
+### `npm install`
+
+Deverá correr este comando a primeira vez que iniciar a plataforma para esta instalar as dependências necessárias para a aplicação correr corretamente caso contrário esta não vai funcionar.
+
 ### `npm start`
 
 Corre a plataforma em modo desenvolvimento.\
