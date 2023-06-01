@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import UsersPage from './pages/UsersPage';
 import ProfilePage from './pages/ProfilePage';
 
-const BASE_URL = 'https://webtelligence.pt/contactos';
-const API_BASE_URL = 'https://webtelligence.pt/contactos/api/index.php';
+const BASE_URL = 'https://amatoscar.pt/GAP/NovasPlataformas/contactos';
+const API_BASE_URL = 'https://amatoscar.pt/GAP/NovasPlataformas/_API/contactos/index.php';
 
 function App() {
 

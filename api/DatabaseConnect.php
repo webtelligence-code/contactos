@@ -3,9 +3,9 @@
 class DatabaseConnect
 {
     private $server = 'localhost';
-    private $dbname = 'webtelli_amatoscar';
-    private $user = 'webtelli_root';
-    private $pass = 'matoscarroot';
+    private $dbname = 'Stardust';
+    private $user = 'Galen';
+    private $pass = 'kMfp0~456';
 
     public function connect()
     {

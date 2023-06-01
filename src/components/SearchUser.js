@@ -28,12 +28,10 @@ const SearchUser = ({ searchInput, setSearchInput }) => {
         />
       </InputGroup>
       <Overlay target={target.current} show={show} placement="bottom">
-        {(props) => (
-          <Tooltip id="overlay-example" {...props}>
-            Insira o termo de pesquisa de utilizador.
-            Ex: Nome, Empresa, Departamento, Função, Email, Contacto.
-          </Tooltip>
-        )}
+        <Tooltip id="overlay-example">
+          Insira o termo de pesquisa de utilizador.
+          Ex: Nome, Empresa, Departamento, Função, Email, Contacto.
+        </Tooltip>
       </Overlay>
     </div>
   )
