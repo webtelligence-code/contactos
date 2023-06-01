@@ -22,6 +22,7 @@ const UsersPage = ({ title, API_BASE_URL }) => {
         }
       })
         .then((response) => {
+          console.log(response.data)
           const groupedUsers = response.data.reduce((acc, user) => {
             const concession = user.CONCESSAO;
             if (!acc[concession]) {

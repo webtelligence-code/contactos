@@ -12,8 +12,8 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path='/contactos' index element={<UsersPage API_BASE_URL={API_BASE_URL} baseUrl={BASE_URL} title='List de contactos' />} />
-          <Route path='/contactos/profile/:username' element={<ProfilePage API_BASE_URL={API_BASE_URL} baseUrl={BASE_URL} title='Perfil' />} />
+          <Route path='/GAP/NovasPlataformas/contactos' index element={<UsersPage API_BASE_URL={API_BASE_URL} baseUrl={BASE_URL} title='List de contactos' />} />
+          <Route path='/GAP/NovasPlataformas/contactos/profile/:username' element={<ProfilePage API_BASE_URL={API_BASE_URL} baseUrl={BASE_URL} title='Perfil' />} />
         </Routes>
       </BrowserRouter>
     </div>

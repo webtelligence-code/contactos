@@ -4,11 +4,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Overlay, Tooltip } from 'react-bootstrap';
 
 const WorkerImage = ({ baseUrl, clickable, avatar, username, sessionUsername, alt, style, onClick, teamOverlay, teamMember }) => {
-  const defaultImageSrc = `${baseUrl}/workers/user.webp`;
+  const BASE_URL = 'https://amatoscar.pt/portal/workers'
+  const defaultImageSrc = `${BASE_URL}/user.webp`;
   const avatarTarget = useRef(null);
   const teamTarget = useRef(null);
 
-  const [imageSrc, setImageSrc] = useState(`${baseUrl}/workers/${username}/${username}.webp`);
+  const [imageSrc, setImageSrc] = useState(`${BASE_URL}/${username}/${username}.png`);
   const [isLoading, setIsLoading] = useState(true);
   const [showOverlay, setShowOverlay] = useState(false);
   const [avatarShow, setAvatarShow] = useState(false);

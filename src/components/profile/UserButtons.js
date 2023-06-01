@@ -41,7 +41,7 @@ const UserButtons = ({ fireModal, sessionUsername, username, firePasswordModal, 
         style={{ backgroundColor: '#388e3c', width: 35 }}
         size='sm'
         className='ms-2'
-        onClick={() => navigate('/contactos')}
+        onClick={() => navigate('GAP/NovasPlataformas/contactos')}
         onMouseEnter={(e) => { setHoveredHome(true); setTooltipMessage('Página Inicial'); setTooltipTarget(e.currentTarget) }}
         onMouseLeave={() => { setHoveredHome(false); setTooltipMessage(''); setTooltipTarget(null) }}
       >
