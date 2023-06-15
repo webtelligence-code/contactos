@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect, useState } from 'react'
 
 const ModalAvatarEdit = ({ baseUrl, setAvatar, username }) => {
-  const defaultImageSrc = `${baseUrl}/workers/user.webp`;
-  const [imageSrc, setImageSrc] = useState(`${baseUrl}/workers/${username}/${username}.webp`);
+  const BASE_URL = 'https://amatoscar.pt/GAP/NovasPlataformas/workers'
+  const defaultImageSrc = `${BASE_URL}/user.webp`;
+  const [imageSrc, setImageSrc] = useState(`${BASE_URL}/${username}/${username}.webp`);
 
   useEffect(() => {
     const img = new Image();

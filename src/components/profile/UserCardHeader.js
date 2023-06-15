@@ -89,7 +89,7 @@ const UserCardHeader = ({ user, sessionUsername, API_BASE_URL, baseUrl }) => {
             objectFit: 'cover',
             border: '#77321c 2px solid'
           }}
-          onClick={() => handleAvatarUpdate(user.USERNAME)}
+          onClick={() => user.USERNAME === sessionUsername && handleAvatarUpdate(user.USERNAME)}
           avatar={true}
           sessionUsername={sessionUsername}
           clickable={sessionUsername === user.USERNAME}

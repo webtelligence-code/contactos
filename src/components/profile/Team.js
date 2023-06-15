@@ -11,7 +11,7 @@ const Team = ({ baseUrl, team, username }) => {
 
   const handleTeamMemberOnClick = (username) => {
     window.scrollTo(0, 0);
-    navigate(`/contactos/profile/${username}`);
+    navigate(`/GAP/NovasPlataformas/contactos/profile/${username}`);
   }
 
   return (
