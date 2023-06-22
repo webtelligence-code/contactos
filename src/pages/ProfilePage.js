@@ -71,7 +71,7 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
       }
     })
       .then((response) => {
-        document.title = `Perfil de ${response.data.NAME}`;
+        document.title = `Perfil de ${response.data.nameDisplay}`;
         setUser(response.data);
       })
       .catch((error) => {
@@ -91,8 +91,8 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
       params: {
         action: 'get_team',
         username,
-        chefia: user.CHEFIA,
-        chefe: user.CHEFE,
+        chefia: user.chefia,
+        chefe: user.chefe,
       }
     })
       .then((response) => {
@@ -112,8 +112,8 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
   // This useEffect will set the states for the user
   useEffect(() => {
     if (user) {
-      setPersonalEmail(user.EMAIL_PESSOAL || '')
-      setPassword(user.PASSWORD || '')
+      setPersonalEmail(user.emailPessoal || '')
+      setPassword(user.passwordPhp || '')
       setPants(user.nCalcas || '');
       setShirt(user.nCamisa || '');
       setJacket(user.nCasaco || '');
@@ -387,7 +387,7 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
     const formData = new FormData();
     formData.append('action', 'update_password');
     formData.append('password', newPassword);
-    formData.append('username', user.USERNAME);
+    formData.append('username', user.username);
 
     axios.post(API_BASE_URL, formData).then((response) => {
       MySwal.fire({
@@ -399,7 +399,7 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
         confirmButtonText: 'Ok'
       }).then(() => window.location.reload()) 
     })
-  }, [API_BASE_URL, MySwal, newPassword, user.USERNAME]);
+  }, [API_BASE_URL, MySwal, newPassword, user.username]);
 
   const evaluatePasswordFields = useCallback(() => {
     setConfirmPasswordFields(false)
@@ -423,7 +423,7 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
     } else if (oldPassword.length > 0 && confirmPassword.length > 0 && password !== newPassword && newPassword === confirmPassword) {
       return updatePassword();
     } else {
-      textBody = 'Ocorreu um erro inesperado. Tente novamente e se o error persistir, contacte o centro informático.';
+      textBody = 'Ocorreu um erro inesperado. Tente novamente e se o error persistir, contacte o departamento informático.';
       textTitle = <div style={{ color: '#c62828' }}>Erro inesperado.</div>;
     }
 

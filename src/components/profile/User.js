@@ -34,8 +34,8 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, sessionUsername }) =
           ) : (
             <Fragment>
               <UserDetails user={user} />
-              <Brands brands={user.MARCAS} />
-              <Team baseUrl={baseUrl} team={team} username={user.USERNAME} />
+              <Brands brands={user.marcas} />
+              <Team baseUrl={baseUrl} team={team} username={user.username} />
             </Fragment>
           )}
         </Card.Body >

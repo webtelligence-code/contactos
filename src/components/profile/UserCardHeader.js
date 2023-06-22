@@ -15,7 +15,7 @@ const UserCardHeader = ({ user, sessionUsername, API_BASE_URL, baseUrl }) => {
   const handleAvatarUpdate = () => {
     MySwal.fire({
       title: <div style={{ color: '#ed6337' }}>Alterar foto de perfil</div>,
-      html: <ModalAvatarEdit baseUrl={baseUrl} setAvatar={setAvatar} username={user.USERNAME} />,
+      html: <ModalAvatarEdit baseUrl={baseUrl} setAvatar={setAvatar} username={user.username} />,
       showCancelButton: true,
       showConfirmButton: true,
       confirmButtonColor: '#388e3c',
@@ -41,11 +41,11 @@ const UserCardHeader = ({ user, sessionUsername, API_BASE_URL, baseUrl }) => {
   const updateAvatar = useCallback(async () => {
     const formData = new FormData();
     const blob = dataURLtoBlob(avatar);
-    const file = new File([blob], `${user.USERNAME}.webp`, { type: 'image/webp' });
+    const file = new File([blob], `${user.username}.webp`, { type: 'image/webp' });
 
     formData.append('action', 'update_avatar');
     formData.append('image', file);
-    formData.append('username', user.USERNAME);
+    formData.append('username', user.username);
 
     axios.post(API_BASE_URL, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -65,7 +65,7 @@ const UserCardHeader = ({ user, sessionUsername, API_BASE_URL, baseUrl }) => {
           }
         })
       });
-  }, [API_BASE_URL, MySwal, avatar, user.USERNAME])
+  }, [API_BASE_URL, MySwal, avatar, user.username])
 
   useEffect(() => {
     if (avatarUpdate) updateAvatar()
@@ -79,9 +79,9 @@ const UserCardHeader = ({ user, sessionUsername, API_BASE_URL, baseUrl }) => {
     }}>
       <div style={{ marginRight: 10 }}>
         <WorkerImage
-          key={`${user.USERNAME}-${avatarUpdate}`}
-          username={user.USERNAME}
-          alt={user.USERNAME}
+          key={`${user.username}-${avatarUpdate}`}
+          username={user.username}
+          alt={user.username}
           style={{
             width: 150,
             height: 150,
@@ -89,25 +89,25 @@ const UserCardHeader = ({ user, sessionUsername, API_BASE_URL, baseUrl }) => {
             objectFit: 'cover',
             border: '#77321c 2px solid'
           }}
-          onClick={() => user.USERNAME === sessionUsername && handleAvatarUpdate(user.USERNAME)}
+          onClick={() => user.username === sessionUsername && handleAvatarUpdate(user.username)}
           avatar={true}
           sessionUsername={sessionUsername}
-          clickable={sessionUsername === user.USERNAME}
+          clickable={sessionUsername === user.username}
           baseUrl={baseUrl}
         />
       </div>
       <div className='text-start' style={{ color: '#77321c' }}>
         <h3>
           <FontAwesomeIcon icon={faUser} className='me-2' color='#ed6337' />
-          {user.NAME}
+          {user.nameDisplay}
         </h3>
         <h5 style={{ opacity: '60%' }}>
           <FontAwesomeIcon icon={faBuildingUser} className='me-2' color='#ed6337' />
-          {user.DEPARTAMENTO}
+          {user.departamento}
         </h5>
         <h6 style={{ opacity: '60%' }}>
           <FontAwesomeIcon icon={faBolt} className='me-2' color='#ed6337' />
-          {user.FUNCAO}
+          {user.funcao}
         </h6>
       </div>
     </div>

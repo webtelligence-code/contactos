@@ -1,6 +1,6 @@
 <?php
 
-include 'DatabaseConnect.php';
+include '../DatabaseConnect.php';
 
 include 'session.php';
 
@@ -30,7 +30,7 @@ function getDepartment()
 function getUsers()
 {
   global $conn;
-  $sql = 'SELECT * FROM users WHERE ACT = 1 AND COLABORADOR = 1 ORDER BY CONCESSAO ASC';
+  $sql = 'SELECT * FROM tbusers WHERE ativo = 1 AND colaborador = 1 ORDER BY concessao ASC';
   $result = $conn->query($sql);
 
   $users = array();
@@ -47,7 +47,7 @@ function getUsers()
 function getUser($username)
 {
   global $conn;
-  $sql = 'SELECT * FROM users WHERE USERNAME = ?';
+  $sql = 'SELECT * FROM tbusers WHERE username = ?';
   $stmt = $conn->prepare($sql);
   $stmt->bind_param('s', $username);
   $stmt->execute();
@@ -59,7 +59,7 @@ function getUser($username)
 function getTeam($chefe, $username, $chefia)
 {
   global $conn;
-  $sql = 'SELECT * FROM users WHERE COLABORADOR = 1 AND ACT = 1 AND (CHEFIA = ? OR USERNAME = ?)';
+  $sql = 'SELECT * FROM tbusers WHERE colaborador = 1 AND ativo = 1 AND (chefia = ? OR username = ?)';
 
   $stmt = $conn->prepare($sql);
 
@@ -80,9 +80,9 @@ function getTeam($chefe, $username, $chefia)
   }
 
   usort($team, function ($a, $b) {
-    if ($a['CHEFE'] == 1 && $b['CHEFE'] != 1) {
+    if ($a['chefe'] == 1 && $b['chefe'] != 1) {
       return -1;
-    } elseif ($a['CHEFE'] != 1 && $b['CHEFE'] == 1) {
+    } elseif ($a['chefe'] != 1 && $b['chefe'] == 1) {
       return 1;
     } else {
       return 0;
@@ -94,7 +94,7 @@ function getTeam($chefe, $username, $chefia)
 function getUsersByConcession($concession)
 {
   global $conn;
-  $sql = 'SELECT * FROM users WHERE ACT = 1 AND COLABORADOR = 1 AND CONCESSAO = ? ORDER BY NAME ASC';
+  $sql = 'SELECT * FROM tbusers WHERE ativo = 1 AND colaborador = 1 AND concessao = ? ORDER BY nameDisplay ASC';
   $stmt = $conn->prepare($sql);
   $stmt->bind_param('s', $concession);
   $stmt->execute();
@@ -118,7 +118,7 @@ function generateLogMessage($username, $personalEmail, $pants, $shirt, $jacket, 
 {
   global $conn;
   // Fetch existing user data
-  $sql = 'SELECT * FROM users WHERE USERNAME = ?';
+  $sql = 'SELECT * FROM tbusers WHERE username = ?';
   $stmt = $conn->prepare($sql);
   $stmt->bind_param('s', $username);
   $stmt->execute();
@@ -132,8 +132,8 @@ function generateLogMessage($username, $personalEmail, $pants, $shirt, $jacket, 
   $dateTime = new DateTime('now', new DateTimeZone('Europe/Lisbon'));
   $formattedDateTime = $dateTime->format('Y-m-d H:i:s');
 
-  if ($personalEmail !== '' && $personalEmail !== $existingUser['EMAIL_PESSOAL']) {
-    $changeFields[] = 'EMAIL_PESSOAL ("' . $personalEmail . '")';
+  if ($personalEmail !== '' && $personalEmail !== $existingUser['emailPessoal']) {
+    $changeFields[] = 'emailPessoal ("' . $personalEmail . '")';
   }
   if ($pants !== 0 && $pants !== $existingUser['nCalcas']) {
     $changeFields[] = 'nCalcas ("' . $pants . '")';
@@ -175,9 +175,9 @@ function updateUser($username, $personalEmail, $pants, $shirt, $jacket, $polo, $
   $logMessage = generateLogMessage($username, $personalEmail, $pants, $shirt, $jacket, $polo, $pullover, $shoe, $sweatshirt, $tshirt);
 
   // Update the user with the new values and log message
-  $sql = "UPDATE users
+  $sql = "UPDATE tbusers
           SET
-          EMAIL_PESSOAL = COALESCE(NULLIF(?, ''), EMAIL_PESSOAL),
+          emailPessoal = COALESCE(NULLIF(?, ''), emailPessoal),
           nCalcas = COALESCE(NULLIF(?, 0), nCalcas),
           nCamisa = COALESCE(NULLIF(?, ''), nCamisa),
           nCasaco = COALESCE(NULLIF(?, ''), nCasaco),
@@ -186,8 +186,8 @@ function updateUser($username, $personalEmail, $pants, $shirt, $jacket, $polo, $
           nSapato = COALESCE(NULLIF(?, 0), nSapato),
           nSweatshirt = COALESCE(NULLIF(?, ''), nSweatshirt),
           nTshirt = COALESCE(NULLIF(?, ''), nTshirt),
-          LOG = ?
-          WHERE USERNAME = ?
+          log = ?
+          WHERE username = ?
         ";
 
   $stmt = $conn->prepare($sql);
@@ -238,21 +238,21 @@ function generateVCardUser($user)
   $vcard->setCharset('UTF-8');
 
   // Separate first and last names
-  $nameParts = explode(' ', $user['NAME']);
+  $nameParts = explode(' ', $user['nameDisplay']);
   $firstName = removeAccents($nameParts[0]);
   $lastName = isset($nameParts[1]) ? removeAccents($nameParts[1]) : '';
 
   // Add user information to the VCard
   $vcard->addName($lastName, $firstName);
-  $vcard->addCompany(removeAccents($user['EMPRESA']), removeAccents($user['DEPARTAMENTO']));
-  $vcard->addJobTitle(removeAccents($user['FUNCAO']));
-  $vcard->addRole(removeAccents($user['FUNCAO']));
-  $vcard->addEmail($user['EMAIL']);
-  $vcard->addPhoneNumber($user['CONTACTO'], 'PREF;WORK;VOICE');
+  $vcard->addCompany(removeAccents($user['empresa']), removeAccents($user['departamento']));
+  $vcard->addJobTitle(removeAccents($user['funcao']));
+  $vcard->addRole(removeAccents($user['funcao']));
+  $vcard->addEmail($user['emailEmpresa']);
+  $vcard->addPhoneNumber($user['contacto'], 'PREF;WORK;VOICE');
 
   // Send the VCard as a response
   header('Content-Type: text/vcard');
-  header('Content-Disposition: attachment; filename="' . $user['USERNAME'] . '.vcf"');
+  header('Content-Disposition: attachment; filename="' . $user['username'] . '.vcf"');
 
   echo $vcard->getOutput();
 }
@@ -270,20 +270,20 @@ function generateVCardConcession($concession)
     $vcard->setCharset('UTF-8');
 
     // Separate first and last names
-    $nameParts = explode(' ', $user['NAME']);
+    $nameParts = explode(' ', $user['nameDisplay']);
     $firstName = removeAccents($nameParts[0]);
     $lastName = isset($nameParts[1]) ? removeAccents($nameParts[1]) : '';
 
     // Add user information to the VCard
     $vcard->addName($lastName, $firstName);
-    $vcard->addCompany(removeAccents($user['EMPRESA']), removeAccents($user['DEPARTAMENTO']));
-    $vcard->addJobTitle(removeAccents($user['FUNCAO']));
-    $vcard->addRole(removeAccents($user['FUNCAO']));
-    $vcard->addEmail($user['EMAIL']);
-    $vcard->addPhoneNumber($user['CONTACTO'], 'PREF;WORK;VOICE');
+    $vcard->addCompany(removeAccents($user['empresa']), removeAccents($user['departamento']));
+    $vcard->addJobTitle(removeAccents($user['funcao']));
+    $vcard->addRole(removeAccents($user['funcao']));
+    $vcard->addEmail($user['emailPessoal']);
+    $vcard->addPhoneNumber($user['contacto'], 'PREF;WORK;VOICE');
 
     // Add the VCard to the zip archive
-    $zip->addFile($user['USERNAME'] . '.vcf', $vcard->getOutput());
+    $zip->addFile($user['username'] . '.vcf', $vcard->getOutput());
   }
 
   $zip->finish(); // Finish the zip creation
@@ -291,7 +291,7 @@ function generateVCardConcession($concession)
 
 function updateAvatar($username, $image) {
 
-  $directoryPath = "../workers/{$username}";
+  $directoryPath = "../../workers/{$username}";
 
   if (!file_exists($directoryPath)) {
     mkdir($directoryPath, 0755, true);
@@ -309,13 +309,19 @@ function updateAvatar($username, $image) {
   return $response;
 }
 
+/**
+ * This function will handle password update
+ * @param mixed $password 
+ * @param mixed $username 
+ * @return string[] Response data
+ */
 function updatePassword($password, $username) {
   global $conn;
 
-  $sql = 'UPDATE users SET PASSWORD = ? WHERE USERNAME = ?';
+  $sql = "UPDATE tbusers SET passwordPhp = ?, passwordAsp = ? WHERE username = ?";
 
   $stmt = $conn->prepare($sql);
-  $stmt->bind_param('ss', $password, $username);
+  $stmt->bind_param('sss', $password, $password, $username);
   $result = $stmt->execute();
 
   if ($result) {

@@ -33,7 +33,7 @@ const ModalAvatarEdit = ({ baseUrl, setAvatar, username }) => {
     <Fragment>
       <div>
         <img
-          src={imageSrc}
+          src={`${imageSrc}?timestamp=${Date.now()}`}
           className='mb-3'
           alt='Avatar Preview'
           style={{

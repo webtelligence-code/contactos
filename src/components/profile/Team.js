@@ -33,14 +33,15 @@ const Team = ({ baseUrl, team, username }) => {
         </Card.Header>
         <Card.Body>
           <Row className='text-center'>
+            {/* eslint-disable-next-line array-callback-return */}
             {team.map((teamMember, key) => {
-              if (username !== teamMember.USERNAME) {
+              if (username !== teamMember.username) {
                 return (
                   <Col key={key} className='m-2'>
                     <WorkerImage
-                      username={teamMember.USERNAME}
+                      username={teamMember.username}
                       defaultImageSrc={defaultImageSrc}
-                      alt={teamMember.USERNAME}
+                      alt={teamMember.username}
                       style={{
                         width: 125,
                         height: 125,
@@ -48,7 +49,7 @@ const Team = ({ baseUrl, team, username }) => {
                         objectFit: 'cover',
                         border: '#77321c 2px solid'
                       }}
-                      onClick={() => handleTeamMemberOnClick(teamMember.USERNAME)}
+                      onClick={() => handleTeamMemberOnClick(teamMember.username)}
                       avatar={false}
                       sessionUsername={null}
                       clickable={true}
@@ -63,7 +64,7 @@ const Team = ({ baseUrl, team, username }) => {
                       }}
                     >
                       <FontAwesomeIcon icon={faUser} className='me-1' color='#ed6337' size='xs' />
-                      {teamMember.NAME}
+                      {teamMember.nameDisplay}
                     </div>
                     <div
                       style={{
@@ -72,7 +73,7 @@ const Team = ({ baseUrl, team, username }) => {
                       }}
                     >
                       <FontAwesomeIcon icon={faBuildingUser} className='me-1' color='#ed6337' size='xs' />
-                      {teamMember.FUNCAO}
+                      {teamMember.funcao}
                     </div>
                     <div
                       style={{
@@ -81,7 +82,7 @@ const Team = ({ baseUrl, team, username }) => {
                       }}
                     >
                       <FontAwesomeIcon icon={faCar} className='me-1' color='#ed6337' size='xs' />
-                      {teamMember.CONCESSAO}
+                      {teamMember.concessao}
                     </div>
                   </Col>
                 )

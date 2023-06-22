@@ -9,7 +9,7 @@ const WorkerImage = ({ baseUrl, clickable, avatar, username, sessionUsername, al
   const avatarTarget = useRef(null);
   const teamTarget = useRef(null);
 
-  const [imageSrc, setImageSrc] = useState(`${BASE_URL}/${username}/${username}.png`);
+  const [imageSrc, setImageSrc] = useState(`${BASE_URL}/${username}/${username}.webp`);
   const [isLoading, setIsLoading] = useState(true);
   const [showOverlay, setShowOverlay] = useState(false);
   const [avatarShow, setAvatarShow] = useState(false);
@@ -51,7 +51,7 @@ const WorkerImage = ({ baseUrl, clickable, avatar, username, sessionUsername, al
     >
       <img
         className={clickable ? 'clickable' : null}
-        src={imageSrc}
+        src={`${imageSrc}?timestamp=${Date.now()}`}
         alt={alt}
         style={style}
         onClick={onClick}

@@ -35,7 +35,7 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
     formData.append('action', 'generate_vcard');
 
     if (typeof data === 'object') {
-      setVCardLoadUser(data.USERNAME);
+      setVCardLoadUser(data.username);
       formData.append('user', JSON.stringify(data))
     } else {
       setVCardLoadConcession(data);
@@ -48,7 +48,7 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
       const a = document.createElement('a');
       a.href = url;
       a.download = typeof data === 'object'
-        ? `${data.USERNAME}.vcf`
+        ? `${data.username}.vcf`
         : `vcards_concessao_${data}.zip`;
       document.body.appendChild(a);
       a.click();
@@ -74,12 +74,12 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
 
     // Add all the fields you want to search by in this array
     const userAttributes = [
-      user.NAME,
-      user.EMPRESA,
-      user.DEPARTAMENTO,
-      user.FUNCAO,
-      user.EMAIL,
-      user.CONTACTO,
+      user.nameDisplay,
+      user.empresa,
+      user.departamento,
+      user.funcao,
+      user.emailEmpresa,
+      user.contacto,
     ];
 
     return searchTerms.every((term) =>
@@ -93,14 +93,14 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
 
   return (
     <Fragment>
-      {Object.keys(users).map((CONCESSAO, key) => {
-        const filteredUsersInGroup = filteredUsers(CONCESSAO);
+      {Object.keys(users).map((concessao, key) => {
+        const filteredUsersInGroup = filteredUsers(concessao);
         if (filteredUsersInGroup.length === 0) {
           return null
         }
 
-        if (!concessionTarget.has(CONCESSAO)) {
-          concessionTarget.set(CONCESSAO, React.createRef());
+        if (!concessionTarget.has(concessao)) {
+          concessionTarget.set(concessao, React.createRef());
         }
 
         return (
@@ -120,27 +120,27 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
               }}
               as='h5'
             >
-              {CONCESSAO}
+              {concessao}
               <Button
-                disabled={vcardLoadConcession === CONCESSAO ? true : false}
+                disabled={vcardLoadConcession === concessao ? true : false}
                 className='ms-2'
                 size='sm'
                 variant='outline-dark'
-                onClick={(event) => handleVCardClick(CONCESSAO, event)}
-                onMouseEnter={() => setHoveredConcession(CONCESSAO)}
+                onClick={(event) => handleVCardClick(concessao, event)}
+                onMouseEnter={() => setHoveredConcession(concessao)}
                 onMouseLeave={() => setHoveredConcession(null)}
-                ref={concessionTarget.get(CONCESSAO)}
+                ref={concessionTarget.get(concessao)}
               >
                 <FontAwesomeIcon
-                  icon={hoveredConcession === CONCESSAO ? faDownload : faAddressCard}
+                  icon={hoveredConcession === concessao ? faDownload : faAddressCard}
                   color='#ed6337'
-                  bounce={hoveredConcession === CONCESSAO}
+                  bounce={hoveredConcession === concessao}
                 />
-                {vcardLoadConcession === CONCESSAO ? ' A transferir' : null}
+                {vcardLoadConcession === concessao ? ' A transferir' : null}
               </Button>
-              <Overlay target={concessionTarget.get(CONCESSAO)?.current} show={hoveredConcession === CONCESSAO} placement='right'>
+              <Overlay target={concessionTarget.get(concessao)?.current} show={hoveredConcession === concessao} placement='right'>
                 <Tooltip id='overlay-ZIP'>
-                  Clicar para transferir ZIP de VCards da Concessão {CONCESSAO}.
+                  Clicar para transferir ZIP de VCards da Concessão {concessao}.
                 </Tooltip>
               </Overlay>
             </Card.Header>
@@ -157,20 +157,20 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredUsers(CONCESSAO).map((user, key) => {
-                    if (!userTarget.has(user.USERNAME)) {
-                      userTarget.set(user.USERNAME, React.createRef())
+                  {filteredUsers(concessao).map((user, key) => {
+                    if (!userTarget.has(user.username)) {
+                      userTarget.set(user.username, React.createRef())
                     }
 
                     return (
-                      <tr style={{ color: '#77321c', fontSize: 15 }} key={key} className='clickable' onClick={() => navigate(`/GAP/NovasPlataformas/contactos/profile/${user.USERNAME}`)}>
-                        <td className='align-middle'>{user.NAME}</td>
-                        <td className='align-middle'>{user.EMPRESA}</td>
-                        <td className='align-middle'>{user.DEPARTAMENTO}</td>
-                        <td className='align-middle'>{user.FUNCAO}</td>
-                        <td className='align-middle'>{user.EMAIL}</td>
+                      <tr style={{ color: '#77321c', fontSize: 15 }} key={key} className='clickable' onClick={() => navigate(`/GAP/NovasPlataformas/contactos/profile/${user.username}`)}>
+                        <td className='align-middle'>{user.nameDisplay}</td>
+                        <td className='align-middle'>{user.empresa}</td>
+                        <td className='align-middle'>{user.departamento}</td>
+                        <td className='align-middle'>{user.funcao}</td>
+                        <td className='align-middle'>{user.emailEmpresa}</td>
                         <td className='text-end'>
-                          {user.CONTACTO}
+                          {user.contacto}
                           <Button
                             disabled={vcardLoadUser === user.USERNAME ? true : false}
                             className='ms-2'
@@ -179,18 +179,18 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                             onClick={(event) => handleVCardClick(user, event)}
                             onMouseEnter={() => setHoveredUser(user)}
                             onMouseLeave={() => setHoveredUser({})}
-                            ref={userTarget.get(user.USERNAME)}
+                            ref={userTarget.get(user.username)}
                           >
                             <FontAwesomeIcon
                               bounce={hoveredUser === user ? true : false}
                               icon={hoveredUser === user ? faDownload : faAddressCard}
                               color='#ed6337'
                             />
-                            {vcardLoadUser === user.USERNAME ? ' A transferir' : null}
+                            {vcardLoadUser === user.username ? ' A transferir' : null}
                           </Button>
-                          <Overlay target={userTarget.get(user.USERNAME)?.current} show={hoveredUser === user} placement='left'>
+                          <Overlay target={userTarget.get(user.username)?.current} show={hoveredUser === user} placement='left'>
                               <Tooltip id='overlay-USER'>
-                                Clicar para transferir VCard do utilizador {user.USERNAME}.
+                                Clicar para transferir VCard do utilizador {user.username}.
                               </Tooltip>
                           </Overlay>
                         </td>

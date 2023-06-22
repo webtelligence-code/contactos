@@ -7,56 +7,56 @@ const UserDetails = ({ user }) => {
   return (
     <Row style={{ color: '#77321c', fontWeight: 'normal' }}>
       <Col>
-        {user.EMAIL && (
+        {user.emailEmpresa && (
           <p>
             <FontAwesomeIcon icon={faEnvelope} className='me-1' color='#ed6337' size='sm' />
             <FontAwesomeIcon icon={faBuilding} className='me-2' color='#ed6337' size='sm' />
-            {user.EMAIL}
+            {user.emailEmpresa}
           </p>
         )}
-        {user.EMAIL_PESSOAL && user.EMAIL_PESSOAL.length > 1 && (
+        {user.emailPessoal && user.emailPessoal.length > 1 && (
           <p>
             <FontAwesomeIcon icon={faEnvelope} className='me-1' color='#ed6337' size='sm' />
             <FontAwesomeIcon icon={faUser} className='me-2' color='#ed6337' size='sm' />
-            {user.EMAIL_PESSOAL}
+            {user.emailPessoal}
           </p>
         )}
-        {user.CONTACTO && (
+        {user.contacto && (
           <p>
             <FontAwesomeIcon icon={faPhone} className='me-2' color='#ed6337' size='sm' />
-            {user.CONTACTO}
+            {user.contacto}
           </p>
         )}
-        {user.EXTENSAO && (
+        {user.extensao && (
           <p>
             <FontAwesomeIcon icon={faLayerGroup} className='me-2' color='#ed6337' size='sm' />
-            {user.EXTENSAO ? user.EXTENSAO : 'Nenhuma.'}
+            {user.extensao}
           </p>
         )}
-        {user.DATA_NASCIMENTO && (
+        {user.dataNascimento && (
           <p>
             <FontAwesomeIcon icon={faCakeCandles} className='me-2' color='#ed6337' size='sm' />
-            {user.DATA_NASCIMENTO}
+            {user.dataNascimento}
           </p>
         )}
       </Col>
       <Col>
-        {user.DEPARTAMENTO && (
+        {user.departamento && (
           <p>
             <FontAwesomeIcon icon={faBuildingUser} className='me-2' color='#ed6337' size='sm' />
-            {user.DEPARTAMENTO}
+            {user.departamento}
           </p>
         )}
-        {user.CONCESSAO && (
+        {user.concessao && (
           <p>
             <FontAwesomeIcon icon={faCar} className='me-2' color='#ed6337' size='sm' />
-            {user.CONCESSAO}
+            {user.concessao}
           </p>
         )}
-        {user.EMPRESA && (
+        {user.empresa && (
           <p>
             <FontAwesomeIcon icon={faBuilding} className='me-2' color='#ed6337' size='sm' />
-            {user.EMPRESA}
+            {user.empresa}
           </p>
         )}
       </Col>
