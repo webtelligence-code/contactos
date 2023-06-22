@@ -71,6 +71,7 @@ const ProfilePage = ({ baseUrl, title, API_BASE_URL }) => {
       }
     })
       .then((response) => {
+        console.log(response.data)
         document.title = `Perfil de ${response.data.nameDisplay}`;
         setUser(response.data);
       })

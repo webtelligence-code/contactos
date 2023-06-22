@@ -125,7 +125,7 @@ function generateLogMessage($username, $personalEmail, $pants, $shirt, $jacket, 
 
   $existingUser = $stmt->get_result()->fetch_assoc();
   // Compare new values with existing values and construct log messag
-  $logMessage = 'O utilizador fez mudanças nos campos ';
+  $logMessage = 'O utilizador ' . $username . ' fez mudanças nos campos ';
   $changeFields = [];
 
   // Add current date and time to the log message
@@ -133,31 +133,31 @@ function generateLogMessage($username, $personalEmail, $pants, $shirt, $jacket, 
   $formattedDateTime = $dateTime->format('Y-m-d H:i:s');
 
   if ($personalEmail !== '' && $personalEmail !== $existingUser['emailPessoal']) {
-    $changeFields[] = 'emailPessoal ("' . $personalEmail . '")';
+    $changeFields[] = '"emailPessoal" -> ("' . $personalEmail . '")';
   }
   if ($pants !== 0 && $pants !== $existingUser['nCalcas']) {
-    $changeFields[] = 'nCalcas ("' . $pants . '")';
+    $changeFields[] = '"nCalcas" -> ("' . $pants . '")';
   }
   if ($shirt !== '' && $shirt !== $existingUser['nCamisa']) {
-    $changeFields[] = 'nCamisa ("' . $shirt . '")';
+    $changeFields[] = '"nCamisa" -> ("' . $shirt . '")';
   }
   if ($jacket !== '' && $jacket !== $existingUser['nCasaco']) {
-    $changeFields[] = 'nCasaco ("' . $jacket . '")';
+    $changeFields[] = '"nCasaco" -> ("' . $jacket . '")';
   }
   if ($polo !== '' && $polo !== $existingUser['nPolo']) {
-    $changeFields[] = 'nPolo ("' . $polo . '")';
+    $changeFields[] = '"nPolo" -> ("' . $polo . '")';
   }
   if ($pullover !== '' && $pullover !== $existingUser['nPullover']) {
-    $changeFields[] = 'nPullover ("' . $pullover . '")';
+    $changeFields[] = '"nPullover" -> ("' . $pullover . '")';
   }
   if ($shoe !== 0 && $shoe !== $existingUser['nSapato']) {
-    $changeFields[] = 'nSapato ("' . $shoe . '")';
+    $changeFields[] = '"nSapato" -> ("' . $shoe . '")';
   }
   if ($sweatshirt !== '' && $sweatshirt !== $existingUser['nSweatshirt']) {
-    $changeFields[] = 'nSweatshirt ("' . $sweatshirt . '")';
+    $changeFields[] = '"nSweatshirt" -> ("' . $sweatshirt . '")';
   }
   if ($tshirt !== '' && $tshirt !== $existingUser['nTshirt']) {
-    $changeFields[] = 'nTshirt ("' . $tshirt . '")';
+    $changeFields[] = '"nTshirt" -> ("' . $tshirt . '")';
   }
 
   // Log message
