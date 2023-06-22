@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 const ModalAvatarEdit = ({ baseUrl, setAvatar, username }) => {
   const BASE_URL = 'https://amatoscar.pt/GAP/NovasPlataformas/workers'
   const defaultImageSrc = `${BASE_URL}/user.webp`;
-  const [imageSrc, setImageSrc] = useState(`${BASE_URL}/${username}/${username}.webp`);
+  const [imageSrc, setImageSrc] = useState(`${BASE_URL}/${username}/${username}.webp?timestamp=${Date.now()}`);
 
   useEffect(() => {
     const img = new Image();
@@ -33,7 +33,7 @@ const ModalAvatarEdit = ({ baseUrl, setAvatar, username }) => {
     <Fragment>
       <div>
         <img
-          src={`${imageSrc}?timestamp=${Date.now()}`}
+          src={imageSrc}
           className='mb-3'
           alt='Avatar Preview'
           style={{

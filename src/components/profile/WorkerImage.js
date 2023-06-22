@@ -9,7 +9,7 @@ const WorkerImage = ({ baseUrl, clickable, avatar, username, sessionUsername, al
   const avatarTarget = useRef(null);
   const teamTarget = useRef(null);
 
-  const [imageSrc, setImageSrc] = useState(`${BASE_URL}/${username}/${username}.webp`);
+  const [imageSrc, setImageSrc] = useState(`${BASE_URL}/${username}/${username}.webp?timestamp=${Date.now()}`);
   const [isLoading, setIsLoading] = useState(true);
   const [showOverlay, setShowOverlay] = useState(false);
   const [avatarShow, setAvatarShow] = useState(false);
@@ -51,7 +51,7 @@ const WorkerImage = ({ baseUrl, clickable, avatar, username, sessionUsername, al
     >
       <img
         className={clickable ? 'clickable' : null}
-        src={`${imageSrc}?timestamp=${Date.now()}`}
+        src={imageSrc}
         alt={alt}
         style={style}
         onClick={onClick}
@@ -90,31 +90,31 @@ const WorkerImage = ({ baseUrl, clickable, avatar, username, sessionUsername, al
       </Overlay>
       {teamOverlay && (
         <Overlay target={teamTarget.current} show={teamShow} placement="top">
-          <Tooltip id="overlay-example" >
-            <h5 style={{ color: '#ed6337' }}>{teamMember.NAME}</h5>
+          <Tooltip id="overlay-example" className='text-start'>
+            <h5 style={{ color: '#ed6337' }}>{teamMember.nameDisplay}</h5>
             <p>
               <FontAwesomeIcon icon={faBuildingUser} className='me-2' color='#ed6337' />
-              {teamMember.DEPARTAMENTO}
+              {teamMember.departamento}
             </p>
             <p>
               <FontAwesomeIcon icon={faBuildingUser} className='me-2' color='#ed6337' />
-              {teamMember.FUNCAO}
+              {teamMember.funcao}
             </p>
             <p>
               <FontAwesomeIcon icon={faCar} className='me-2' color='#ed6337' />
-              {teamMember.CONCESSAO}
+              {teamMember.concessao}
             </p>
             <p>
               <FontAwesomeIcon icon={faBuilding} className='me-2' color='#ed6337' />
-              {teamMember.EMPRESA}
+              {teamMember.empresa}
             </p>
             <p>
               <FontAwesomeIcon icon={faEnvelope} className='me-2' color='#ed6337' />
-              {teamMember.EMAIL}
+              {teamMember.emailEmpresa}
             </p>
             <p>
               <FontAwesomeIcon icon={faPhone} className='me-2' color='#ed6337' />
-              {teamMember.CONTACTO}
+              {teamMember.contacto}
             </p>
           </Tooltip>
         </Overlay>

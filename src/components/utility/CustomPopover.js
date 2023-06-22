@@ -5,31 +5,31 @@ import Popover from 'react-bootstrap/Popover';
 
 const CustomPopover = ({ teamMember }) => (
   <Popover id="popover-basic">
-    <Popover.Header as="h3">{teamMember.NAME}</Popover.Header>
+    <Popover.Header as="h3">{teamMember.nameDisplay}</Popover.Header>
     <Popover.Body>
       <p>
         <FontAwesomeIcon icon={faBuildingUser} className='me-2' />
-        {teamMember.DEPARTAMENTO}
+        {teamMember.departamento}
       </p>
       <p>
         <FontAwesomeIcon icon={faBuildingUser} className='me-2' />
-        {teamMember.FUNCAO}
+        {teamMember.funcao}
       </p>
       <p>
         <FontAwesomeIcon icon={faCar} className='me-2' />
-        {teamMember.CONCESSAO}
+        {teamMember.concessao}
       </p>
       <p>
         <FontAwesomeIcon icon={faBuilding} className='me-2' />
-        {teamMember.EMPRESA}
+        {teamMember.empresa}
       </p>
       <p>
         <FontAwesomeIcon icon={faEnvelope} className='me-2' />
-        {teamMember.EMAIL}
+        {teamMember.emailEmpresa}
       </p>
       <p>
         <FontAwesomeIcon icon={faPhone} className='me-2' />
-        {teamMember.CONTACTO}
+        {teamMember.contacto}
       </p>
     </Popover.Body>
   </Popover>
