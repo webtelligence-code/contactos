@@ -149,7 +149,6 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                 <thead>
                   <tr style={{ color: '#77321c', borderColor: '#77321c' }}>
                     <th>Nome</th>
-                    <th>Empresa</th>
                     <th>Departamento</th>
                     <th>Função</th>
                     <th>Email</th>
@@ -165,7 +164,6 @@ const UserTable = ({ users, searchInput, API_BASE_URL }) => {
                     return (
                       <tr style={{ color: '#77321c', fontSize: 15 }} key={key} className='clickable' onClick={() => navigate(`/GAP/NovasPlataformas/contactos/profile/${user.username}`)}>
                         <td className='align-middle'>{user.nameDisplay}</td>
-                        <td className='align-middle'>{user.empresa}</td>
                         <td className='align-middle'>{user.departamento}</td>
                         <td className='align-middle'>{user.funcao}</td>
                         <td className='align-middle'>{user.emailEmpresa}</td>

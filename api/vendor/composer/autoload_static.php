@@ -4,35 +4,59 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit8ab56844b68037787eefdf84237e1ecb
+class ComposerStaticInitae6fe9b1a39960ef80bbbd0f10d56fe3
 {
+    public static $files = array (
+        '383eaff206634a77a1be54e64e6459c7' => __DIR__ . '/..' . '/sabre/uri/lib/functions.php',
+        '3569eecfeed3bcf0bad3c998a494ecb8' => __DIR__ . '/..' . '/sabre/xml/lib/Deserializer/functions.php',
+        '93aa591bc4ca510c520999e34229ee79' => __DIR__ . '/..' . '/sabre/xml/lib/Serializer/functions.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
-        'E' => 
+        'Z' => 
         array (
-            'Endroid\\QrCode\\' => 15,
+            'ZipStream\\' => 10,
         ),
-        'D' => 
+        'S' => 
         array (
-            'DASPRiD\\Enum\\' => 13,
+            'Sabre\\Xml\\' => 10,
+            'Sabre\\VObject\\' => 14,
+            'Sabre\\Uri\\' => 10,
+        ),
+        'J' => 
+        array (
+            'JeroenDesloovere\\VCard\\' => 23,
         ),
         'B' => 
         array (
-            'BaconQrCode\\' => 12,
+            'Behat\\Transliterator\\' => 21,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Endroid\\QrCode\\' => 
+        'ZipStream\\' => 
         array (
-            0 => __DIR__ . '/..' . '/endroid/qr-code/src',
+            0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
         ),
-        'DASPRiD\\Enum\\' => 
+        'Sabre\\Xml\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dasprid/enum/src',
+            0 => __DIR__ . '/..' . '/sabre/xml/lib',
         ),
-        'BaconQrCode\\' => 
+        'Sabre\\VObject\\' => 
         array (
-            0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
+            0 => __DIR__ . '/..' . '/sabre/vobject/lib',
+        ),
+        'Sabre\\Uri\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabre/uri/lib',
+        ),
+        'JeroenDesloovere\\VCard\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jeroendesloovere/vcard/src',
+        ),
+        'Behat\\Transliterator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/behat/transliterator/src/Behat/Transliterator',
         ),
     );
 
@@ -43,9 +67,9 @@ class ComposerStaticInit8ab56844b68037787eefdf84237e1ecb
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit8ab56844b68037787eefdf84237e1ecb::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit8ab56844b68037787eefdf84237e1ecb::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit8ab56844b68037787eefdf84237e1ecb::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitae6fe9b1a39960ef80bbbd0f10d56fe3::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitae6fe9b1a39960ef80bbbd0f10d56fe3::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitae6fe9b1a39960ef80bbbd0f10d56fe3::$classMap;
 
         }, null, ClassLoader::class);
     }

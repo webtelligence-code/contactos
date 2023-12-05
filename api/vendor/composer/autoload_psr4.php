@@ -6,7 +6,10 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Endroid\\QrCode\\' => array($vendorDir . '/endroid/qr-code/src'),
-    'DASPRiD\\Enum\\' => array($vendorDir . '/dasprid/enum/src'),
-    'BaconQrCode\\' => array($vendorDir . '/bacon/bacon-qr-code/src'),
+    'ZipStream\\' => array($vendorDir . '/maennchen/zipstream-php/src'),
+    'Sabre\\Xml\\' => array($vendorDir . '/sabre/xml/lib'),
+    'Sabre\\VObject\\' => array($vendorDir . '/sabre/vobject/lib'),
+    'Sabre\\Uri\\' => array($vendorDir . '/sabre/uri/lib'),
+    'JeroenDesloovere\\VCard\\' => array($vendorDir . '/jeroendesloovere/vcard/src'),
+    'Behat\\Transliterator\\' => array($vendorDir . '/behat/transliterator/src/Behat/Transliterator'),
 );

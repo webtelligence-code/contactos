@@ -23,20 +23,15 @@ const User = ({ API_BASE_URL, baseUrl, user, team, loading, sessionUsername }) =
           {loading ? (
             <LoadingBars classes={'ms-3'} />
           ) : (
-            <UserCardHeader user={user} baseUrl={baseUrl} API_BASE_URL={API_BASE_URL} sessionUsername={sessionUsername}/>
+            <UserCardHeader user={user} brands={user.marcas} baseUrl={baseUrl} API_BASE_URL={API_BASE_URL} sessionUsername={sessionUsername} />
           )}
 
         </Card.Header>
-        {/* This is the body of the User card */}
-        <Card.Body style={{ padding: 50, paddingTop: 20, paddingBottom: 20 }}>
+        <Card.Body>
           {loading ? (
             <LoadingBars />
           ) : (
-            <Fragment>
-              <UserDetails user={user} />
-              <Brands brands={user.marcas} />
-              <Team baseUrl={baseUrl} team={team} username={user.username} />
-            </Fragment>
+            <Team baseUrl={baseUrl} team={team} username={user.username} />
           )}
         </Card.Body >
       </Card >

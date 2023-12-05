@@ -9,13 +9,14 @@ const Brands = ({ brands }) => {
 
   return (
     brandList.length > 0 && (
-      <Card>
+      <Card className='mt-2' style={{border: 'none'}}>
         <Card.Header
           style={{
             backgroundColor: 'white',
             borderBottomLeftRadius: '10px',
             borderBottomRightRadius: '10px',
-            color: '#77321c'
+            color: '#77321c',
+            border: 'none'
           }}
           as={'h6'}
         >

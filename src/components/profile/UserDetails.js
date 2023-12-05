@@ -1,4 +1,4 @@
-import { faBuilding, faBuildingUser, faCakeCandles, faCar, faEnvelope, faLayerGroup, faPhone, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faBuilding, faBuildingUser, faCakeCandles, faCalendarCheck, faCar, faEnvelope, faLayerGroup, faPhone, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
@@ -8,56 +8,37 @@ const UserDetails = ({ user }) => {
     <Row style={{ color: '#77321c', fontWeight: 'normal' }}>
       <Col>
         {user.emailEmpresa && (
-          <p>
+          <span className='my-1'>
             <FontAwesomeIcon icon={faEnvelope} className='me-1' color='#ed6337' size='sm' />
             <FontAwesomeIcon icon={faBuilding} className='me-2' color='#ed6337' size='sm' />
-            {user.emailEmpresa}
-          </p>
-        )}
-        {user.emailPessoal && user.emailPessoal.length > 1 && (
-          <p>
-            <FontAwesomeIcon icon={faEnvelope} className='me-1' color='#ed6337' size='sm' />
-            <FontAwesomeIcon icon={faUser} className='me-2' color='#ed6337' size='sm' />
-            {user.emailPessoal}
-          </p>
+            {user.emailEmpresa}<br />
+          </span>
         )}
         {user.contacto && (
-          <p>
+          <span className='my-1'>
             <FontAwesomeIcon icon={faPhone} className='me-2' color='#ed6337' size='sm' />
-            {user.contacto}
-          </p>
+            {user.contacto}<br />
+          </span>
         )}
         {user.extensao && (
-          <p>
+          <span className='my-1'>
             <FontAwesomeIcon icon={faLayerGroup} className='me-2' color='#ed6337' size='sm' />
-            {user.extensao}
-          </p>
-        )}
-        {user.dataNascimento && (
-          <p>
-            <FontAwesomeIcon icon={faCakeCandles} className='me-2' color='#ed6337' size='sm' />
-            {user.dataNascimento}
-          </p>
+            {user.extensao}<br />
+          </span>
         )}
       </Col>
       <Col>
-        {user.departamento && (
-          <p>
-            <FontAwesomeIcon icon={faBuildingUser} className='me-2' color='#ed6337' size='sm' />
-            {user.departamento}
-          </p>
+        {user.dataNascimento && (
+          <span className='my-1'>
+            <FontAwesomeIcon icon={faCakeCandles} className='me-2' color='#ed6337' size='sm' />
+            {user.dataNascimento}<br />
+          </span>
         )}
-        {user.concessao && (
-          <p>
-            <FontAwesomeIcon icon={faCar} className='me-2' color='#ed6337' size='sm' />
-            {user.concessao}
-          </p>
-        )}
-        {user.empresa && (
-          <p>
-            <FontAwesomeIcon icon={faBuilding} className='me-2' color='#ed6337' size='sm' />
-            {user.empresa}
-          </p>
+        {user.dataAdmissao && (
+          <span className='my-1'>
+            <FontAwesomeIcon icon={faCalendarCheck} className='me-2' color='#ed6337' size='sm' />
+            {user.dataAdmissao}<br />
+          </span>
         )}
       </Col>
     </Row>

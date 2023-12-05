@@ -16,15 +16,14 @@ const Team = ({ baseUrl, team, username }) => {
 
   return (
     <Fragment>
-      <Card
-        className='my-3'
-      >
+      <Card style={{border: 'none'}}>
         <Card.Header
           style={{
             backgroundColor: 'white',
             borderBottomLeftRadius: '10px',
             borderBottomRightRadius: '10px',
-            color: '#77321c'
+            color: '#77321c',
+            border: 'none'
           }}
           as={'h6'}
         >
